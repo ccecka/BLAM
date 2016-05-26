@@ -8,24 +8,43 @@ namespace blam
 namespace cublas
 {
 
+// RowMajor -> ColMajor
+template <typename DerivedPolicy,
+          typename T>
+void
+ger(const execution_policy<DerivedPolicy>& exec,
+    StorageOrder order, int m, int n,
+    const T& alpha,
+    const T* x, int incX,
+    const T* y, int incY,
+    T* A, int ldA)
+{
+  if (order == ColMajor) {
+    ger(exec, m, n,
+        alpha,
+        x, incX,
+        y, incY,
+        A, ldA);
+  } else { // RowMajor: swap x & y
+    ger(exec, n, m,
+        alpha,
+        y, incY,
+        x, incX,
+        A, ldA);
+  }
+}
+
 // sger
 template <typename DerivedPolicy>
 void
 ger(const execution_policy<DerivedPolicy>& exec,
-    StorageOrder order, int m, int n,
+    int m, int n,
     const float& alpha,
     const float* x, int incX,
     const float* y, int incY,
     float* A, int ldA)
 {
   BLAM_DEBUG_OUT("cublasSger");
-
-  if (order == RowMajor) {
-    using std::swap;
-    swap(m, n);
-    swap(x, y);
-    swap(incX, incY);
-  }
 
   cublasSger(handle(derived_cast(exec)),
              m, n,
@@ -39,20 +58,13 @@ ger(const execution_policy<DerivedPolicy>& exec,
 template <typename DerivedPolicy>
 void
 ger(const execution_policy<DerivedPolicy>& exec,
-    StorageOrder order, int m, int n,
+    int m, int n,
     const double& alpha,
     const double* x, int incX,
     const double* y, int incY,
     double* A, int ldA)
 {
   BLAM_DEBUG_OUT("cublasDger");
-
-  if (order == RowMajor) {
-    using std::swap;
-    swap(m, n);
-    swap(x, y);
-    swap(incX, incY);
-  }
 
   cublasDger(handle(derived_cast(exec)),
              m, n,
@@ -66,20 +78,13 @@ ger(const execution_policy<DerivedPolicy>& exec,
 template <typename DerivedPolicy>
 void
 ger(const execution_policy<DerivedPolicy>& exec,
-    StorageOrder order, int m, int n,
+    int m, int n,
     const ComplexFloat& alpha,
     const ComplexFloat* x, int incX,
     const ComplexFloat* y, int incY,
     ComplexFloat* A, int ldA)
 {
   BLAM_DEBUG_OUT("cublasCgerc");
-
-  if (order == RowMajor) {
-    using std::swap;
-    swap(m, n);
-    swap(x, y);
-    swap(incX, incY);
-  }
 
   cublasCgerc(handle(derived_cast(exec)),
               m, n,
@@ -93,20 +98,13 @@ ger(const execution_policy<DerivedPolicy>& exec,
 template <typename DerivedPolicy>
 void
 ger(const execution_policy<DerivedPolicy>& exec,
-    StorageOrder order, int m, int n,
+    int m, int n,
     const ComplexDouble& alpha,
     const ComplexDouble* x, int incX,
     const ComplexDouble* y, int incY,
     ComplexDouble* A, int ldA)
 {
   BLAM_DEBUG_OUT("cublasZgerc");
-
-  if (order == RowMajor) {
-    using std::swap;
-    swap(m, n);
-    swap(x, y);
-    swap(incX, incY);
-  }
 
   cublasZgerc(handle(derived_cast(exec)),
               m, n,
@@ -116,24 +114,43 @@ ger(const execution_policy<DerivedPolicy>& exec,
               reinterpret_cast<cuDoubleComplex*>(A), ldA);
 }
 
+// RowMajor -> ColMajor
+template <typename DerivedPolicy,
+          typename T>
+void
+geru(const execution_policy<DerivedPolicy>& exec,
+     StorageOrder order, int m, int n,
+     const T& alpha,
+     const T* x, int incX,
+     const T* y, int incY,
+     T* A, int ldA)
+{
+  if (order == ColMajor) {
+    geru(exec, m, n,
+         alpha,
+         x, incX,
+         y, incY,
+         A, ldA);
+  } else {
+    geru(exec, n, m,
+         alpha,
+         y, incY,
+         x, incX,
+         A, ldA);
+  }
+}
+
 // cgeru
 template <typename DerivedPolicy>
 void
 geru(const execution_policy<DerivedPolicy>& exec,
-     StorageOrder order, int m, int n,
+     int m, int n,
      const ComplexFloat& alpha,
      const ComplexFloat* x, int incX,
      const ComplexFloat* y, int incY,
      ComplexFloat* A, int ldA)
 {
   BLAM_DEBUG_OUT("cublasCgeru");
-
-  if (order == RowMajor) {
-    using std::swap;
-    swap(m, n);
-    swap(x, y);
-    swap(incX, incY);
-  }
 
   cublasCgeru(handle(derived_cast(exec)),
               m, n,
@@ -147,20 +164,13 @@ geru(const execution_policy<DerivedPolicy>& exec,
 template <typename DerivedPolicy>
 void
 geru(const execution_policy<DerivedPolicy>& exec,
-     StorageOrder order, int m, int n,
+     int m, int n,
      const ComplexDouble& alpha,
      const ComplexDouble* x, int incX,
      const ComplexDouble* y, int incY,
      ComplexDouble* A, int ldA)
 {
   BLAM_DEBUG_OUT("cublasZgeru");
-
-  if (order == RowMajor) {
-    using std::swap;
-    swap(m, n);
-    swap(x, y);
-    swap(incX, incY);
-  }
 
   cublasZgeru(handle(derived_cast(exec)),
               m, n,

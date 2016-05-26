@@ -8,11 +8,43 @@ namespace blam
 namespace cublas
 {
 
+// RowMajor -> ColMajor
+template <typename DerivedPolicy,
+          typename T>
+void
+gemm(const execution_policy<DerivedPolicy>& exec,
+     StorageOrder order, Transpose transA, Transpose transB,
+     int m, int n, int k,
+     const T& alpha,
+     const T* A, int ldA,
+     const T* B, int ldB,
+     const T& beta,
+     T* C, int ldC)
+{
+  if (order == ColMajor) {
+    gemm(exec, transA, transB,
+         m, n, k,
+         alpha,
+         A, ldA,
+         B, ldB,
+         beta,
+         C, ldC);
+  } else { // RowMajor: swap A & B
+    gemm(exec, transB, transA,
+         n, m, k,
+         alpha,
+         B, ldB,
+         A, ldA,
+         beta,
+         C, ldC);
+  }
+}
+
 // sgemm
 template <typename DerivedPolicy>
 void
 gemm(const execution_policy<DerivedPolicy>& exec,
-     StorageOrder order, Transpose transA, Transpose transB,
+     Transpose transA, Transpose transB,
      int m, int n, int k,
      const float& alpha,
      const float* A, int ldA,
@@ -21,14 +53,6 @@ gemm(const execution_policy<DerivedPolicy>& exec,
      float* C, int ldC)
 {
   BLAM_DEBUG_OUT("cublasSgemm");
-
-  if (order == RowMajor) {
-    using std::swap;
-    swap(transA, transB);
-    swap(m, n);
-    swap(A, B);
-    swap(ldA, ldB);
-  }
 
   cublasSgemm(handle(derived_cast(exec)),
               cublas_transpose(transA), cublas_transpose(transB),
@@ -44,7 +68,7 @@ gemm(const execution_policy<DerivedPolicy>& exec,
 template <typename DerivedPolicy>
 void
 gemm(const execution_policy<DerivedPolicy>& exec,
-     StorageOrder order, Transpose transA, Transpose transB,
+     Transpose transA, Transpose transB,
      int m, int n, int k,
      const double& alpha,
      const double* A, int ldA,
@@ -53,14 +77,6 @@ gemm(const execution_policy<DerivedPolicy>& exec,
      double* C, int ldC)
 {
   BLAM_DEBUG_OUT("cublasDgemm");
-
-  if (order == RowMajor) {
-    using std::swap;
-    swap(transA, transB);
-    swap(m, n);
-    swap(A, B);
-    swap(ldA, ldB);
-  }
 
   cublasDgemm(handle(derived_cast(exec)),
               cublas_transpose(transA), cublas_transpose(transB),
@@ -76,7 +92,7 @@ gemm(const execution_policy<DerivedPolicy>& exec,
 template <typename DerivedPolicy>
 void
 gemm(const execution_policy<DerivedPolicy>& exec,
-     StorageOrder order, Transpose transA, Transpose transB,
+     Transpose transA, Transpose transB,
      int m, int n, int k,
      const ComplexFloat& alpha,
      const ComplexFloat* A, int ldA,
@@ -85,14 +101,6 @@ gemm(const execution_policy<DerivedPolicy>& exec,
      ComplexFloat* C, int ldC)
 {
   BLAM_DEBUG_OUT("cublasCgemm");
-
-  if (order == RowMajor) {
-    using std::swap;
-    swap(transA, transB);
-    swap(m, n);
-    swap(A, B);
-    swap(ldA, ldB);
-  }
 
   cublasCgemm(handle(derived_cast(exec)),
               cublas_transpose(transA), cublas_transpose(transB),
@@ -108,7 +116,7 @@ gemm(const execution_policy<DerivedPolicy>& exec,
 template <typename DerivedPolicy>
 void
 gemm(const execution_policy<DerivedPolicy>& exec,
-     StorageOrder order, Transpose transA, Transpose transB,
+     Transpose transA, Transpose transB,
      int m, int n, int k,
      const ComplexDouble& alpha,
      const ComplexDouble* A, int ldA,
@@ -117,14 +125,6 @@ gemm(const execution_policy<DerivedPolicy>& exec,
      ComplexDouble* C, int ldC)
 {
   BLAM_DEBUG_OUT("cublasDgemm");
-
-  if (order == RowMajor) {
-    using std::swap;
-    swap(transA, transB);
-    swap(m, n);
-    swap(A, B);
-    swap(ldA, ldB);
-  }
 
   cublasZgemm(handle(derived_cast(exec)),
               cublas_transpose(transA), cublas_transpose(transB),

@@ -15,11 +15,46 @@ namespace blam
 namespace cublas
 {
 
+// RowMajor -> ColMajor
+template <typename DerivedPolicy,
+          typename T>
+void
+batch_gemm(const execution_policy<DerivedPolicy>& exec,
+           StorageOrder order, Transpose transA, Transpose transB,
+           int m, int n, int k,
+           const T& alpha,
+           const T* A, int ldA, int loA,
+           const T* B, int ldB, int loB,
+           const T& beta,
+           T* C, int ldC, int loC,
+           int p)
+{
+  if (order == ColMajor) {
+    batch_gemm(exec, transA, transB,
+               m, n, k,
+               alpha,
+               A, ldA, loA,
+               B, ldB, loB,
+               beta,
+               C, ldC, loC,
+               p);
+  } else { // RowMajor: swap A & B
+    batch_gemm(exec, transB, transA,
+               n, m, k,
+               alpha,
+               B, ldB, loB,
+               A, ldA, loA,
+               beta,
+               C, ldC, loC,
+               p);
+  }
+}
+
 // sgemm
 template <typename DerivedPolicy>
 void
 batch_gemm(const execution_policy<DerivedPolicy>& exec,
-           StorageOrder order, Transpose transA, Transpose transB,
+           Transpose transA, Transpose transB,
            int m, int n, int k,
            const float& alpha,
            const float* A, int ldA, int loA,
@@ -29,15 +64,6 @@ batch_gemm(const execution_policy<DerivedPolicy>& exec,
            int p)
 {
   BLAM_DEBUG_OUT("cublasSgemmBatched");
-
-  if (order == RowMajor) {
-    using std::swap;
-    swap(transA, transB);
-    swap(m, n);
-    swap(A, B);
-    swap(ldA, ldB);
-    swap(loA, loB);
-  }
 
   cublasSgemmBatched(handle(derived_cast(exec)),
                      cublas_transpose(transA), cublas_transpose(transB),
@@ -54,7 +80,7 @@ batch_gemm(const execution_policy<DerivedPolicy>& exec,
 template <typename DerivedPolicy>
 void
 batch_gemm(const execution_policy<DerivedPolicy>& exec,
-           StorageOrder order, Transpose transA, Transpose transB,
+           Transpose transA, Transpose transB,
            int m, int n, int k,
            const double& alpha,
            const double* A, int ldA, int loA,
@@ -64,15 +90,6 @@ batch_gemm(const execution_policy<DerivedPolicy>& exec,
            int p)
 {
   BLAM_DEBUG_OUT("cublasDgemmBatched");
-
-  if (order == RowMajor) {
-    using std::swap;
-    swap(transA, transB);
-    swap(m, n);
-    swap(A, B);
-    swap(ldA, ldB);
-    swap(loA, loB);
-  }
 
   cublasDgemmBatched(handle(derived_cast(exec)),
                      cublas_transpose(transA), cublas_transpose(transB),
@@ -89,7 +106,7 @@ batch_gemm(const execution_policy<DerivedPolicy>& exec,
 template <typename DerivedPolicy>
 void
 batch_gemm(const execution_policy<DerivedPolicy>& exec,
-           StorageOrder order, Transpose transA, Transpose transB,
+           Transpose transA, Transpose transB,
            int m, int n, int k,
            const ComplexFloat& alpha,
            const ComplexFloat* A, int ldA, int loA,
@@ -99,15 +116,6 @@ batch_gemm(const execution_policy<DerivedPolicy>& exec,
            int p)
 {
   BLAM_DEBUG_OUT("cublasCgemmBatched");
-
-  if (order == RowMajor) {
-    using std::swap;
-    swap(transA, transB);
-    swap(m, n);
-    swap(A, B);
-    swap(ldA, ldB);
-    swap(loA, loB);
-  }
 
   cublasCgemmBatched(handle(derived_cast(exec)),
                      cublas_transpose(transA), cublas_transpose(transB),
@@ -124,7 +132,7 @@ batch_gemm(const execution_policy<DerivedPolicy>& exec,
 template <typename DerivedPolicy>
 void
 batch_gemm(const execution_policy<DerivedPolicy>& exec,
-           StorageOrder order, Transpose transA, Transpose transB,
+           Transpose transA, Transpose transB,
            int m, int n, int k,
            const ComplexDouble& alpha,
            const ComplexDouble* A, int ldA, int loA,
@@ -134,15 +142,6 @@ batch_gemm(const execution_policy<DerivedPolicy>& exec,
            int p)
 {
   BLAM_DEBUG_OUT("cublasZgemmBatched");
-
-  if (order == RowMajor) {
-    using std::swap;
-    swap(transA, transB);
-    swap(m, n);
-    swap(A, B);
-    swap(ldA, ldB);
-    swap(loA, loB);
-  }
 
   cublasZgemmBatched(handle(derived_cast(exec)),
                      cublas_transpose(transA), cublas_transpose(transB),

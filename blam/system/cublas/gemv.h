@@ -8,11 +8,43 @@ namespace blam
 namespace cublas
 {
 
+// RowMajor -> ColMajor
+template <typename DerivedPolicy,
+          typename T>
+void
+gemv(const execution_policy<DerivedPolicy>& exec,
+     StorageOrder order, Transpose trans,
+     int m, int n,
+     const T& alpha,
+     const T* A, int ldA,
+     const T* x, int incX,
+     const T& beta,
+     T* y, int incY)
+{
+  if (order == ColMajor) {
+    gemv(exec, trans,
+         m, n,
+         alpha,
+         A, ldA,
+         x, incX,
+         beta,
+         y, incY);
+  } else { // RowMajor: transpose A
+    gemv(exec, Transpose(trans ^ Trans),
+         n, m,
+         alpha,
+         A, ldA,
+         x, incX,
+         beta,
+         y, incY);
+  }
+}
+
 // sgemv
 template <typename DerivedPolicy>
 void
 gemv(const execution_policy<DerivedPolicy>& exec,
-     StorageOrder order, Transpose trans,
+     Transpose trans,
      int m, int n,
      const float& alpha,
      const float* A, int ldA,
@@ -21,12 +53,6 @@ gemv(const execution_policy<DerivedPolicy>& exec,
      float* y, int incY)
 {
   BLAM_DEBUG_OUT("cublasSgemv");
-
-  if (order == RowMajor) {
-    trans = Transpose(trans^Trans);
-    using std::swap;
-    swap(m, n);
-  }
 
   cublasSgemv(handle(derived_cast(exec)), cublas_transpose(trans),
               m, n,
@@ -41,7 +67,7 @@ gemv(const execution_policy<DerivedPolicy>& exec,
 template <typename DerivedPolicy>
 void
 gemv(const execution_policy<DerivedPolicy>& exec,
-     StorageOrder order, Transpose trans,
+     Transpose trans,
      int m, int n,
      const double& alpha,
      const double* A, int ldA,
@@ -50,12 +76,6 @@ gemv(const execution_policy<DerivedPolicy>& exec,
      double* y, int incY)
 {
   BLAM_DEBUG_OUT("cublasDgemv");
-
-  if (order == RowMajor) {
-    trans = Transpose(trans^Trans);
-    using std::swap;
-    swap(m, n);
-  }
 
   cublasDgemv(handle(derived_cast(exec)), cublas_transpose(trans),
               m, n,
@@ -70,7 +90,7 @@ gemv(const execution_policy<DerivedPolicy>& exec,
 template <typename DerivedPolicy>
 void
 gemv(const execution_policy<DerivedPolicy>& exec,
-     StorageOrder order, Transpose trans,
+     Transpose trans,
      int m, int n,
      const ComplexFloat& alpha,
      const ComplexFloat* A, int ldA,
@@ -79,12 +99,6 @@ gemv(const execution_policy<DerivedPolicy>& exec,
      ComplexFloat* y, int incY)
 {
   BLAM_DEBUG_OUT("cublasCgemv");
-
-  if (order == RowMajor) {
-    trans = Transpose(trans^Trans);
-    using std::swap;
-    swap(m, n);
-  }
 
   cublasCgemv(handle(derived_cast(exec)), cublas_transpose(trans),
               m, n,
@@ -99,7 +113,7 @@ gemv(const execution_policy<DerivedPolicy>& exec,
 template <typename DerivedPolicy>
 void
 gemv(const execution_policy<DerivedPolicy>& exec,
-     StorageOrder order, Transpose trans,
+     Transpose trans,
      int m, int n,
      const ComplexDouble& alpha,
      const ComplexDouble* A, int ldA,
@@ -108,12 +122,6 @@ gemv(const execution_policy<DerivedPolicy>& exec,
      ComplexDouble* y, int incY)
 {
   BLAM_DEBUG_OUT("cublasZgemv");
-
-  if (order == RowMajor) {
-    trans = Transpose(trans^Trans);
-    using std::swap;
-    swap(m, n);
-  }
 
   cublasZgemv(handle(derived_cast(exec)), cublas_transpose(trans),
               m, n,
