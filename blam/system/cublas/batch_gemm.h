@@ -1,14 +1,9 @@
 #pragma once
 
-#if 0  // REPLACE WITH LIBRARY VERSIONING
+#if (CUDA_VERSION >= 8000)
 
 #include <blam/detail/config.h>
-
 #include <blam/system/cublas/execution_policy.h>
-
-// XXX: Custom CUBLAS implementation of strided_batch_gemm
-// XXX: Remove on CUBLAS 8.0
-#include "cublas_batch_gemm.cuh"
 
 namespace blam
 {
@@ -63,17 +58,17 @@ batch_gemm(const execution_policy<DerivedPolicy>& exec,
            float* C, int ldC, int loC,
            int p)
 {
-  BLAM_DEBUG_OUT("cublasSgemmBatched");
+  BLAM_DEBUG_OUT("cublasSgemmStridedBatched");
 
-  cublasSgemmBatched(handle(derived_cast(exec)),
-                     cublas_transpose(transA), cublas_transpose(transB),
-                     m, n, k,
-                     &alpha,
-                     A, ldA, loA,
-                     B, ldB, loB,
-                     &beta,
-                     C, ldC, loC,
-                     p);
+  cublasSgemmStridedBatched(handle(derived_cast(exec)),
+                            cublas_transpose(transA), cublas_transpose(transB),
+                            m, n, k,
+                            &alpha,
+                            A, ldA, loA,
+                            B, ldB, loB,
+                            &beta,
+                            C, ldC, loC,
+                            p);
 }
 
 // dgemm
@@ -89,17 +84,17 @@ batch_gemm(const execution_policy<DerivedPolicy>& exec,
            double* C, int ldC, int loC,
            int p)
 {
-  BLAM_DEBUG_OUT("cublasDgemmBatched");
+  BLAM_DEBUG_OUT("cublasDgemmStridedBatched");
 
-  cublasDgemmBatched(handle(derived_cast(exec)),
-                     cublas_transpose(transA), cublas_transpose(transB),
-                     m, n, k,
-                     &alpha,
-                     A, ldA, loA,
-                     B, ldB, loB,
-                     &beta,
-                     C, ldC, loC,
-                     p);
+  cublasDgemmStridedBatched(handle(derived_cast(exec)),
+                            cublas_transpose(transA), cublas_transpose(transB),
+                            m, n, k,
+                            &alpha,
+                            A, ldA, loA,
+                            B, ldB, loB,
+                            &beta,
+                            C, ldC, loC,
+                            p);
 }
 
 // cgemm
@@ -115,17 +110,17 @@ batch_gemm(const execution_policy<DerivedPolicy>& exec,
            ComplexFloat* C, int ldC, int loC,
            int p)
 {
-  BLAM_DEBUG_OUT("cublasCgemmBatched");
+  BLAM_DEBUG_OUT("cublasCgemmStridedBatched");
 
-  cublasCgemmBatched(handle(derived_cast(exec)),
-                     cublas_transpose(transA), cublas_transpose(transB),
-                     m, n, k,
-                     reinterpret_cast<const cuFloatComplex*>(&alpha),
-                     reinterpret_cast<const cuFloatComplex*>(A), ldA, loA,
-                     reinterpret_cast<const cuFloatComplex*>(B), ldB, loB,
-                     reinterpret_cast<const cuFloatComplex*>(&beta),
-                     reinterpret_cast<cuFloatComplex*>(C), ldC, loC,
-                     p);
+  cublasCgemmStridedBatched(handle(derived_cast(exec)),
+                            cublas_transpose(transA), cublas_transpose(transB),
+                            m, n, k,
+                            reinterpret_cast<const cuFloatComplex*>(&alpha),
+                            reinterpret_cast<const cuFloatComplex*>(A), ldA, loA,
+                            reinterpret_cast<const cuFloatComplex*>(B), ldB, loB,
+                            reinterpret_cast<const cuFloatComplex*>(&beta),
+                            reinterpret_cast<cuFloatComplex*>(C), ldC, loC,
+                            p);
 }
 
 // zgemm
@@ -141,20 +136,20 @@ batch_gemm(const execution_policy<DerivedPolicy>& exec,
            ComplexDouble* C, int ldC, int loC,
            int p)
 {
-  BLAM_DEBUG_OUT("cublasZgemmBatched");
+  BLAM_DEBUG_OUT("cublasZgemmStridedBatched");
 
-  cublasZgemmBatched(handle(derived_cast(exec)),
-                     cublas_transpose(transA), cublas_transpose(transB),
-                     m, n, k,
-                     reinterpret_cast<const cuDoubleComplex*>(&alpha),
-                     reinterpret_cast<const cuDoubleComplex*>(A), ldA, loA,
-                     reinterpret_cast<const cuDoubleComplex*>(B), ldB, loB,
-                     reinterpret_cast<const cuDoubleComplex*>(&beta),
-                     reinterpret_cast<cuDoubleComplex*>(C), ldC, loC,
-                     p);
+  cublasZgemmStridedBatched(handle(derived_cast(exec)),
+                            cublas_transpose(transA), cublas_transpose(transB),
+                            m, n, k,
+                            reinterpret_cast<const cuDoubleComplex*>(&alpha),
+                            reinterpret_cast<const cuDoubleComplex*>(A), ldA, loA,
+                            reinterpret_cast<const cuDoubleComplex*>(B), ldB, loB,
+                            reinterpret_cast<const cuDoubleComplex*>(&beta),
+                            reinterpret_cast<cuDoubleComplex*>(C), ldC, loC,
+                            p);
 }
 
 } // end namespace cublas
 } // end namespace blam
 
-#endif
+#endif // CUDA_VERSION >= 8000
