@@ -25,10 +25,10 @@ batch_gemm(const ExecutionPolicy& exec,
            const MB* B, int ldB, int loB,
            const Beta& beta,
            MC* C, int ldC, int loC,
-           int p)
+           int batch_size)
 {
 #if defined(BLAM_USE_DECAY)
-  for (int i = 0; i < p; ++i) {
+  for (int i = 0; i < batch_size; ++i) {
     blam::adl::gemm(exec,
                     order, transA, transB,
                     m, n, k,
@@ -56,7 +56,7 @@ batch_gemm(const ExecutionPolicy& exec,
            const MB* B, int ldB, int loB,
            const Beta& beta,
            MC* C, int ldC, int loC,
-           int p)
+           int batch_size)
 {
   blam::adl::batch_gemm(exec,
                         ColMajor, transA, transB,
@@ -66,7 +66,7 @@ batch_gemm(const ExecutionPolicy& exec,
                         B, ldB, loB,
                         beta,
                         C, ldC, loC,
-                        p);
+                        batch_size);
 }
 
 // Default to NoTrans
@@ -81,7 +81,7 @@ batch_gemm(const ExecutionPolicy& exec,
            const MB* B, int ldB, int loB,
            const Beta& beta,
            MC* C, int ldC, int loC,
-           int p)
+           int batch_size)
 {
   blam::adl::batch_gemm(exec,
                         NoTrans, NoTrans,
@@ -91,7 +91,7 @@ batch_gemm(const ExecutionPolicy& exec,
                         B, ldB, loB,
                         beta,
                         C, ldC, loC,
-                        p);
+                        batch_size);
 }
 
 } // end namespace generic

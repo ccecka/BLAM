@@ -40,7 +40,7 @@ endif
 
 # Define the C++ compiler to use
 ifeq ($(kernel-name),Darwin)
-	USE_CXX := $(shell which g++-4.8)
+	USE_CXX := $(shell which clang++)
 endif
 ifeq ($(kernel-name),Linux)
 	USE_CXX := $(shell which g++-4.8)
@@ -63,7 +63,7 @@ DEPSFLAGS = -MD -MF $(DEPSFILE) #-MP
 INCLUDES += -I$(BLAM_PATH) $(BLAS_INC)
 
 # Define cxx compile flags
-CXXFLAGS  = -O3 -fopenmp -Wall
+CXXFLAGS  = -O3
 
 # Define nvcc compile flags   TODO: Detect and generate appropriate sm_XX
 NVCCFLAGS := -arch=sm_30 -O3 --compiler-options "$(CXXFLAGS)"

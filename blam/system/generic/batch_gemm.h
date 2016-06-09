@@ -22,7 +22,7 @@ batch_gemm(const ExecutionPolicy& exec,
            const MB* B, int ldB, int loB,
            const Beta& beta,
            MC* C, int ldC, int loC,
-           int p);
+           int batch_size);
 
 // Default to ColMajor
 template <typename ExecutionPolicy,
@@ -37,7 +37,7 @@ batch_gemm(const ExecutionPolicy& exec,
            const MB* B, int ldB, int loB,
            const Beta& beta,
            MC* C, int ldC, int loC,
-           int p);
+           int batch_size);
 
 // Default to NoTrans
 template <typename ExecutionPolicy,
@@ -51,7 +51,7 @@ batch_gemm(const ExecutionPolicy& exec,
            const MB* B, int ldB, int loB,
            const Beta& beta,
            MC* C, int ldC, int loC,
-           int p);
+           int batch_size);
 
 } // end namespace generic
 } // end namespace system
