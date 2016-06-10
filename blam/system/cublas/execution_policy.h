@@ -1,9 +1,10 @@
 #pragma once
 
-#include <cublas_v2.h>
-
 #include <blam/detail/config.h>
 #include <blam/detail/execution_policy.h>
+
+#include <cuda.h>
+#include <cublas_v2.h>
 
 namespace blam
 {

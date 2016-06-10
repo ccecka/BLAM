@@ -1,9 +1,9 @@
 #pragma once
 
-#if (CUDA_VERSION >= 8000)
-
 #include <blam/detail/config.h>
 #include <blam/system/cublas/execution_policy.h>
+
+#if (CUDA_VERSION >= 8000)
 
 namespace blam
 {

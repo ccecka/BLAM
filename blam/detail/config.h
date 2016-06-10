@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cassert>
+#include <iostream>
 
 //-- BLAM_DEBUG_OUT ---------------------------------------------------------
 #ifdef BLAM_DEBUG
