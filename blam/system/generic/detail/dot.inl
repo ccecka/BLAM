@@ -11,77 +11,144 @@ namespace generic
 {
 
 template <typename ExecutionPolicy,
-          typename T, typename U>
+          typename VX, typename VY, typename R>
 void
-dot(const ExecutionPolicy& exec,
-    int n,
-    const T* x, int incX,
-    const T* y, int incY,
-    U& result)
+dotc(const ExecutionPolicy& exec,
+     int n,
+     const VX* x, int incX,
+     const VY* y, int incY,
+     R& result)
 {
   static_assert(sizeof(ExecutionPolicy) == 0, "BLAM UNIMPLEMENTED");
 }
 
 template <typename ExecutionPolicy,
-          typename T, typename U>
+          typename VX, typename VY, typename R>
 void
 dotu(const ExecutionPolicy& exec,
      int n,
-     const T* x, int incX,
-     const T* y, int incY,
-     U& result)
+     const VX* x, int incX,
+     const VY* y, int incY,
+     R& result)
 {
   static_assert(sizeof(ExecutionPolicy) == 0, "BLAM UNIMPLEMENTED");
 }
 
 // incX,incY -> 1,1
 template <typename ExecutionPolicy,
-          typename T, typename U>
+          typename VX, typename VY, typename R>
 void
 dot(const ExecutionPolicy& exec,
     int n,
-    const T* x,
-    const T* y,
-    U& result)
+    const VX* x,
+    const VY* y,
+    R& result)
 {
-  blam::adl::dot(exec, n, x, 1, y, 1, result);
+  blam::adl::dotc(exec, n, x, 1, y, 1, result);
 }
 
 // incX,incY -> 1,1
 template <typename ExecutionPolicy,
-          typename T, typename U>
+          typename VX, typename VY, typename R>
+void
+dotc(const ExecutionPolicy& exec,
+     int n,
+     const VX* x,
+     const VY* y,
+     R& result)
+{
+  blam::adl::dotc(exec, n, x, 1, y, 1, result);
+}
+
+// incX,incY -> 1,1
+template <typename ExecutionPolicy,
+          typename VX, typename VY, typename R>
 void
 dotu(const ExecutionPolicy& exec,
      int n,
-     const T* x,
-     const T* y,
-     U& result)
+     const VX* x,
+     const VY* y,
+     R& result)
 {
   blam::adl::dotu(exec, n, x, 1, y, 1, result);
 }
 
-// sdotu -> sdot
-template <typename ExecutionPolicy>
+// sdot -> sdotu
+template <typename ExecutionPolicy,
+          typename R>
 void
-dotu(const ExecutionPolicy& exec,
+dot(const ExecutionPolicy& exec,
+    int n,
+    const float* x, int incX,
+    const float* y, int incY,
+    R& result)
+{
+  blam::adl::dotu(exec, n, x, incX, y, incY, result);
+}
+
+// sdotc -> sdotu
+template <typename ExecutionPolicy,
+          typename R>
+void
+dotc(const ExecutionPolicy& exec,
      int n,
      const float* x, int incX,
      const float* y, int incY,
-     float& result)
+     R& result)
 {
-  blam::adl::dot(exec, n, x, incX, y, incY, result);
+  blam::adl::dotu(exec, n, x, incX, y, incY, result);
 }
 
-// ddotu -> ddot
-template <typename ExecutionPolicy>
+// ddot -> ddotu
+template <typename ExecutionPolicy,
+          typename R>
 void
-dotu(const ExecutionPolicy& exec,
+dot(const ExecutionPolicy& exec,
+    int n,
+    const double* x, int incX,
+    const double* y, int incY,
+    R& result)
+{
+  blam::adl::dotu(exec, n, x, incX, y, incY, result);
+}
+
+// ddotc -> ddotu
+template <typename ExecutionPolicy,
+          typename R>
+void
+dotc(const ExecutionPolicy& exec,
      int n,
      const double* x, int incX,
      const double* y, int incY,
-     double& result)
+     R& result)
 {
-  blam::adl::dot(exec, n, x, incX, y, incY, result);
+  blam::adl::dotu(exec, n, x, incX, y, incY, result);
+}
+
+// cdot -> cdotc
+template <typename ExecutionPolicy,
+          typename R>
+void
+dot(const ExecutionPolicy& exec,
+    int n,
+    const ComplexFloat* x, int incX,
+    const ComplexFloat* y, int incY,
+    R& result)
+{
+  blam::adl::dotc(exec, n, x, incX, y, incY, result);
+}
+
+// zdot -> zdotc
+template <typename ExecutionPolicy,
+          typename R>
+void
+dot(const ExecutionPolicy& exec,
+    int n,
+    const ComplexDouble* x, int incX,
+    const ComplexDouble* y, int incY,
+    R& result)
+{
+  blam::adl::dotc(exec, n, x, incX, y, incY, result);
 }
 
 } // end namespace generic

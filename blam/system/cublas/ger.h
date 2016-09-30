@@ -8,41 +8,15 @@ namespace blam
 namespace cublas
 {
 
-// RowMajor -> ColMajor
-template <typename DerivedPolicy,
-          typename T>
-void
-ger(const execution_policy<DerivedPolicy>& exec,
-    StorageOrder order, int m, int n,
-    const T& alpha,
-    const T* x, int incX,
-    const T* y, int incY,
-    T* A, int ldA)
-{
-  if (order == ColMajor) {
-    ger(exec, m, n,
-        alpha,
-        x, incX,
-        y, incY,
-        A, ldA);
-  } else { // RowMajor: swap x & y
-    ger(exec, n, m,
-        alpha,
-        y, incY,
-        x, incX,
-        A, ldA);
-  }
-}
-
 // sger
 template <typename DerivedPolicy>
 void
-ger(const execution_policy<DerivedPolicy>& exec,
-    int m, int n,
-    const float& alpha,
-    const float* x, int incX,
-    const float* y, int incY,
-    float* A, int ldA)
+geru(const execution_policy<DerivedPolicy>& exec,
+     int m, int n,
+     const float& alpha,
+     const float* x, int incX,
+     const float* y, int incY,
+     float* A, int ldA)
 {
   BLAM_DEBUG_OUT("cublasSger");
 
@@ -57,12 +31,12 @@ ger(const execution_policy<DerivedPolicy>& exec,
 // dger
 template <typename DerivedPolicy>
 void
-ger(const execution_policy<DerivedPolicy>& exec,
-    int m, int n,
-    const double& alpha,
-    const double* x, int incX,
-    const double* y, int incY,
-    double* A, int ldA)
+geru(const execution_policy<DerivedPolicy>& exec,
+     int m, int n,
+     const double& alpha,
+     const double* x, int incX,
+     const double* y, int incY,
+     double* A, int ldA)
 {
   BLAM_DEBUG_OUT("cublasDger");
 
@@ -77,12 +51,12 @@ ger(const execution_policy<DerivedPolicy>& exec,
 // cgerc
 template <typename DerivedPolicy>
 void
-ger(const execution_policy<DerivedPolicy>& exec,
-    int m, int n,
-    const ComplexFloat& alpha,
-    const ComplexFloat* x, int incX,
-    const ComplexFloat* y, int incY,
-    ComplexFloat* A, int ldA)
+gerc(const execution_policy<DerivedPolicy>& exec,
+     int m, int n,
+     const ComplexFloat& alpha,
+     const ComplexFloat* x, int incX,
+     const ComplexFloat* y, int incY,
+     ComplexFloat* A, int ldA)
 {
   BLAM_DEBUG_OUT("cublasCgerc");
 
@@ -97,12 +71,12 @@ ger(const execution_policy<DerivedPolicy>& exec,
 // zgerc
 template <typename DerivedPolicy>
 void
-ger(const execution_policy<DerivedPolicy>& exec,
-    int m, int n,
-    const ComplexDouble& alpha,
-    const ComplexDouble* x, int incX,
-    const ComplexDouble* y, int incY,
-    ComplexDouble* A, int ldA)
+gerc(const execution_policy<DerivedPolicy>& exec,
+     int m, int n,
+     const ComplexDouble& alpha,
+     const ComplexDouble* x, int incX,
+     const ComplexDouble* y, int incY,
+     ComplexDouble* A, int ldA)
 {
   BLAM_DEBUG_OUT("cublasZgerc");
 
@@ -112,32 +86,6 @@ ger(const execution_policy<DerivedPolicy>& exec,
               reinterpret_cast<const cuDoubleComplex*>(x), incX,
               reinterpret_cast<const cuDoubleComplex*>(y), incY,
               reinterpret_cast<cuDoubleComplex*>(A), ldA);
-}
-
-// RowMajor -> ColMajor
-template <typename DerivedPolicy,
-          typename T>
-void
-geru(const execution_policy<DerivedPolicy>& exec,
-     StorageOrder order, int m, int n,
-     const T& alpha,
-     const T* x, int incX,
-     const T* y, int incY,
-     T* A, int ldA)
-{
-  if (order == ColMajor) {
-    geru(exec, m, n,
-         alpha,
-         x, incX,
-         y, incY,
-         A, ldA);
-  } else {
-    geru(exec, n, m,
-         alpha,
-         y, incY,
-         x, incX,
-         A, ldA);
-  }
 }
 
 // cgeru
@@ -178,6 +126,87 @@ geru(const execution_policy<DerivedPolicy>& exec,
               reinterpret_cast<const cuDoubleComplex*>(x), incX,
               reinterpret_cast<const cuDoubleComplex*>(y), incY,
               reinterpret_cast<cuDoubleComplex*>(A), ldA);
+}
+
+// blam -> cublas
+template <typename DerivedPolicy,
+          typename VX, typename VY, typename MA>
+void
+gerc(const execution_policy<DerivedPolicy>& exec,
+     int n,
+     const VX* x, int incX,
+     const VY* y, int incY,
+     MA* A, int ldA)
+{
+  gerc(handle(derived_cast(exec)), n,
+       x, incX,
+       y, incY,
+       A, ldA);
+}
+
+// RowMajor -> ColMajor
+template <typename DerivedPolicy,
+          typename T>
+void
+gerc(const execution_policy<DerivedPolicy>& exec,
+     StorageOrder order, int m, int n,
+     const T& alpha,
+     const T* x, int incX,
+     const T* y, int incY,
+     T* A, int ldA)
+{
+  if (order == ColMajor || (m == n && x == y && incX == incY)) {
+    gerc(exec, m, n,
+         alpha,
+         x, incX,
+         y, incY,
+         A, ldA);
+  } else {
+    // No such implementation
+    assert(false);  // XXX: Use fn which does not elide with NDEBUG
+  }
+}
+
+// blam -> cublas
+template <typename DerivedPolicy,
+          typename VX, typename VY, typename R>
+void
+geru(const execution_policy<DerivedPolicy>& exec,
+    int n,
+    const VX* x, int incX,
+    const VY* y, int incY,
+    R& result)
+{
+  geru(handle(derived_cast(exec)), n,
+       x, incX,
+       y, incY,
+       &result);
+}
+
+// RowMajor -> ColMajor
+template <typename DerivedPolicy,
+          typename T>
+void
+geru(const execution_policy<DerivedPolicy>& exec,
+     StorageOrder order, int m, int n,
+     const T& alpha,
+     const T* x, int incX,
+     const T* y, int incY,
+     T* A, int ldA)
+{
+  if (order == ColMajor) {
+    geru(exec, m, n,
+         alpha,
+         x, incX,
+         y, incY,
+         A, ldA);
+  } else { // RowMajor: swap x & y
+    geru(exec, n, m,
+         alpha,
+         y, incY,
+         x, incX,
+         A, ldA);
+  }
 }
 
 } // end namespace cublas

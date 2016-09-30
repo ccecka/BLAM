@@ -16,6 +16,7 @@ namespace detail
 
 tag dot(...);
 tag dotu(...);
+tag dotc(...);
 
 /** XXX WAR: nvcc/edg bug? **/
 #if 0
@@ -70,8 +71,15 @@ struct dot_fn<tag>
   }
 };
 
+template <typename... T>
+void
+_dot::operator()(T&&... t) const {
+  dot_fn<decltype(dot(std::declval<T>()...))>::call(std::forward<T>(t)...);
+}
+
 template <typename R>
-struct dotu_fn {
+struct dotu_fn
+{
   template <typename... T>
   static R call(T&&... t) {
     return dotu(std::forward<T>(t)...);
@@ -91,14 +99,34 @@ struct dotu_fn<tag>
 
 template <typename... T>
 void
-_dot::operator()(T&&... t) const {
-  dot_fn<decltype(dot(std::declval<T>()...))>::call(std::forward<T>(t)...);
+_dotu::operator()(T&&... t) const {
+  dotu_fn<decltype(dotu(std::declval<T>()...))>::call(std::forward<T>(t)...);
 }
+
+template <typename R>
+struct dotc_fn
+{
+  template <typename... T>
+  static R call(T&&... t) {
+    return dotc(std::forward<T>(t)...);
+  }
+};
+
+template <>
+struct dotc_fn<tag>
+{
+  template <typename... T>
+  static auto call(T&&... t)
+      -> decltype(blam::system::generic::dotc(std::forward<T>(t)...))
+  {
+    return blam::system::generic::dotc(std::forward<T>(t)...);
+  }
+};
 
 template <typename... T>
 void
-_dotu::operator()(T&&... t) const {
-  dotu_fn<decltype(dotu(std::declval<T>()...))>::call(std::forward<T>(t)...);
+_dotc::operator()(T&&... t) const {
+  dotc_fn<decltype(dotc(std::declval<T>()...))>::call(std::forward<T>(t)...);
 }
 
 } // end namespace detail

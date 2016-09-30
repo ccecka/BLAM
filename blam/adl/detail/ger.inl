@@ -15,6 +15,8 @@ namespace detail
 {
 
 tag ger(...);
+tag geru(...);
+tag gerc(...);
 
 /** XXX WAR: nvcc/edg bug? **/
 #if 0
@@ -88,6 +90,34 @@ void
 _geru::operator()(T&&... t) const
 {
   geru_fn<decltype(geru(std::declval<T>()...))>::call(std::forward<T>(t)...);
+}
+
+template <typename R>
+struct gerc_fn
+{
+  template <typename... T>
+  static R call(T&&... t)
+  {
+    return gerc(std::forward<T>(t)...);
+  }
+};
+
+template <>
+struct gerc_fn<tag>
+{
+  template <typename... T>
+  static auto call(T&&... t)
+      -> decltype(blam::system::generic::gerc(std::forward<T>(t)...))
+  {
+    return blam::system::generic::gerc(std::forward<T>(t)...);
+  }
+};
+
+template <typename... T>
+void
+_gerc::operator()(T&&... t) const
+{
+  gerc_fn<decltype(gerc(std::declval<T>()...))>::call(std::forward<T>(t)...);
 }
 
 } // end namespace detail

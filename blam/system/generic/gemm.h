@@ -1,7 +1,6 @@
 #pragma once
 
 #include <blam/detail/config.h>
-#include <blam/system/generic/execution_policy.h>
 
 namespace blam
 {

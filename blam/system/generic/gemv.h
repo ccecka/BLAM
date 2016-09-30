@@ -1,7 +1,6 @@
 #pragma once
 
 #include <blam/detail/config.h>
-#include <blam/system/generic/execution_policy.h>
 
 namespace blam
 {
@@ -52,4 +51,4 @@ gemv(const ExecutionPolicy& exec,
 } // end namespace system
 } // end namespace blam
 
-#include <blam/system/generic/detail/gemm.inl>
+#include <blam/system/generic/detail/gemv.inl>

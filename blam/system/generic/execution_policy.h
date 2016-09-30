@@ -47,7 +47,3 @@ struct execution_policy
 } // end namespace generic
 } // end namespace system
 } // end namespace blam
-
-
-// Include algorithms
-#include <blam/system/generic/dot.h>

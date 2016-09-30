@@ -49,5 +49,6 @@ geru(ExecutionPolicy&& exec,
 #endif
 
 using blam::adl::ger;
+using blam::adl::geru;
 
 } // end namespace blam

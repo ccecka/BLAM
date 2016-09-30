@@ -106,18 +106,123 @@ batch_gemm(cublasHandle_t handle,
                             batch_size);
 }
 
+// scgemm    XXX: Move to general?
+void
+batch_gemm(cublasHandle_t handle,
+           cublasOperation_t transA, cublasOperation_t transB,
+           int m, int n, int k,
+           const float* alpha,
+           const ComplexFloat* A, int ldA, int loA,
+           const float* B, int ldB, int loB,
+           const float* beta,
+           ComplexFloat* C, int ldC, int loC,
+           int batch_size)
+{
+  BLAM_DEBUG_OUT("cublasS[C]gemmStridedBatched");
+
+  assert(transA == CUBLAS_OP_N);
+
+  cublasSgemmStridedBatched(handle, transA, transB,
+                            2*m, n, k,
+                            reinterpret_cast<const float*>(alpha),
+                            reinterpret_cast<const float*>(A), 2*ldA, 2*loA,
+                            reinterpret_cast<const float*>(B), ldB, loB,
+                            reinterpret_cast<const float*>(beta),
+                            reinterpret_cast<float*>(C), 2*ldC, 2*loC,
+                            batch_size);
+}
+
+// csgemm    XXX: Move to general?
+void
+batch_gemm(cublasHandle_t handle,
+           cublasOperation_t transA, cublasOperation_t transB,
+           int m, int n, int k,
+           const float* alpha,
+           const float* A, int ldA, int loA,
+           const ComplexFloat* B, int ldB, int loB,
+           const float* beta,
+           ComplexFloat* C, int ldC, int loC,
+           int batch_size)
+{
+  BLAM_DEBUG_OUT("cublasS[C]gemmStridedBatched");
+
+  assert(transB == CUBLAS_OP_T);
+
+  cublasSgemmStridedBatched(handle, transA, transB,
+                            m, 2*n, k,
+                            reinterpret_cast<const float*>(alpha),
+                            reinterpret_cast<const float*>(A), ldA, loA,
+                            reinterpret_cast<const float*>(B), 2*ldB, 2*loB,
+                            reinterpret_cast<const float*>(beta),
+                            reinterpret_cast<float*>(C), 2*ldC, 2*loC,
+                            batch_size);
+}
+
+// zdgemm    XXX: Move to general?
+void
+batch_gemm(cublasHandle_t handle,
+           cublasOperation_t transA, cublasOperation_t transB,
+           int m, int n, int k,
+           const double* alpha,
+           const ComplexDouble* A, int ldA, int loA,
+           const double* B, int ldB, int loB,
+           const double* beta,
+           ComplexDouble* C, int ldC, int loC,
+           int batch_size)
+{
+  BLAM_DEBUG_OUT("cublasD[Z]gemmStridedBatched");
+
+  assert(transA == CUBLAS_OP_N);
+
+  cublasDgemmStridedBatched(handle, transA, transB,
+                            2*m, n, k,
+                            reinterpret_cast<const double*>(alpha),
+                            reinterpret_cast<const double*>(A), 2*ldA, 2*loA,
+                            reinterpret_cast<const double*>(B), ldB, loB,
+                            reinterpret_cast<const double*>(beta),
+                            reinterpret_cast<double*>(C), 2*ldC, 2*loC,
+                            batch_size);
+}
+
+// dzgemm    XXX: Move to general?
+void
+batch_gemm(cublasHandle_t handle,
+           cublasOperation_t transA, cublasOperation_t transB,
+           int m, int n, int k,
+           const double* alpha,
+           const double* A, int ldA, int loA,
+           const ComplexDouble* B, int ldB, int loB,
+           const double* beta,
+           ComplexDouble* C, int ldC, int loC,
+           int batch_size)
+{
+  BLAM_DEBUG_OUT("cublasD[Z]gemmStridedBatched");
+
+  assert(transB == CUBLAS_OP_T);
+
+  cublasDgemmStridedBatched(handle, transA, transB,
+                            m, 2*n, k,
+                            reinterpret_cast<const double*>(alpha),
+                            reinterpret_cast<const double*>(A), ldA, loA,
+                            reinterpret_cast<const double*>(B), 2*ldB, 2*loB,
+                            reinterpret_cast<const double*>(beta),
+                            reinterpret_cast<double*>(C), 2*ldC, 2*loC,
+                            batch_size);
+}
+
 // blam -> cublas
 template <typename DerivedPolicy,
-          typename T>
+          typename Alpha, typename MA, typename MB,
+          typename Beta, typename MC>
 void
 batch_gemm(const execution_policy<DerivedPolicy>& exec,
            Transpose transA, Transpose transB,
            int m, int n, int k,
-           const T& alpha,
-           const T* A, int ldA, int loA,
-           const T* B, int ldB, int loB,
-           const T& beta,
-           T* C, int ldC, int loC,
+           const Alpha& alpha,
+           const MA* A, int ldA, int loA,
+           const MB* B, int ldB, int loB,
+           const Beta& beta,
+           MC* C, int ldC, int loC,
            int batch_size)
 {
   return batch_gemm(handle(derived_cast(exec)),
@@ -133,16 +238,17 @@ batch_gemm(const execution_policy<DerivedPolicy>& exec,
 
 // RowMajor -> ColMajor
 template <typename DerivedPolicy,
-          typename T>
+          typename Alpha, typename MA, typename MB,
+          typename Beta, typename MC>
 void
 batch_gemm(const execution_policy<DerivedPolicy>& exec,
            StorageOrder order, Transpose transA, Transpose transB,
            int m, int n, int k,
-           const T& alpha,
-           const T* A, int ldA, int loA,
-           const T* B, int ldB, int loB,
-           const T& beta,
-           T* C, int ldC, int loC,
+           const Alpha& alpha,
+           const MA* A, int ldA, int loA,
+           const MB* B, int ldB, int loB,
+           const Beta& beta,
+           MC* C, int ldC, int loC,
            int batch_size)
 {
   if (order == ColMajor) {

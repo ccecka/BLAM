@@ -3,7 +3,10 @@
 #include <blam/detail/config.h>
 
 #include <blam/adl/gemm.h>
-//#include <blam/adl/gemv.h>
+
+#if defined(BLAM_USE_DECAY)
+//# include <blam/adl/gemv.h>
+#endif
 
 namespace blam
 {

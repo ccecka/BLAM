@@ -11,11 +11,11 @@ namespace cblas
 // sdsdot
 template <typename DerivedPolicy>
 void
-sdot(const execution_policy<DerivedPolicy>& /*exec*/,
-     int n, const float& alpha,
-     const float* x, int incX,
-     const float* y, int incY,
-     float& result)
+sdotu(const execution_policy<DerivedPolicy>& /*exec*/,
+      int n, const float& alpha,
+      const float* x, int incX,
+      const float* y, int incY,
+      float& result)
 {
   BLAM_DEBUG_OUT("cblas_sdsdot");
 
@@ -25,11 +25,11 @@ sdot(const execution_policy<DerivedPolicy>& /*exec*/,
 // dsdot
 template <typename DerivedPolicy>
 void
-dot(const execution_policy<DerivedPolicy>& /*exec*/,
-    int n,
-    const float* x, int incX,
-    const float* y, int incY,
-    double& result)
+dotu(const execution_policy<DerivedPolicy>& /*exec*/,
+     int n,
+     const float* x, int incX,
+     const float* y, int incY,
+     double& result)
 {
   BLAM_DEBUG_OUT("cblas_dsdot");
 
@@ -39,11 +39,11 @@ dot(const execution_policy<DerivedPolicy>& /*exec*/,
 // sdot
 template <typename DerivedPolicy>
 void
-dot(const execution_policy<DerivedPolicy>& /*exec*/,
-    int n,
-    const float* x, int incX,
-    const float* y, int incY,
-    float& result)
+dotu(const execution_policy<DerivedPolicy>& /*exec*/,
+     int n,
+     const float* x, int incX,
+     const float* y, int incY,
+     float& result)
 {
   BLAM_DEBUG_OUT("cblas_sdot");
 
@@ -53,11 +53,11 @@ dot(const execution_policy<DerivedPolicy>& /*exec*/,
 // ddot
 template <typename DerivedPolicy>
 void
-dot(const execution_policy<DerivedPolicy>& /*exec*/,
-    int n,
-    const double* x, int incX,
-    const double* y, int incY,
-    double& result)
+dotu(const execution_policy<DerivedPolicy>& /*exec*/,
+     int n,
+     const double* x, int incX,
+     const double* y, int incY,
+     double& result)
 {
   BLAM_DEBUG_OUT("cblas_ddot");
 
@@ -67,11 +67,11 @@ dot(const execution_policy<DerivedPolicy>& /*exec*/,
 // cdotc_sub
 template <typename DerivedPolicy>
 void
-dot(const execution_policy<DerivedPolicy>& /*exec*/,
-    int n,
-    const ComplexFloat* x, int incX,
-    const ComplexFloat* y, int incY,
-    ComplexFloat& result)
+dotc(const execution_policy<DerivedPolicy>& /*exec*/,
+     int n,
+     const ComplexFloat* x, int incX,
+     const ComplexFloat* y, int incY,
+     ComplexFloat& result)
 {
   BLAM_DEBUG_OUT("cblas_cdotc_sub");
 
@@ -83,11 +83,11 @@ dot(const execution_policy<DerivedPolicy>& /*exec*/,
 // zdotc_sub
 template <typename DerivedPolicy>
 void
-dot(const execution_policy<DerivedPolicy>& /*exec*/,
-    int n,
-    const ComplexDouble* x, int incX,
-    const ComplexDouble* y, int incY,
-    ComplexDouble& result)
+dotc(const execution_policy<DerivedPolicy>& /*exec*/,
+     int n,
+     const ComplexDouble* x, int incX,
+     const ComplexDouble* y, int incY,
+     ComplexDouble& result)
 {
   BLAM_DEBUG_OUT("cblas_zdotc_sub");
 

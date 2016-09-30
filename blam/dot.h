@@ -46,5 +46,6 @@ dotu(ExecutionPolicy&& exec,
 
 using blam::adl::dot;
 using blam::adl::dotu;
+using blam::adl::dotc;
 
 } // end namespace blam

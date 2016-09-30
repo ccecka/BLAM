@@ -9,105 +9,155 @@ namespace cublas
 {
 
 // sdot
-template <typename DerivedPolicy>
 void
-dot(const execution_policy<DerivedPolicy>& exec,
-    int n,
-    const float* x, int incX,
-    const float* y, int incY,
-    float& result)
+dotu(cublasHandle_t handle, int n,
+     const float* x, int incX,
+     const float* y, int incY,
+     float* result)
 {
   BLAM_DEBUG_OUT("cublasSdot");
 
-  cublasSdot(handle(derived_cast(exec)), n,
+  cublasSdot(handle, n,
              x, incX,
              y, incY,
-             &result);
+             result);
 }
 
 // ddot
-template <typename DerivedPolicy>
 void
-dot(const execution_policy<DerivedPolicy>& exec,
-    int n,
-    const double* x, int incX,
-    const double* y, int incY,
-    double& result)
+dotu(cublasHandle_t handle, int n,
+     const double* x, int incX,
+     const double* y, int incY,
+     double* result)
 {
   BLAM_DEBUG_OUT("cublasDdot");
 
-  cublasDdot(handle(derived_cast(exec)), n,
+  cublasDdot(handle, n,
              x, incX,
              y, incY,
-             &result);
+             result);
+}
+
+// sdot
+void
+dotc(cublasHandle_t handle, int n,
+     const float* x, int incX,
+     const float* y, int incY,
+     float* result)
+{
+  BLAM_DEBUG_OUT("cublasSdot");
+
+  cublasSdot(handle, n,
+             x, incX,
+             y, incY,
+             result);
+}
+
+// ddot
+void
+dotc(cublasHandle_t handle, int n,
+     const double* x, int incX,
+     const double* y, int incY,
+     double* result)
+{
+  BLAM_DEBUG_OUT("cublasDdot");
+
+  cublasDdot(handle, n,
+             x, incX,
+             y, incY,
+             result);
 }
 
 // cdotc
-template <typename DerivedPolicy>
 void
-dot(const execution_policy<DerivedPolicy>& exec,
-    int n,
-    const ComplexFloat* x, int incX,
-    const ComplexFloat* y, int incY,
-    ComplexFloat& result)
+dotc(cublasHandle_t handle, int n,
+     const ComplexFloat* x, int incX,
+     const ComplexFloat* y, int incY,
+     ComplexFloat* result)
 {
   BLAM_DEBUG_OUT("cublasCdotc");
 
-  cublasCdotc(handle(derived_cast(exec)), n,
+  cublasCdotc(handle, n,
               reinterpret_cast<const cuFloatComplex*>(x), incX,
               reinterpret_cast<const cuFloatComplex*>(y), incY,
-              reinterpret_cast<cuFloatComplex*>(&result));
+              reinterpret_cast<cuFloatComplex*>(result));
 }
 
 // zdotc
-template <typename DerivedPolicy>
 void
-dot(const execution_policy<DerivedPolicy>& exec,
-    int n,
-    const ComplexDouble* x, int incX,
-    const ComplexDouble* y, int incY,
-    ComplexDouble& result)
+dotc(cublasHandle_t handle, int n,
+     const ComplexDouble* x, int incX,
+     const ComplexDouble* y, int incY,
+     ComplexDouble* result)
 {
   BLAM_DEBUG_OUT("cublasZdotc");
 
-  cublasZdotc(handle(derived_cast(exec)), n,
+  cublasZdotc(handle, n,
               reinterpret_cast<const cuDoubleComplex*>(x), incX,
               reinterpret_cast<const cuDoubleComplex*>(y), incY,
-              reinterpret_cast<cuDoubleComplex*>(&result));
+              reinterpret_cast<cuDoubleComplex*>(result));
 }
 
 // cdotu
-template <typename DerivedPolicy>
 void
-dotu(const execution_policy<DerivedPolicy>& exec,
-     int n,
+dotu(cublasHandle_t handle, int n,
      const ComplexFloat* x, int incX,
      const ComplexFloat* y, int incY,
-     ComplexFloat& result)
+     ComplexFloat* result)
 {
   BLAM_DEBUG_OUT("cublasCdotu");
 
-  cublasCdotu(handle(derived_cast(exec)), n,
+  cublasCdotu(handle, n,
               reinterpret_cast<const cuFloatComplex*>(x), incX,
               reinterpret_cast<const cuFloatComplex*>(y), incY,
-              reinterpret_cast<cuFloatComplex*>(&result));
+              reinterpret_cast<cuFloatComplex*>(result));
 }
 
 // zdotu
-template <typename DerivedPolicy>
 void
-dotu(const execution_policy<DerivedPolicy>& exec,
-     int n,
+dotu(cublasHandle_t handle, int n,
      const ComplexDouble* x, int incX,
      const ComplexDouble* y, int incY,
-     ComplexDouble& result)
+     ComplexDouble* result)
 {
   BLAM_DEBUG_OUT("cublasZdotu");
 
-  cublasZdotu(handle(derived_cast(exec)), n,
+  cublasZdotu(handle, n,
               reinterpret_cast<const cuDoubleComplex*>(x), incX,
               reinterpret_cast<const cuDoubleComplex*>(y), incY,
-              reinterpret_cast<cuDoubleComplex*>(&result));
+              reinterpret_cast<cuDoubleComplex*>(result));
+}
+
+// blam -> cublas
+template <typename DerivedPolicy,
+          typename VX, typename VY, typename R>
+void
+dotc(const execution_policy<DerivedPolicy>& exec,
+     int n,
+     const VX* x, int incX,
+     const VY* y, int incY,
+     R& result)
+{
+  dotc(handle(derived_cast(exec)), n,
+       x, incX,
+       y, incY,
+       &result);
+}
+
+// blam -> cublas
+template <typename DerivedPolicy,
+          typename VX, typename VY, typename R>
+void
+dotu(const execution_policy<DerivedPolicy>& exec,
+    int n,
+    const VX* x, int incX,
+    const VY* y, int incY,
+    R& result)
+{
+  dotu(handle(derived_cast(exec)), n,
+       x, incX,
+       y, incY,
+       &result);
 }
 
 } // end namespace cublas

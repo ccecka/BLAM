@@ -22,6 +22,12 @@ struct _dotu
   void operator()(T&&... t) const;
 };
 
+struct _dotc
+{
+  template <typename... T>
+  void operator()(T&&... t) const;
+};
+
 } // end namespace detail
 
 // blam::adl::dot is a global function object
@@ -34,6 +40,12 @@ static const auto dot = detail::static_const<detail::_dot>::value;
 namespace
 {
 static const auto dotu = detail::static_const<detail::_dotu>::value;
+}
+
+// blam::adl::dotc is a global function object
+namespace
+{
+static const auto dotc = detail::static_const<detail::_dotc>::value;
 }
 
 } // end namespace adl

@@ -1,7 +1,6 @@
 #pragma once
 
 #include <blam/detail/config.h>
-#include <blam/system/generic/execution_policy.h>
 
 namespace blam
 {
@@ -11,66 +10,133 @@ namespace generic
 {
 
 template <typename ExecutionPolicy,
-          typename Alpha, typename T, typename U>
+          typename Alpha, typename VX, typename VY, typename MA>
 void
-ger(const ExecutionPolicy& exec,
-    StorageOrder order, int m, int n,
-    const Alpha& alpha,
-    const T* x, int incX,
-    const T* y, int incY,
-    U* A, int ldA);
+gerc(const ExecutionPolicy& exec,
+     StorageOrder order, int m, int n,
+     const Alpha& alpha,
+     const VX* x, int incX,
+     const VY* y, int incY,
+     MA* A, int ldA);
 
 // Default to ColMajor
 template <typename ExecutionPolicy,
-          typename Alpha, typename T, typename U>
+          typename Alpha, typename VX, typename VY, typename MA>
 void
-ger(const ExecutionPolicy& exec,
-    int m, int n,
-    const Alpha& alpha,
-    const T* x, int incX,
-    const T* y, int incY,
-    U* A, int ldA);
+gerc(const ExecutionPolicy& exec,
+     int m, int n,
+     const Alpha& alpha,
+     const VX* x, int incX,
+     const VY* y, int incY,
+     MA* A, int ldA);
 
 template <typename ExecutionPolicy,
-          typename Alpha, typename T, typename U>
+          typename Alpha, typename VX, typename VY, typename MA>
 void
 geru(const ExecutionPolicy& exec,
      StorageOrder order, int m, int n,
      const Alpha& alpha,
-     const T* x, int incX,
-     const T* y, int incY,
-     U* A, int ldA);
+     const VX* x, int incX,
+     const VY* y, int incY,
+     MA* A, int ldA);
 
 // Default to ColMajor
 template <typename ExecutionPolicy,
-          typename Alpha, typename T, typename U>
+          typename Alpha, typename VX, typename VY, typename MA>
 void
 geru(const ExecutionPolicy& exec,
      int m, int n,
      const Alpha& alpha,
-     const T* x, int incX,
-     const T* y, int incY,
-     U* A, int ldA);
+     const VX* x, int incX,
+     const VY* y, int incY,
+     MA* A, int ldA);
 
-// sgeru -> sger
-template <typename ExecutionPolicy>
+// Default to ColMajor
+template <typename ExecutionPolicy,
+          typename Alpha, typename VX, typename VY, typename MA>
 void
-geru(const ExecutionPolicy& exec,
-     int m, int n,
+ger(const ExecutionPolicy& exec,
+    int m, int n,
+    const Alpha& alpha,
+    const VX* x, int incX,
+    const VY* y, int incY,
+    MA* A, int ldA);
+
+// sger -> sgeru
+template <typename ExecutionPolicy,
+          typename MA>
+void
+ger(const ExecutionPolicy& exec,
+    StorageOrder order, int m, int n,
+    const float& alpha,
+    const float* x, int incX,
+    const float* y, int incY,
+    MA* A, int ldA);
+
+// sgerc -> sgeru
+template <typename ExecutionPolicy,
+          typename MA>
+void
+gerc(const ExecutionPolicy& exec,
+     StorageOrder order, int m, int n,
      const float& alpha,
      const float* x, int incX,
      const float* y, int incY,
-     float* A, int ldA);
+     MA* A, int ldA);
 
-// dgeru -> dger
+// dger -> dgeru
 template <typename ExecutionPolicy>
 void
 geru(const ExecutionPolicy& exec,
-     int m, int n,
+     StorageOrder order, int m, int n,
      const double& alpha,
      const double* x, int incX,
      const double* y, int incY,
      double* A, int ldA);
+
+// dger -> dgeru
+template <typename ExecutionPolicy,
+          typename MA>
+void
+ger(const ExecutionPolicy& exec,
+    StorageOrder order, int m, int n,
+    const double& alpha,
+    const double* x, int incX,
+    const double* y, int incY,
+    MA* A, int ldA);
+
+// dgerc -> dgeru
+template <typename ExecutionPolicy,
+          typename MA>
+void
+gerc(const ExecutionPolicy& exec,
+     StorageOrder order, int m, int n,
+     const double& alpha,
+     const double* x, int incX,
+     const double* y, int incY,
+     MA* A, int ldA);
+
+// cger -> cgerc
+template <typename ExecutionPolicy,
+          typename MA>
+void
+ger(const ExecutionPolicy& exec,
+    StorageOrder order, int m, int n,
+    const ComplexFloat& alpha,
+    const ComplexFloat* x, int incX,
+    const ComplexFloat* y, int incY,
+    MA* A, int ldA);
+
+// zger -> zgerc
+template <typename ExecutionPolicy,
+          typename MA>
+void
+ger(const ExecutionPolicy& exec,
+    StorageOrder order, int m, int n,
+    const ComplexDouble& alpha,
+    const ComplexDouble* x, int incX,
+    const ComplexDouble* y, int incY,
+    MA* A, int ldA);
 
 } // end namespace generic
 } // end namespace system

@@ -22,6 +22,12 @@ struct _geru
   void operator()(T&&... t) const;
 };
 
+struct _gerc
+{
+  template <typename... T>
+  void operator()(T&&... t) const;
+};
+
 } // end namespace detail
 
 // blam::adl::ger is a global function object
@@ -34,6 +40,12 @@ static const auto ger = detail::static_const<detail::_ger>::value;
 namespace
 {
 static const auto geru = detail::static_const<detail::_geru>::value;
+}
+
+// blam::adl::gerc is a global function object
+namespace
+{
+static const auto gerc = detail::static_const<detail::_gerc>::value;
 }
 
 } // end namespace adl

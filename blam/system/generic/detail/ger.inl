@@ -3,7 +3,10 @@
 #include <blam/detail/config.h>
 
 #include <blam/adl/dot.h>
-//#include <blam/adl/axpy.h>
+
+#if defined(BLAM_USE_DECAY)
+//# include <blam/adl/axpy.h>
+#endif
 
 namespace blam
 {
@@ -13,14 +16,14 @@ namespace generic
 {
 
 template <typename ExecutionPolicy,
-          typename Alpha, typename T, typename U>
+          typename Alpha, typename VX, typename VY, typename MA>
 void
-ger(const ExecutionPolicy& exec,
-    StorageOrder order, int m, int n,
-    const Alpha& alpha,
-    const T* x, int incX,
-    const T* y, int incY,
-    U* A, int ldA)
+gerc(const ExecutionPolicy& exec,
+     StorageOrder order, int m, int n,
+     const Alpha& alpha,
+     const VX* x, int incX,
+     const VY* y, int incY,
+     MA* A, int ldA)
 {
 #if defined(BLAM_USE_DECAY)
   // axpy
@@ -30,14 +33,14 @@ ger(const ExecutionPolicy& exec,
 }
 
 template <typename ExecutionPolicy,
-          typename Alpha, typename T, typename U>
+          typename Alpha, typename VX, typename VY, typename MA>
 void
 geru(const ExecutionPolicy& exec,
      StorageOrder order, int m, int n,
      const Alpha& alpha,
-     const T* x, int incX,
-     const T* y, int incY,
-     U* A, int ldA)
+     const VX* x, int incX,
+     const VY* y, int incY,
+     MA* A, int ldA)
 {
 #if defined(BLAM_USE_DECAY)
   // axpy
@@ -48,14 +51,14 @@ geru(const ExecutionPolicy& exec,
 
 // Default to ColMajor
 template <typename ExecutionPolicy,
-          typename Alpha, typename T, typename U>
+          typename Alpha, typename VX, typename VY, typename MA>
 void
 ger(const ExecutionPolicy& exec,
     int m, int n,
     const Alpha& alpha,
-    const T* x, int incX,
-    const T* y, int incY,
-    U* A, int ldA)
+    const VX* x, int incX,
+    const VY* y, int incY,
+    MA* A, int ldA)
 {
   blam::adl::ger(exec,
                  ColMajor, m, n,
@@ -67,14 +70,33 @@ ger(const ExecutionPolicy& exec,
 
 // Default to ColMajor
 template <typename ExecutionPolicy,
-          typename Alpha, typename T, typename U>
+          typename Alpha, typename VX, typename VY, typename MA>
+void
+gerc(const ExecutionPolicy& exec,
+    int m, int n,
+    const Alpha& alpha,
+    const VX* x, int incX,
+    const VY* y, int incY,
+    MA* A, int ldA)
+{
+  blam::adl::gerc(exec,
+                  ColMajor, m, n,
+                  alpha,
+                  x, incX,
+                  y, incY,
+                  A, ldA);
+}
+
+// Default to ColMajor
+template <typename ExecutionPolicy,
+          typename Alpha, typename VX, typename VY, typename MA>
 void
 geru(const ExecutionPolicy& exec,
      int m, int n,
      const Alpha& alpha,
-     const T* x, int incX,
-     const T* y, int incY,
-     U* A, int ldA)
+     const VX* x, int incX,
+     const VY* y, int incY,
+     MA* A, int ldA)
 {
   blam::adl::geru(exec,
                   ColMajor, m, n,
@@ -84,17 +106,18 @@ geru(const ExecutionPolicy& exec,
                   A, ldA);
 }
 
-// sgeru -> sger
-template <typename ExecutionPolicy>
+// sger -> sgeru
+template <typename ExecutionPolicy,
+          typename MA>
 void
-geru(const ExecutionPolicy& exec,
-     StorageOrder order, int m, int n,
-     const float& alpha,
-     const float* x, int incX,
-     const float* y, int incY,
-     float* A, int ldA)
+ger(const ExecutionPolicy& exec,
+    StorageOrder order, int m, int n,
+    const float& alpha,
+    const float* x, int incX,
+    const float* y, int incY,
+    MA* A, int ldA)
 {
-  blam::adl::ger(exec,
+  blam::adl::geru(exec,
                  order, m, n,
                  alpha,
                  x, incX,
@@ -102,22 +125,99 @@ geru(const ExecutionPolicy& exec,
                  A, ldA);
 }
 
-// dgeru -> dger
-template <typename ExecutionPolicy>
+// sgerc -> sgeru
+template <typename ExecutionPolicy,
+          typename MA>
 void
-geru(const ExecutionPolicy& exec,
+gerc(const ExecutionPolicy& exec,
      StorageOrder order, int m, int n,
-     const double& alpha,
-     const double* x, int incX,
-     const double* y, int incY,
-     double* A, int ldA)
+     const float& alpha,
+     const float* x, int incX,
+     const float* y, int incY,
+     MA* A, int ldA)
 {
-  blam::adl::ger(exec,
+  blam::adl::geru(exec,
                  order, m, n,
                  alpha,
                  x, incX,
                  y, incY,
                  A, ldA);
+}
+
+// dger -> dgeru
+template <typename ExecutionPolicy,
+          typename MA>
+void
+ger(const ExecutionPolicy& exec,
+    StorageOrder order, int m, int n,
+    const double& alpha,
+    const double* x, int incX,
+    const double* y, int incY,
+    MA* A, int ldA)
+{
+  blam::adl::geru(exec,
+                  order, m, n,
+                  alpha,
+                  x, incX,
+                  y, incY,
+                  A, ldA);
+}
+
+// dgerc -> dgeru
+template <typename ExecutionPolicy,
+          typename MA>
+void
+gerc(const ExecutionPolicy& exec,
+     StorageOrder order, int m, int n,
+     const double& alpha,
+     const double* x, int incX,
+     const double* y, int incY,
+     MA* A, int ldA)
+{
+  blam::adl::geru(exec,
+                  order, m, n,
+                  alpha,
+                  x, incX,
+                  y, incY,
+                  A, ldA);
+}
+
+// cger -> cgerc
+template <typename ExecutionPolicy,
+          typename MA>
+void
+ger(const ExecutionPolicy& exec,
+    StorageOrder order, int m, int n,
+    const ComplexFloat& alpha,
+    const ComplexFloat* x, int incX,
+    const ComplexFloat* y, int incY,
+    MA* A, int ldA)
+{
+  blam::adl::gerc(exec,
+                  order, m, n,
+                  alpha,
+                  x, incX,
+                  y, incY,
+                  A, ldA);
+}
+
+// zger -> zgerc
+template <typename ExecutionPolicy,
+          typename MA>
+void
+ger(const ExecutionPolicy& exec,
+    StorageOrder order, int m, int n,
+    const ComplexDouble& alpha,
+    const ComplexDouble* x, int incX,
+    const ComplexDouble* y, int incY,
+    MA* A, int ldA)
+{
+  blam::adl::gerc(exec,
+                  order, m, n,
+                  alpha,
+                  x, incX,
+                  y, incY,
+                  A, ldA);
 }
 
 } // end namespace generic

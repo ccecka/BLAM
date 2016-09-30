@@ -10,59 +10,59 @@
 namespace thrust
 {
 
-// dot
+// dotc
 template <typename DerivedPolicy,
-          typename T, typename U>
+          typename VX, typename VY, typename R>
 void
-dot(const execution_policy<DerivedPolicy>& exec,
-    int n,
-    const T* x, int incX,
-    const T* y, int incY,
-    U& result)
+dotc(const execution_policy<DerivedPolicy>& exec,
+     int n,
+     const VX* x, int incX,
+     const VY* y, int incY,
+     R& result)
 {
-  BLAM_DEBUG_OUT("thrust dot");
+  BLAM_DEBUG_OUT("thrust dotc");
 
-  auto xc = thrust::make_transform_iterator(x, blam::conj_fn<T>{});
+  auto yc = thrust::make_transform_iterator(y, blam::conj_fn<VY>{});
 
   if (incX == 1 && incY == 1) {
-    result = thrust::inner_product(exec, y, y+n, xc, U(0));
+    result = thrust::inner_product(exec, x, x+n, yc, R(0));
   } else if (incX == 1) {
-    auto yi = blam::make_strided_iterator(y, incY);
-    result = thrust::inner_product(exec, xc, xc+n, yi, U(0));
+    auto xs = blam::make_strided_iterator(x, incX);
+    result = thrust::inner_product(exec, xs, xs+n, yc, R(0));
   } else if (incY == 1) {
-    auto xi = blam::make_strided_iterator(xc, incX);
-    result = thrust::inner_product(exec, y, y+n, xi, U(0));
+    auto ycs = blam::make_strided_iterator(yc, incY);
+    result = thrust::inner_product(exec, x, x+n, ycs, R(0));
   } else {
-    auto yr = blam::make_strided_range(y, y+n*incY, incY);
-    auto xi = blam::make_strided_iterator(xc, incY);
-    result = thrust::inner_product(exec, yr.begin(), yr.end(), xi, U(0));
+    auto xr = blam::make_strided_range(x, x+n*incX, incX);
+    auto ycs = blam::make_strided_iterator(yc, incY);
+    result = thrust::inner_product(exec, xr.begin(), xr.end(), ycs, R(0));
   }
 }
 
 // dotu
 template <typename DerivedPolicy,
-          typename T, typename U>
+          typename VX, typename VY, typename R>
 void
 dotu(const execution_policy<DerivedPolicy>& exec,
      int n,
-     const T* x, int incX,
-     const T* y, int incY,
-     U& result)
+     const VX* x, int incX,
+     const VY* y, int incY,
+     R& result)
 {
   BLAM_DEBUG_OUT("thrust dotu");
 
   if (incX == 1 && incY == 1) {
-    result = thrust::inner_product(exec, x, x+n, y, U(0));
+    result = thrust::inner_product(exec, x, x+n, y, R(0));
   } else if (incX == 1) {
-    auto yi = blam::make_strided_iterator(y, incY);
-    result = thrust::inner_product(exec, x, x+n, yi, U(0));
+    auto ys = blam::make_strided_iterator(y, incY);
+    result = thrust::inner_product(exec, x, x+n, ys, R(0));
   } else if (incY == 1) {
-    auto xi = blam::make_strided_iterator(x, incX);
-    result = thrust::inner_product(exec, y, y+n, xi, U(0));
+    auto xs = blam::make_strided_iterator(x, incX);
+    result = thrust::inner_product(exec, y, y+n, xs, R(0));
   } else {
     auto xr = blam::make_strided_range(x, x+n*incX, incX);
-    auto yi = blam::make_strided_iterator(y, incY);
-    result = thrust::inner_product(exec, xr.begin(), xr.end(), yi, U(0));
+    auto ys = blam::make_strided_iterator(y, incY);
+    result = thrust::inner_product(exec, xr.begin(), xr.end(), ys, R(0));
   }
 }
 

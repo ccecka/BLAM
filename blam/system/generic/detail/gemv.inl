@@ -45,7 +45,7 @@ gemv(const ExecutionPolicy& exec,
      VY* y, int incY)
 {
   blam::adl::gemv(exec, NoTrans,
-                  m, n
+                  m, n,
                   alpha,
                   A, ldA,
                   x, incX,
@@ -67,7 +67,7 @@ gemv(const ExecutionPolicy& exec,
      VY* y, int incY)
 {
   blam::adl::gemv(exec, ColMajor, NoTrans,
-                  m, n
+                  m, n,
                   alpha,
                   A, ldA,
                   x, incX,

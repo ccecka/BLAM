@@ -9,63 +9,68 @@ namespace cublas
 {
 
 // scopy
-template <typename DerivedPolicy>
 void
-copy(const execution_policy<DerivedPolicy>& exec,
-     int n,
+copy(cublasHandle_t handle, int n,
      const float* x, int incX,
      float* y, int incY)
 {
   BLAM_DEBUG_OUT("cublasScopy");
 
-  cublasScopy(handle(derived_cast(exec)), n,
+  cublasScopy(handle, n,
               x, incX,
               y, incY);
 }
 
 // dcopy
-template <typename DerivedPolicy>
 void
-copy(const execution_policy<DerivedPolicy>& exec,
-     int n,
+copy(cublasHandle_t handle, int n,
      const double* x, int incX,
      double* y, int incY)
 {
   BLAM_DEBUG_OUT("cublasDcopy");
 
-  cublasDcopy(handle(derived_cast(exec)), n,
+  cublasDcopy(handle, n,
               x, incX,
               y, incY);
 }
 
 // ccopy
-template <typename DerivedPolicy>
 void
-dot(const execution_policy<DerivedPolicy>& exec,
-    int n,
-    const ComplexFloat* x, int incX,
-    ComplexFloat* y, int incY)
+copy(cublasHandle_t handle, int n,
+     const ComplexFloat* x, int incX,
+     ComplexFloat* y, int incY)
 {
   BLAM_DEBUG_OUT("cublasCcopy");
 
-  cublasCcopy(handle(derived_cast(exec)), n,
+  cublasCcopy(handle, n,
               reinterpret_cast<const cuFloatComplex*>(x), incX,
               reinterpret_cast<cuFloatComplex*>(y), incY);
 }
 
 // zcopy
-template <typename DerivedPolicy>
 void
-dot(const execution_policy<DerivedPolicy>& exec,
-    int n,
-    const ComplexDouble* x, int incX,
-    ComplexDouble* y, int incY)
+copy(cublasHandle_t handle, int n,
+     const ComplexDouble* x, int incX,
+     ComplexDouble* y, int incY)
 {
   BLAM_DEBUG_OUT("cublasZcopy");
 
-  cublasZcopy(handle(derived_cast(exec)), n,
+  cublasZcopy(handle, n,
               reinterpret_cast<const cuDoubleComplex*>(x), incX,
               reinterpret_cast<cuDoubleComplex*>(y), incY);
+}
+
+// blam -> cublas
+template <typename DerivedPolicy,
+          typename VX, typename VY>
+void
+copy(const execution_policy<DerivedPolicy>& exec, int n,
+     const VX* x, int incX,
+     VY* y, int incY)
+{
+  copy(handle(derived_cast(exec)), n,
+       x, incX,
+       y, incY);
 }
 
 } // end namespace cublas

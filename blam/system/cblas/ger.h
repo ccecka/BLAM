@@ -11,12 +11,12 @@ namespace cblas
 // sger
 template <typename DerivedPolicy>
 void
-ger(const execution_policy<DerivedPolicy>& /*exec*/,
-    StorageOrder order, int m, int n,
-    const float& alpha,
-    const float* x, int incX,
-    const float* y, int incY,
-    float* A, int ldA)
+geru(const execution_policy<DerivedPolicy>& /*exec*/,
+     StorageOrder order, int m, int n,
+     const float& alpha,
+     const float* x, int incX,
+     const float* y, int incY,
+     float* A, int ldA)
 {
   BLAM_DEBUG_OUT("cblas_sger");
 
@@ -31,12 +31,12 @@ ger(const execution_policy<DerivedPolicy>& /*exec*/,
 // dger
 template <typename DerivedPolicy>
 void
-ger(const execution_policy<DerivedPolicy>& /*exec*/,
-    StorageOrder order, int m, int n,
-    const double& alpha,
-    const double* x, int incX,
-    const double* y, int incY,
-    double* A, int ldA)
+geru(const execution_policy<DerivedPolicy>& /*exec*/,
+     StorageOrder order, int m, int n,
+     const double& alpha,
+     const double* x, int incX,
+     const double* y, int incY,
+     double* A, int ldA)
 {
   BLAM_DEBUG_OUT("cblas_dger");
 
@@ -51,12 +51,12 @@ ger(const execution_policy<DerivedPolicy>& /*exec*/,
 // cgerc
 template <typename DerivedPolicy>
 void
-ger(const execution_policy<DerivedPolicy>& /*exec*/,
-    StorageOrder order, int m, int n,
-    const ComplexFloat& alpha,
-    const ComplexFloat* x, int incX,
-    const ComplexFloat* y, int incY,
-    ComplexFloat* A, int ldA)
+gerc(const execution_policy<DerivedPolicy>& /*exec*/,
+     StorageOrder order, int m, int n,
+     const ComplexFloat& alpha,
+     const ComplexFloat* x, int incX,
+     const ComplexFloat* y, int incY,
+     ComplexFloat* A, int ldA)
 {
   BLAM_DEBUG_OUT("cblas_cgerc");
 
@@ -71,12 +71,12 @@ ger(const execution_policy<DerivedPolicy>& /*exec*/,
 // zgerc
 template <typename DerivedPolicy>
 void
-ger(const execution_policy<DerivedPolicy>& /*exec*/,
-    StorageOrder order, int m, int n,
-    const ComplexDouble& alpha,
-    const ComplexDouble* x, int incX,
-    const ComplexDouble* y, int incY,
-    ComplexDouble* A, int ldA)
+gerc(const execution_policy<DerivedPolicy>& /*exec*/,
+     StorageOrder order, int m, int n,
+     const ComplexDouble& alpha,
+     const ComplexDouble* x, int incX,
+     const ComplexDouble* y, int incY,
+     ComplexDouble* A, int ldA)
 {
   BLAM_DEBUG_OUT("cblas_zgerc");
 
