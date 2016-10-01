@@ -48,8 +48,3 @@ struct execution_policy
 } // end namespace thrustblas
 } // end namespace blam
 */
-
-
-// Include algorithms
-#include <blam/system/thrustblas/copy.h>
-#include <blam/system/thrustblas/dot.h>

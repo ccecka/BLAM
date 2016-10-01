@@ -3,7 +3,6 @@
 #include <mkl.h>
 
 #include <blam/detail/config.h>
-
 #include <blam/system/cblas/execution_policy.h>
 
 // XXX TODO: Inherit from cblas_execution_policy for refined dispatch
@@ -52,6 +51,3 @@ static const tag par{};
 
 } // end namespace mkl
 } // end namespace blam
-
-// Include algorithms
-#include <blam/system/mkl/batch_gemm.h>

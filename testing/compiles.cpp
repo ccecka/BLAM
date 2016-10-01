@@ -6,9 +6,9 @@
 #include <blam/gemm.h>
 #include <blam/batch_gemm.h>
 
-#include <blam/system/mkl/execution_policy.h>
-#include <blam/system/cublas/execution_policy.h>
-#include <blam/system/thrustblas/execution_policy.h>
+#include <blam/system/mkl/mkl.h>
+#include <blam/system/cublas/cublas.h>
+#include <blam/system/thrustblas/thrustblas.h>
 
 int main()
 {
