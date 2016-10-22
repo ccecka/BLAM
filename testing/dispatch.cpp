@@ -38,6 +38,10 @@ int main()
   blam::dot(blam::cublas::par, n, x, 1, y, 1, result);
   std::cout << result << std::endl;
 
+  // XXX
+  //blam::dotc(blam::cublas::par, n, reinterpret_cast<std::complex<double>*>(x), 1, y, 1, result);
+  //std::cout << result << std::endl;
+
   blam::dotu(blam::cublas::par, n, x, 1, y, 1, result);
   std::cout << result << std::endl;
 

@@ -34,6 +34,18 @@ dotu(const ExecutionPolicy& exec,
   static_assert(sizeof(ExecutionPolicy) == 0, "BLAM UNIMPLEMENTED");
 }
 
+template <typename ExecutionPolicy,
+          typename VX, typename VY, typename R>
+void
+dot(const ExecutionPolicy& exec,
+    int n,
+    const VX* x, int incX,
+    const VY* y, int incY,
+    R& result)
+{
+  static_assert(sizeof(ExecutionPolicy) == 0, "BLAM UNIMPLEMENTED");
+}
+
 // incX,incY -> 1,1
 template <typename ExecutionPolicy,
           typename VX, typename VY, typename R>

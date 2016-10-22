@@ -131,33 +131,39 @@ dotu(cublasHandle_t handle, int n,
 // blam -> cublas
 template <typename DerivedPolicy,
           typename VX, typename VY, typename R>
-void
-dotc(const execution_policy<DerivedPolicy>& exec,
-     int n,
+auto
+dotc(const execution_policy<DerivedPolicy>& exec, int n,
      const VX* x, int incX,
      const VY* y, int incY,
      R& result)
+    -> decltype(dotc(handle(derived_cast(exec)), n,
+                     x, incX,
+                     y, incY,
+                     &result))
 {
-  dotc(handle(derived_cast(exec)), n,
-       x, incX,
-       y, incY,
-       &result);
+  return dotc(handle(derived_cast(exec)), n,
+              x, incX,
+              y, incY,
+              &result);
 }
 
 // blam -> cublas
 template <typename DerivedPolicy,
           typename VX, typename VY, typename R>
-void
-dotu(const execution_policy<DerivedPolicy>& exec,
-    int n,
-    const VX* x, int incX,
-    const VY* y, int incY,
-    R& result)
+auto
+dotu(const execution_policy<DerivedPolicy>& exec, int n,
+     const VX* x, int incX,
+     const VY* y, int incY,
+     R& result)
+    -> decltype(dotu(handle(derived_cast(exec)), n,
+                     x, incX,
+                     y, incY,
+                     &result))
 {
-  dotu(handle(derived_cast(exec)), n,
-       x, incX,
-       y, incY,
-       &result);
+  return dotu(handle(derived_cast(exec)), n,
+              x, incX,
+              y, incY,
+              &result);
 }
 
 } // end namespace cublas

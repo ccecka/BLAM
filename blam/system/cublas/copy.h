@@ -63,14 +63,17 @@ copy(cublasHandle_t handle, int n,
 // blam -> cublas
 template <typename DerivedPolicy,
           typename VX, typename VY>
-void
+auto
 copy(const execution_policy<DerivedPolicy>& exec, int n,
      const VX* x, int incX,
      VY* y, int incY)
+    -> decltype(copy(handle(derived_cast(exec)), n,
+                     x, incX,
+                     y, incY))
 {
-  copy(handle(derived_cast(exec)), n,
-       x, incX,
-       y, incY);
+  return copy(handle(derived_cast(exec)), n,
+              x, incX,
+              y, incY);
 }
 
 } // end namespace cublas

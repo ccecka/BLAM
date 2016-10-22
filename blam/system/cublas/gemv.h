@@ -92,7 +92,7 @@ gemv(cublasHandle_t handle, cublasOperation_t trans,
               reinterpret_cast<cuDoubleComplex*>(y), incY);
 }
 
-// csgemv
+// csgemv   XXX: Move to general
 void
 gemv(cublasHandle_t handle, cublasOperation_t trans,
      int m, int n,
@@ -115,7 +115,7 @@ gemv(cublasHandle_t handle, cublasOperation_t trans,
               reinterpret_cast<float*>(y), incY);
 }
 
-// zdgemv
+// zdgemv   XXX: Move to general
 void
 gemv(cublasHandle_t handle, cublasOperation_t trans,
      int m, int n,
@@ -140,55 +140,78 @@ gemv(cublasHandle_t handle, cublasOperation_t trans,
 
 // blam -> cublas
 template <typename DerivedPolicy,
-          typename T>
-void
+          typename Alpha, typename MA, typename VX,
+          typename Beta, typename VY>
+auto
 gemv(const execution_policy<DerivedPolicy>& exec,
      Transpose trans,
      int m, int n,
-     const T& alpha,
-     const T* A, int ldA,
-     const T* x, int incX,
-     const T& beta,
-     T* y, int incY)
+     const Alpha& alpha,
+     const MA* A, int ldA,
+     const VX* x, int incX,
+     const Beta& beta,
+     VY* y, int incY)
+    -> decltype(gemv(handle(derived_cast(exec)), cublas_transpose(trans),
+                     m, n,
+                     &alpha,
+                     A, ldA,
+                     x, incX,
+                     &beta,
+                     y, incY))
 {
-  gemv(handle(derived_cast(exec)), cublas_transpose(trans),
-       m, n,
-       &alpha,
-       A, ldA,
-       x, incX,
-       &beta,
-       y, incY);
+  return gemv(handle(derived_cast(exec)), cublas_transpose(trans),
+              m, n,
+              &alpha,
+              A, ldA,
+              x, incX,
+              &beta,
+              y, incY);
 }
 
 // RowMajor -> ColMajor
 template <typename DerivedPolicy,
-          typename T>
-void
+          typename Alpha, typename MA, typename VX,
+          typename Beta, typename VY>
+auto
 gemv(const execution_policy<DerivedPolicy>& exec,
      StorageOrder order, Transpose trans,
      int m, int n,
-     const T& alpha,
-     const T* A, int ldA,
-     const T* x, int incX,
-     const T& beta,
-     T* y, int incY)
+     const Alpha& alpha,
+     const MA* A, int ldA,
+     const VX* x, int incX,
+     const Beta& beta,
+     VY* y, int incY)
+    -> decltype(gemv(exec, trans,
+                     m, n,
+                     alpha,
+                     A, ldA,
+                     x, incX,
+                     beta,
+                     y, incY),
+                gemv(exec, Transpose(trans ^ Trans),
+                     n, m,
+                     alpha,
+                     A, ldA,
+                     x, incX,
+                     beta,
+                     y, incY))
 {
   if (order == ColMajor) {
-    gemv(exec, trans,
-         m, n,
-         alpha,
-         A, ldA,
-         x, incX,
-         beta,
-         y, incY);
+    return gemv(exec, trans,
+                m, n,
+                alpha,
+                A, ldA,
+                x, incX,
+                beta,
+                y, incY);
   } else { // RowMajor: transpose A
-    gemv(exec, Transpose(trans ^ Trans),
-         n, m,
-         alpha,
-         A, ldA,
-         x, incX,
-         beta,
-         y, incY);
+    return gemv(exec, Transpose(trans ^ Trans),
+                n, m,
+                alpha,
+                A, ldA,
+                x, incX,
+                beta,
+                y, incY);
   }
 }
 

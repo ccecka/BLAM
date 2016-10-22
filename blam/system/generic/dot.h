@@ -27,6 +27,15 @@ dotu(const ExecutionPolicy& exec,
      const VY* y, int incY,
      R& result);
 
+template <typename ExecutionPolicy,
+          typename VX, typename VY, typename R>
+void
+dot(const ExecutionPolicy& exec,
+    int n,
+    const VX* x, int incX,
+    const VY* y, int incY,
+    R& result);
+
 // incX,incY -> 1,1
 template <typename ExecutionPolicy,
           typename VX, typename VY, typename R>
