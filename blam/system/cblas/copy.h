@@ -9,10 +9,8 @@ namespace cblas
 {
 
 // scopy
-template <typename DerivedPolicy>
 void
-copy(const execution_policy<DerivedPolicy>& /*exec*/,
-     int n,
+copy(int n,
      const float* x, int incX,
      float* y, int incY)
 {
@@ -22,10 +20,8 @@ copy(const execution_policy<DerivedPolicy>& /*exec*/,
 }
 
 // dcopy
-template <typename DerivedPolicy>
 void
-copy(const execution_policy<DerivedPolicy>& /*exec*/,
-     int n,
+copy(int n,
      const double* x, int incX,
      double* y, int incY)
 {
@@ -35,10 +31,8 @@ copy(const execution_policy<DerivedPolicy>& /*exec*/,
 }
 
 // ccopy
-template <typename DerivedPolicy>
 void
-copy(const execution_policy<DerivedPolicy>& /*exec*/,
-     int n,
+copy(int n,
      const ComplexFloat* x, int incX,
      ComplexFloat *y, int incY)
 {
@@ -49,10 +43,8 @@ copy(const execution_policy<DerivedPolicy>& /*exec*/,
 }
 
 // zcopy
-template <typename DerivedPolicy>
 void
-copy(const execution_policy<DerivedPolicy>& /*exec*/,
-     int n,
+copy(int n,
      const ComplexDouble* x, int incX,
      ComplexDouble* y, int incY)
 {
@@ -60,6 +52,19 @@ copy(const execution_policy<DerivedPolicy>& /*exec*/,
 
   cblas_zcopy(n, reinterpret_cast<const double*>(x), incX,
               reinterpret_cast<double*>(y), incY);
+}
+
+// blam -> cblas
+template <typename DerivedPolicy,
+          typename VX, typename VY>
+auto
+copy(const execution_policy<DerivedPolicy>& /*exec*/,
+     int n,
+     const VX* x, int incX,
+     VY* y, int incY)
+    -> decltype(copy(n, x, incX, y, incY))
+{
+  return copy(n, x, incX, y, incY);
 }
 
 } // end namespace cblas

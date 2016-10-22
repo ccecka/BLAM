@@ -10,7 +10,7 @@ namespace cblas
 
 // sgemv
 void
-gemv(CBLAS_LAYOUT order, CBLAS_TRANSPOSE trans,
+gemv(const CBLAS_LAYOUT order, const CBLAS_TRANSPOSE trans,
      int m, int n,
      const float& alpha,
      const float* A, int ldA,
@@ -31,7 +31,7 @@ gemv(CBLAS_LAYOUT order, CBLAS_TRANSPOSE trans,
 
 // dgemv
 void
-gemv(CBLAS_LAYOUT order, CBLAS_TRANSPOSE trans,
+gemv(const CBLAS_LAYOUT order, const CBLAS_TRANSPOSE trans,
      int m, int n,
      const double& alpha,
      const double* A, int ldA,
@@ -52,7 +52,7 @@ gemv(CBLAS_LAYOUT order, CBLAS_TRANSPOSE trans,
 
 // cgemv
 void
-gemv(CBLAS_LAYOUT order, CBLAS_TRANSPOSE trans,
+gemv(const CBLAS_LAYOUT order, const CBLAS_TRANSPOSE trans,
      int m, int n,
      const ComplexFloat& alpha,
      const ComplexFloat* A, int ldA,
@@ -73,7 +73,7 @@ gemv(CBLAS_LAYOUT order, CBLAS_TRANSPOSE trans,
 
 // zgemv
 void
-gemv(CBLAS_LAYOUT order, CBLAS_TRANSPOSE trans,
+gemv(const CBLAS_LAYOUT order, const CBLAS_TRANSPOSE trans,
      int m, int n,
      const ComplexDouble& alpha,
      const ComplexDouble* A, int ldA,
@@ -94,24 +94,32 @@ gemv(CBLAS_LAYOUT order, CBLAS_TRANSPOSE trans,
 
 // blam -> cblas
 template <typename DerivedPolicy,
-          typename T>
-void
+          typename Alpha, typename MA, typename VX,
+          typename Beta, typename VY>
+auto
 gemv(const execution_policy<DerivedPolicy>& /*exec*/,
      StorageOrder order, Transpose trans,
      int m, int n,
-     const T& alpha,
-     const T* A, int ldA,
-     const T* x, int incX,
-     const T& beta,
-     T* y, int incY)
+     const Alpha& alpha,
+     const MA* A, int ldA,
+     const VX* x, int incX,
+     const Beta& beta,
+     VY* y, int incY)
+    -> decltype(gemv(cblas_order(order), cblas_transpose(trans),
+                     m, n,
+                     alpha,
+                     A, ldA,
+                     x, incX,
+                     beta,
+                     y, incY))
 {
-  gemv(cblas_order(order), cblas_transpose(trans),
-       m, n,
-       alpha,
-       A, ldA,
-       x, incX,
-       beta,
-       y, incY);
+  return gemv(cblas_order(order), cblas_transpose(trans),
+              m, n,
+              alpha,
+              A, ldA,
+              x, incX,
+              beta,
+              y, incY);
 }
 
 } // end namespace cblas

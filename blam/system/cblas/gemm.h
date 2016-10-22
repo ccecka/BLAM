@@ -9,10 +9,9 @@ namespace cblas
 {
 
 // sgemm
-template <typename DerivedPolicy>
 void
-gemm(const execution_policy<DerivedPolicy>& /*exec*/,
-     StorageOrder order, Transpose transA, Transpose transB,
+gemm(const CBLAS_LAYOUT order,
+     const CBLAS_TRANSPOSE transA, const CBLAS_TRANSPOSE transB,
      int m, int n, int k,
      const float& alpha,
      const float* A, int ldA,
@@ -22,8 +21,8 @@ gemm(const execution_policy<DerivedPolicy>& /*exec*/,
 {
   BLAM_DEBUG_OUT("cblas_sgemm");
 
-  cblas_sgemm(cblas_order(order),
-              cblas_transpose(transA), cblas_transpose(transB),
+  cblas_sgemm(order,
+              transA, transB,
               m, n, k,
               alpha,
               A, ldA,
@@ -33,10 +32,9 @@ gemm(const execution_policy<DerivedPolicy>& /*exec*/,
 }
 
 // dgemm
-template <typename DerivedPolicy>
 void
-gemm(const execution_policy<DerivedPolicy>& /*exec*/,
-     StorageOrder order, Transpose transA, Transpose transB,
+gemm(const CBLAS_LAYOUT order,
+     const CBLAS_TRANSPOSE transA, const CBLAS_TRANSPOSE transB,
      int m, int n, int k,
      const double& alpha,
      const double* A, int ldA,
@@ -46,8 +44,8 @@ gemm(const execution_policy<DerivedPolicy>& /*exec*/,
 {
   BLAM_DEBUG_OUT("cblas_dgemm");
 
-  cblas_dgemm(cblas_order(order),
-              cblas_transpose(transA), cblas_transpose(transB),
+  cblas_dgemm(order,
+              transA, transB,
               m, n, k,
               alpha,
               A, ldA,
@@ -57,10 +55,9 @@ gemm(const execution_policy<DerivedPolicy>& /*exec*/,
 }
 
 // cgemm
-template <typename DerivedPolicy>
 void
-gemm(const execution_policy<DerivedPolicy>& /*exec*/,
-     StorageOrder order, Transpose transA, Transpose transB,
+gemm(const CBLAS_LAYOUT order,
+     const CBLAS_TRANSPOSE transA, const CBLAS_TRANSPOSE transB,
      int m, int n, int k,
      const ComplexFloat& alpha,
      const ComplexFloat* A, int ldA,
@@ -70,8 +67,8 @@ gemm(const execution_policy<DerivedPolicy>& /*exec*/,
 {
   BLAM_DEBUG_OUT("cblas_cgemm");
 
-  cblas_cgemm(cblas_order(order),
-              cblas_transpose(transA), cblas_transpose(transB),
+  cblas_cgemm(order,
+              transA, transB,
               m, n, k,
               reinterpret_cast<const float*>(&alpha),
               reinterpret_cast<const float*>(A), ldA,
@@ -81,10 +78,9 @@ gemm(const execution_policy<DerivedPolicy>& /*exec*/,
 }
 
 // zgemm
-template <typename DerivedPolicy>
 void
-gemm(const execution_policy<DerivedPolicy>& /*exec*/,
-     StorageOrder order, Transpose transA, Transpose transB,
+gemm(const CBLAS_LAYOUT order,
+     const CBLAS_TRANSPOSE transA, const CBLAS_TRANSPOSE transB,
      int m, int n, int k,
      const ComplexDouble& alpha,
      const ComplexDouble* A, int ldA,
@@ -94,14 +90,46 @@ gemm(const execution_policy<DerivedPolicy>& /*exec*/,
 {
   BLAM_DEBUG_OUT("cblas_zgemm");
 
-  cblas_zgemm(cblas_order(order),
-              cblas_transpose(transA), cblas_transpose(transB),
+  cblas_zgemm(order,
+              transA, transB,
               m, n, k,
               reinterpret_cast<const double*>(&alpha),
               reinterpret_cast<const double*>(A), ldA,
               reinterpret_cast<const double*>(B), ldB,
               reinterpret_cast<const double*>(&beta),
               reinterpret_cast<double*>(C), ldC);
+}
+
+// blam -> cblas
+template <typename DerivedPolicy,
+          typename Alpha, typename MA, typename MB,
+          typename Beta, typename MC>
+auto
+gemm(const execution_policy<DerivedPolicy>& /*exec*/,
+     StorageOrder order, Transpose transA, Transpose transB,
+     int m, int n, int k,
+     const Alpha& alpha,
+     const MA* A, int ldA,
+     const MB* B, int ldB,
+     const Beta& beta,
+     MC* C, int ldC)
+    -> decltype(gemm(cblas_order(order),
+                     cblas_transpose(transA), cblas_transpose(transB),
+                     m, n, k,
+                     alpha,
+                     A, ldA,
+                     B, ldB,
+                     beta,
+                     C, ldC))
+{
+  return gemm(cblas_order(order),
+              cblas_transpose(transA), cblas_transpose(transB),
+              m, n, k,
+              alpha,
+              A, ldA,
+              B, ldB,
+              beta,
+              C, ldC);
 }
 
 } // end namespace cblas

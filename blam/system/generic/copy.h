@@ -14,18 +14,18 @@ template <typename ExecutionPolicy,
           typename T, typename U>
 void
 copy(const ExecutionPolicy& exec,
-    int n,
-    const T* x, int incX,
-    U* y, int incY);
+     int n,
+     const T* x, int incX,
+     U* y, int incY);
 
 // incX,incY -> 1,1
 template <typename ExecutionPolicy,
           typename T, typename U>
 void
 copy(const ExecutionPolicy& exec,
-    int n,
-    const T* x,
-    U* y);
+     int n,
+     const T* x,
+     U* y);
 
 } // end namespace generic
 } // end namespace system
