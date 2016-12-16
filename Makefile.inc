@@ -26,6 +26,7 @@ CUDA_PATH = /usr/local/cuda
 INTEL_PATH = /opt/intel
 MKL_PATH = $(INTEL_PATH)/mkl
 
+# https://software.intel.com/en-us/articles/intel-mkl-link-line-advisor
 BLAS_INC = -I$(MKL_PATH)/include
 ifeq ($(kernel-name),Darwin)
 	BLAS_LIBS = -lpthread -ldl -lm -L$(MKL_PATH)/lib -lmkl_rt -lmkl_intel_thread -L$(INTEL_PATH)/lib -liomp5 -lcublas
