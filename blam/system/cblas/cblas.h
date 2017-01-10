@@ -31,10 +31,15 @@
 #include <blam/system/cublas/execution_policy.h>
 
 // Include all algorithms
+
+// Level 1
+#include <blam/system/cblas/axpy.h>
 #include <blam/system/cblas/copy.h>
 #include <blam/system/cblas/dot.h>
 
+// Level 2
 #include <blam/system/cblas/gemv.h>
 #include <blam/system/cblas/ger.h>
 
+// Level 3
 #include <blam/system/cblas/gemm.h>

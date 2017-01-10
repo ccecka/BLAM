@@ -27,15 +27,74 @@
 
 #pragma once
 
-// Execution policy first
-#include <blam/system/mkl/execution_policy.h>
+#include <blam/detail/config.h>
+#include <blam/system/cublas/execution_policy.h>
 
-// Include all algorithms
-#include <blam/system/cblas/cblas.h>
+namespace blam
+{
+namespace cublas
+{
 
-// Level 1
+// saxpy
+void
+axpy(cublasHandle_t handle, int n, const float& alpha,
+     const float* x, int incX,
+     float* y, int incY)
+{
+    BLAM_DEBUG_OUT("cublasSaxpy");
 
-// Level 2
+    cublasSaxpy(handle, n, alpha, x, incX, y, incY);
+}
 
-// Level 3
-#include <blam/system/mkl/batch_gemm.h>
+// daxpy
+void
+axpy(cublasHandle_t handle, int n, const double& alpha,
+     const double* x, int incX,
+     double* y, int incY)
+{
+    CXXBLAS_DEBUG_OUT("cublasDaxpy");
+
+    cublasDaxpy(handle, n, alpha, x, incX, y, incY);
+}
+
+// caxpy
+void
+axpy(cublasHandle_t handle, int n, const ComplexFloat& alpha,
+     const ComplexFloat* x, int incX,
+     ComplexFloat* y, int incY)
+{
+    CXXBLAS_DEBUG_OUT("cublasCaxpy");
+
+    ccublasCaxpy(handle, n, reinterpret_cast<const float*>(&alpha),
+                 reinterpret_cast<const float*>(x), incX,
+                 reinterpret_cast<float*>(y), incY);
+}
+
+// zaxpy
+void
+axpy(cublasHandle_t handle, int n, const ComplexDouble& alpha,
+     const ComplexDouble* x, int incX,
+     ComplexDouble* y, int incY)
+{
+    CXXBLAS_DEBUG_OUT("cublasZaxpy");
+
+    cublasZaxpy(handle, n, reinterpret_cast<const double*>(&alpha),
+                reinterpret_cast<const double*>(x), incX,
+                reinterpret_cast<double*>(y), incY);
+}
+
+// blam -> cblas
+template <typename DerivedPolicy,
+          typename Alpha, typename VX, typename VY>
+auto
+axpy(const execution_policy<DerivedPolicy>& exec,
+     int n, const Alpha& alpha
+     const VX* x, int incX,
+     VY* y, int incY)
+    -> decltype(axpy(handle(derived_cast(exec)), n, alpha, x, incX, y, incY))
+{
+  return axpy(handle(derived_cast(exec)), n, alpha, x, incX, y, incY);
+}
+
+} // end namespace cublas
+} // end namespace blam

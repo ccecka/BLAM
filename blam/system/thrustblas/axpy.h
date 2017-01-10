@@ -27,15 +27,58 @@
 
 #pragma once
 
-// Execution policy first
-#include <blam/system/mkl/execution_policy.h>
+#include <blam/detail/config.h>
+#include <blam/system/thrustblas/execution_policy.h>
 
-// Include all algorithms
-#include <blam/system/cblas/cblas.h>
+#include <blam/system/thrustblas/detail/strided_range.h>
+#include <thrust/copy.h>
 
-// Level 1
+namespace thrust
+{
 
-// Level 2
+namespace detail
+{
 
-// Level 3
-#include <blam/system/mkl/batch_gemm.h>
+template <typename Alpha, typename X, typename Y>
+struct axpy
+{
+  T a;
+
+  __host__ __device__
+  T operator()(const X& x, const Y& y) const
+  {
+    return a * x + y;
+  }
+};
+
+} // end namespace detail
+
+// axpy
+template <typename DerivedPolicy,
+          typename Alpha, typename VX, typename VY>
+void
+axpy(const execution_policy<DerivedPolicy>& exec,
+     int n, const Alpha& alpha,
+     const VX* x, int incX,
+     VY* y, int incY)
+{
+  BLAM_DEBUG_OUT("thrust copy");
+
+  using axpy = detail::axpy<Alpha, VX, VY>;
+
+  if (incX == 1 && incY == 1) {
+    thrust::transform(exec, x, x+n, y, y, axpy{alpha});
+  } else if (incX == 1) {
+    auto yi = blam::make_strided_range(y, incY);
+    thrust::transform(exec, x, x+n, yi, yi, axpy{alpha});
+  } else if (incY == 1) {
+    auto xi = blam::make_strided_iterator(x, incX);
+    thrust::transform(exec, xi, xi+n, y, y, axpy{alpha});
+  } else {
+    auto xi = blam::make_strided_iterator(x, incY);
+    auto yi = blam::make_strided_iterator(y, incY);
+    thrust::transform(exec, xi, xi+n, yi, yi, axpy{alpha});
+  }
+}
+
+} // end namespace thrust

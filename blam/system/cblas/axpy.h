@@ -27,15 +27,74 @@
 
 #pragma once
 
-// Execution policy first
-#include <blam/system/mkl/execution_policy.h>
+#include <blam/detail/config.h>
+#include <blam/system/cblas/execution_policy.h>
 
-// Include all algorithms
-#include <blam/system/cblas/cblas.h>
+namespace blam
+{
+namespace cblas
+{
 
-// Level 1
+// saxpy
+void
+axpy(int n, const float& alpha,
+     const float* x, int incX,
+     float* y, int incY)
+{
+    BLAM_DEBUG_OUT("cblas_saxpy");
 
-// Level 2
+    cblas_saxpy(n, alpha, x, incX, y, incY);
+}
 
-// Level 3
-#include <blam/system/mkl/batch_gemm.h>
+// daxpy
+void
+axpy(int n, const double& alpha,
+     const double* x, int incX,
+     double* y, int incY)
+{
+    CXXBLAS_DEBUG_OUT("cblas_daxpy");
+
+    cblas_daxpy(n, alpha, x, incX, y, incY);
+}
+
+// caxpy
+void
+axpy(int n, const ComplexFloat& alpha,
+     const ComplexFloat* x, int incX,
+     ComplexFloat* y, int incY)
+{
+    CXXBLAS_DEBUG_OUT("cblas_caxpy");
+
+    cblas_caxpy(n, reinterpret_cast<const float*>(&alpha),
+                   reinterpret_cast<const float*>(x), incX,
+                   reinterpret_cast<float*>(y), incY);
+}
+
+// zaxpy
+void
+axpy(int n, const ComplexDouble& alpha,
+     const ComplexDouble* x, int incX,
+     ComplexDouble* y, int incY)
+{
+    CXXBLAS_DEBUG_OUT("cblas_zaxpy");
+
+    cblas_zaxpy(n, reinterpret_cast<const double*>(&alpha),
+                   reinterpret_cast<const double*>(x), incX,
+                   reinterpret_cast<double*>(y), incY);
+}
+
+// blam -> cblas
+template <typename DerivedPolicy,
+          typename Alpha, typename VX, typename VY>
+auto
+axpy(const execution_policy<DerivedPolicy>& /*exec*/,
+     int n, const Alpha& alpha
+     const VX* x, int incX,
+     VY* y, int incY)
+    -> decltype(axpy(n, alpha, x, incX, y, incY))
+{
+  return axpy(n, alpha, x, incX, y, incY);
+}
+
+} // end namespace cblas
+} // end namespace blam

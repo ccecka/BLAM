@@ -31,12 +31,16 @@
 #include <blam/system/cublas/execution_policy.h>
 
 // Include all algorithms
+
+// Level 1
+#include <blam/system/cublas/axpy.h>
 #include <blam/system/cublas/copy.h>
 #include <blam/system/cublas/dot.h>
 
+// Level 2
 #include <blam/system/cublas/gemv.h>
 #include <blam/system/cublas/ger.h>
 
+// Level 3
 #include <blam/system/cublas/gemm.h>
-
 #include <blam/system/cublas/batch_gemm.h>
