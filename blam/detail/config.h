@@ -71,7 +71,7 @@ enum Transpose {
 namespace blam
 {
 
-// User could potentially define ComplexFloat/ComplexDouble instead of thrust::
+// User could potentially define ComplexFloat/ComplexDouble instead of std::
 #ifndef BLAM_COMPLEX_TYPES
 #define BLAM_COMPLEX_TYPES 1
 template <typename T>

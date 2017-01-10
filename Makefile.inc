@@ -93,8 +93,8 @@ INCLUDES += -I$(BLAM_PATH) $(BLAS_INC)
 # Define cxx compile flags
 CXXFLAGS  = -O3 -fopenmp
 
-# Define nvcc compile flags   TODO: Detect and generate appropriate sm_XX
-NVCCFLAGS := -arch=sm_30 -O3 --compiler-options "$(CXXFLAGS)"
+# Define nvcc compile flags   TODO: Detect and generate appropriate sm_XX?
+NVCCFLAGS := -arch=sm_35 -O3 --compiler-options "$(CXXFLAGS)"
 
 # Define any directories containing libraries
 #   To include directories use -Lpath/to/files
@@ -139,8 +139,6 @@ endif
 #   $^: the name of the prereqs of the rule
 #   $<: the name of the first prereq of the rule
 #   $@: the name of the target of the rule
-.SUFFIXES:                                        # Delete the default suffixes
-.SUFFIXES: .hpp .cpp .kern .kern.cpp .kern.cu .o  # Define our suffix list
 
 # 'make' - default rule
 all: $(EXEC)
