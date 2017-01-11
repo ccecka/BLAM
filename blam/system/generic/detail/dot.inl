@@ -83,7 +83,7 @@ dot(const ExecutionPolicy& exec,
     const VY* y,
     R& result)
 {
-  blam::adl::dotc(exec, n, x, 1, y, 1, result);
+  blam::adl::dot(exec, n, x, 1, y, 1, result);
 }
 
 // incX,incY -> 1,1
@@ -125,19 +125,6 @@ dot(const ExecutionPolicy& exec,
   blam::adl::dotu(exec, n, x, incX, y, incY, result);
 }
 
-// sdotc -> sdotu
-template <typename ExecutionPolicy,
-          typename R>
-void
-dotc(const ExecutionPolicy& exec,
-     int n,
-     const float* x, int incX,
-     const float* y, int incY,
-     R& result)
-{
-  blam::adl::dotu(exec, n, x, incX, y, incY, result);
-}
-
 // ddot -> ddotu
 template <typename ExecutionPolicy,
           typename R>
@@ -147,19 +134,6 @@ dot(const ExecutionPolicy& exec,
     const double* x, int incX,
     const double* y, int incY,
     R& result)
-{
-  blam::adl::dotu(exec, n, x, incX, y, incY, result);
-}
-
-// ddotc -> ddotu
-template <typename ExecutionPolicy,
-          typename R>
-void
-dotc(const ExecutionPolicy& exec,
-     int n,
-     const double* x, int incX,
-     const double* y, int incY,
-     R& result)
 {
   blam::adl::dotu(exec, n, x, incX, y, incY, result);
 }

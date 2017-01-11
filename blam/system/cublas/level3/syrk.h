@@ -35,122 +35,111 @@ namespace blam
 namespace cublas
 {
 
-// sgemm
+// ssyrk
 void
-gemm(cublasHandle_t handle,
-     cublasOperation_t transA, cublasOperation_t transB,
-     int m, int n, int k,
+syrk(cublasHandle_t handle,
+     cublasFillMode_t upLo, cublasOperation_t trans,
+     int n, int k,
      const float* alpha,
      const float* A, int ldA,
-     const float* B, int ldB,
      const float* beta,
      float* C, int ldC)
 {
-  BLAM_DEBUG_OUT("cublasSgemm");
+  BLAM_DEBUG_OUT("cublasSsyrk");
 
-  cublasSgemm(handle, transA, transB,
-              m, n, k,
+  cublasSsyrk(handle, upLo, trans,
+              n, k,
               alpha,
               A, ldA,
-              B, ldB,
               beta,
               C, ldC);
 }
 
-// dgemm
+// dsyrk
 void
-gemm(cublasHandle_t handle,
-     cublasOperation_t transA, cublasOperation_t transB,
-     int m, int n, int k,
+syrk(cublasHandle_t handle,
+     cublasFillMode_t upLo, cublasOperation_t trans,
+     int n, int k,
      const double* alpha,
      const double* A, int ldA,
-     const double* B, int ldB,
      const double* beta,
      double* C, int ldC)
 {
-  BLAM_DEBUG_OUT("cublasDgemm");
+  BLAM_DEBUG_OUT("cublasDsyrk");
 
-  cublasDgemm(handle, transA, transB,
-              m, n, k,
+  cublasDsyrk(handle, upLo, trans,
+              n, k,
               alpha,
               A, ldA,
-              B, ldB,
               beta,
               C, ldC);
 }
 
-// cgemm
+// csyrk
 void
-gemm(cublasHandle_t handle,
-     cublasOperation_t transA, cublasOperation_t transB,
-     int m, int n, int k,
+syrk(cublasHandle_t handle,
+     cublasFillMode_t upLo, cublasOperation_t trans,
+     int n, int k,
      const ComplexFloat* alpha,
      const ComplexFloat* A, int ldA,
-     const ComplexFloat* B, int ldB,
      const ComplexFloat* beta,
      ComplexFloat* C, int ldC)
 {
-  BLAM_DEBUG_OUT("cublasCgemm");
+  BLAM_DEBUG_OUT("cublasCsyrk");
 
-  cublasCgemm(handle, transA, transB,
-              m, n, k,
+  cublasCsyrk(handle, upLo, trans,
+              n, k,
               reinterpret_cast<const cuFloatComplex*>(alpha),
               reinterpret_cast<const cuFloatComplex*>(A), ldA,
-              reinterpret_cast<const cuFloatComplex*>(B), ldB,
               reinterpret_cast<const cuFloatComplex*>(beta),
               reinterpret_cast<cuFloatComplex*>(C), ldC);
 }
 
-// zgemm
+// zsyrk
 void
-gemm(cublasHandle_t handle,
-     cublasOperation_t transA, cublasOperation_t transB,
-     int m, int n, int k,
+syrk(cublasHandle_t handle,
+     cublasFillMode_t upLo, cublasOperation_t trans,
+     int n, int k,
      const ComplexDouble* alpha,
      const ComplexDouble* A, int ldA,
-     const ComplexDouble* B, int ldB,
      const ComplexDouble* beta,
      ComplexDouble* C, int ldC)
 {
-  BLAM_DEBUG_OUT("cublasDgemm");
+  BLAM_DEBUG_OUT("cublasZsyrk");
 
-  cublasZgemm(handle, transA, transB,
-              m, n, k,
+  cublasZsyrk(handle, upLo, trans,
+              n, k,
               reinterpret_cast<const cuDoubleComplex*>(alpha),
               reinterpret_cast<const cuDoubleComplex*>(A), ldA,
-              reinterpret_cast<const cuDoubleComplex*>(B), ldB,
               reinterpret_cast<const cuDoubleComplex*>(beta),
               reinterpret_cast<cuDoubleComplex*>(C), ldC);
 }
 
 // blam -> cublas
 template <typename DerivedPolicy,
-          typename Alpha, typename MA, typename MB,
+          typename Alpha, typename MA,
           typename Beta, typename MC>
 auto
-gemm(const execution_policy<DerivedPolicy>& exec,
-     Transpose transA, Transpose transB,
-     int m, int n, int k,
+syrk(const execution_policy<DerivedPolicy>& exec,
+     StorageUpLo upLo, Transpose trans,
+     int n, int k,
      const Alpha& alpha,
      const MA* A, int ldA,
-     const MB* B, int ldB,
      const Beta& beta,
      MC* C, int ldC)
-    -> decltype(gemm(handle(derived_cast(exec)),
-                     cublas_transpose(transA), cublas_transpose(transB),
-                     m, n, k,
+    -> decltype(syrk(handle(derived_cast(exec)),
+                     cublas_type(upLo), cublas_type(trans),
+                     n, k,
                      &alpha,
                      A, ldA,
-                     B, ldB,
                      &beta,
                      C, ldC))
 {
-  return gemm(handle(derived_cast(exec)),
-              cublas_transpose(transA), cublas_transpose(transB),
-              m, n, k,
+  return syrk(handle(derived_cast(exec)),
+              cublas_type(upLo), cublas_type(trans),
+              n, k,
               &alpha,
               A, ldA,
-              B, ldB,
               &beta,
               C, ldC);
 }
@@ -160,45 +149,35 @@ template <typename DerivedPolicy,
           typename Alpha, typename MA, typename MB,
           typename Beta, typename MC>
 auto
-gemm(const execution_policy<DerivedPolicy>& exec,
-     StorageOrder order, Transpose transA, Transpose transB,
-     int m, int n, int k,
+syrk(const execution_policy<DerivedPolicy>& exec,
+     StorageOrder order, StorageUpLo upLo, Transpose trans,
+     int n, int k,
      const Alpha& alpha,
      const MA* A, int ldA,
      const MB* B, int ldB,
      const Beta& beta,
      MC* C, int ldC)
-    -> decltype(gemm(exec, transA, transB,
-                     m, n, k,
-                     &alpha,
+    -> decltype(syrk(exec, upLo, trans,
+                     n, k,
+                     alpha,
                      A, ldA,
-                     B, ldB,
-                     &beta,
-                     C, ldC),
-                gemm(exec, transB, transA,
-                     n, m, k,
-                     &alpha,
-                     B, ldB,
-                     A, ldA,
-                     &beta,
+                     beta,
                      C, ldC))
 {
   if (order == ColMajor) {
-    gemm(exec, transA, transB,
-         m, n, k,
-         &alpha,
-         A, ldA,
-         B, ldB,
-         &beta,
-         C, ldC);
-  } else { // RowMajor: swap A & B
-    gemm(exec, transB, transA,
-         n, m, k,
-         &alpha,
-         B, ldB,
-         A, ldA,
-         &beta,
-         C, ldC);
+    return syrk(exec, upLo, trans,
+                n, k,
+                alpha,
+                A, ldA,
+                beta,
+                C, ldC);
+  } else {
+    return syrk(exec, (upLo==Upper) ? Lower : Upper, Transpose(trans^ConjTrans),
+                n, k,
+                conj(alpha),
+                A, ldA,
+                beta,
+                C, ldC);
   }
 }
 

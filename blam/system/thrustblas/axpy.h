@@ -42,12 +42,11 @@ namespace detail
 template <typename Alpha, typename X, typename Y>
 struct axpy
 {
-  T a;
+  Alpha a;
 
   __host__ __device__
-  T operator()(const X& x, const Y& y) const
-  {
-    return a * x + y;
+  auto operator()(const X& x, const Y& y) const -> decltype(a*x+y) {
+    return a*x+y;
   }
 };
 
@@ -58,7 +57,8 @@ template <typename DerivedPolicy,
           typename Alpha, typename VX, typename VY>
 void
 axpy(const execution_policy<DerivedPolicy>& exec,
-     int n, const Alpha& alpha,
+     int n,
+     const Alpha& alpha,
      const VX* x, int incX,
      VY* y, int incY)
 {

@@ -27,72 +27,81 @@
 
 #pragma once
 
-#include <cassert>
-#include <iostream>
-
-//-- BLAM_DEBUG_OUT ---------------------------------------------------------
-#ifdef BLAM_DEBUG
-# include <iostream>
-# ifndef BLAM_DEBUG_OUT
-#  define BLAM_DEBUG_OUT(msg)    std::cerr << "BLAM: " << msg << std::endl
-#  define BLAM_DEBUG_OUT_2(msg)  std::cerr << msg << std::endl
-# endif // BLAM_DEBUG_OUT
-#else
-# ifndef BLAM_DEBUG_OUT
-#  define BLAM_DEBUG_OUT(msg)
-#  define BLAM_DEBUG_OUT_2(msg)
-# endif // BLAM_DEBUG_OUT
-#endif // BLAM_DEBUG
-
-// XXX: Move to typedef.h?
+#include <blam/detail/config.h>
+#include <blam/system/cublas/execution_policy.h>
 
 namespace blam
 {
-
-enum StorageOrder {
-  ColMajor = 0,
-  RowMajor = 1
-};
-
-enum Transpose {
-  NoTrans   = 0,
-  Conj      = 1,
-  Trans     = 2,
-  ConjTrans = 3
-};
-
-enum StorageUpLo {
-  Upper = 'U',
-  Lower = 'L'
-};
-
-enum Diag {
-  Unit    = 'U',
-  NonUnit = 'N'
-};
-
-enum Side {
-  Left  = 'L',
-  Right = 'R'
-};
-
-} // end namespace blam
-
-
-// XXX: Move to complex.h?
-
-#include <complex>
-
-namespace blam
+namespace cublas
 {
 
-// User could potentially define ComplexFloat/ComplexDouble instead of std::
-#ifndef BLAM_COMPLEX_TYPES
-#define BLAM_COMPLEX_TYPES 1
-template <typename T>
-using complex       = std::complex<T>;
-using ComplexFloat  = complex<float>;
-using ComplexDouble = complex<double>;
-#endif // BLAM_COMPLEX_TYPES
+// sswap
+void
+swap(cublasHandle_t handle, int n,
+     float* x, int incX,
+     float* y, int incY)
+{
+  BLAM_DEBUG_OUT("cublasSswap");
 
+  cublasSswap(handle, n,
+              x, incX,
+              y, incY);
+}
+
+// dcopy
+void
+swap(cublasHandle_t handle, int n,
+     double* x, int incX,
+     double* y, int incY)
+{
+  BLAM_DEBUG_OUT("cublasDswap");
+
+  cublasDswap(handle, n,
+              x, incX,
+              y, incY);
+}
+
+// ccopy
+void
+swap(cublasHandle_t handle, int n,
+     ComplexFloat* x, int incX,
+     ComplexFloat* y, int incY)
+{
+  BLAM_DEBUG_OUT("cublasCswap");
+
+  cublasCswap(handle, n,
+              reinterpret_cast<cuFloatComplex*>(x), incX,
+              reinterpret_cast<cuFloatComplex*>(y), incY);
+}
+
+// zcopy
+void
+swap(cublasHandle_t handle, int n,
+     ComplexDouble* x, int incX,
+     ComplexDouble* y, int incY)
+{
+  BLAM_DEBUG_OUT("cublasZswap");
+
+  cublasZswap(handle, n,
+              reinterpret_cast<cuDoubleComplex*>(x), incX,
+              reinterpret_cast<cuDoubleComplex*>(y), incY);
+}
+
+// blam -> cublas
+template <typename DerivedPolicy,
+          typename VX, typename VY>
+auto
+swap(const execution_policy<DerivedPolicy>& exec, int n,
+     const VX* x, int incX,
+     const VY* y, int incY)
+    -> decltype(swap(handle(derived_cast(exec)), n,
+                     x, incX,
+                     y, incY))
+{
+  return swap(handle(derived_cast(exec)), n,
+              x, incX,
+              y, incY);
+}
+
+} // end namespace cublas
 } // end namespace blam

@@ -28,27 +28,77 @@
 #pragma once
 
 #include <blam/detail/config.h>
+#include <blam/system/cublas/execution_policy.h>
 
 namespace blam
 {
-
-template <typename T>
-struct conj_fn
+namespace cublas
 {
-  /*! \typedef argument_type
-   *  \brief The type of the function object's argument.
-   */
-  typedef T argument_type;
 
-  /*! \typedef result_type
-   *  \brief The type of the function object's result.
-   */
-  typedef T result_type;
+// chpr2
+void
+hpr2(cublasHandle_t handle, cublasFillMode_t upLo,
+     int n,
+     const float* alpha,
+     const ComplexFloat* x, int incX,
+     const ComplexFloat* y, int incY,
+     ComplexFloat* A)
+{
+  BLAM_DEBUG_OUT("cublasChpr2");
 
-  /*! Function call operator. The return value is <tt>conj(x)</tt>.
-   */
-  __host__ __device__
-  T operator()(const T& x) const { return conj(x); }
-};
-
+  cublasChpr2(handle, upLo,
+              n,
+              reinterpret_cast<const cuFloatComplex*>(alpha),
+              reinterpret_cast<const cuFloatComplex*>(x), incX,
+              reinterpret_cast<const cuFloatComplex*>(y), incY,
+              reinterpret_cast<cuFloatComplex*>(A));
 }
+
+// zhpr2
+void
+hpr2(cublasHandle_t handle, cublasFillMode_t upLo,
+     int n,
+     const double* alpha,
+     const ComplexDouble* x, int incX,
+     const ComplexDouble* y, int incY,
+     ComplexDouble* A)
+{
+  BLAM_DEBUG_OUT("cublasZhpr2");
+
+  cublasZhpr2(handle, upLo,
+              n,
+              reinterpret_cast<const cuDoubleComplex*>(alpha),
+              reinterpret_cast<const cuDoubleComplex*>(x), incX,
+              reinterpret_cast<const cuDoubleComplex*>(y), incY,
+              reinterpret_cast<cuDoubleComplex*>(A));
+}
+
+// blam -> cublas
+template <typename DerivedPolicy,
+          typename Alpha,
+          typename VX, typename VY, typename MA>
+auto
+hpr2(const execution_policy<DerivedPolicy>& exec,
+     StorageUpLo upLo,
+     int n,
+     const Alpha& alpha,
+     const VX* x, int incX,
+     const VY* y, int incY,
+     MA* A)
+    -> decltype(hpr2(handle(derived_cast(exec)), cublas_type(upLo),
+                     n, &alpha,
+                     x, incX,
+                     y, incY,
+                     A))
+{
+  return hpr2(handle(derived_cast(exec)), cublas_type(upLo),
+              n, &alpha,
+              x, incX,
+              y, incY,
+              A);
+}
+
+// XXX TODO RowMajor -> ColMajor?
+
+} // end namespace cublas
+} // end namespace blam

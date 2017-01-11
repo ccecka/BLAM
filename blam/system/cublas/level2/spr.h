@@ -27,72 +27,71 @@
 
 #pragma once
 
-#include <cassert>
-#include <iostream>
-
-//-- BLAM_DEBUG_OUT ---------------------------------------------------------
-#ifdef BLAM_DEBUG
-# include <iostream>
-# ifndef BLAM_DEBUG_OUT
-#  define BLAM_DEBUG_OUT(msg)    std::cerr << "BLAM: " << msg << std::endl
-#  define BLAM_DEBUG_OUT_2(msg)  std::cerr << msg << std::endl
-# endif // BLAM_DEBUG_OUT
-#else
-# ifndef BLAM_DEBUG_OUT
-#  define BLAM_DEBUG_OUT(msg)
-#  define BLAM_DEBUG_OUT_2(msg)
-# endif // BLAM_DEBUG_OUT
-#endif // BLAM_DEBUG
-
-// XXX: Move to typedef.h?
+#include <blam/detail/config.h>
+#include <blam/system/cublas/execution_policy.h>
 
 namespace blam
 {
-
-enum StorageOrder {
-  ColMajor = 0,
-  RowMajor = 1
-};
-
-enum Transpose {
-  NoTrans   = 0,
-  Conj      = 1,
-  Trans     = 2,
-  ConjTrans = 3
-};
-
-enum StorageUpLo {
-  Upper = 'U',
-  Lower = 'L'
-};
-
-enum Diag {
-  Unit    = 'U',
-  NonUnit = 'N'
-};
-
-enum Side {
-  Left  = 'L',
-  Right = 'R'
-};
-
-} // end namespace blam
-
-
-// XXX: Move to complex.h?
-
-#include <complex>
-
-namespace blam
+namespace cublas
 {
 
-// User could potentially define ComplexFloat/ComplexDouble instead of std::
-#ifndef BLAM_COMPLEX_TYPES
-#define BLAM_COMPLEX_TYPES 1
-template <typename T>
-using complex       = std::complex<T>;
-using ComplexFloat  = complex<float>;
-using ComplexDouble = complex<double>;
-#endif // BLAM_COMPLEX_TYPES
+// sspr
+void
+spr(cublasHandle_t handle, cublasFillMode_t upLo,
+    int n,
+    const float* alpha,
+    const float* x, int incX,
+    float* A)
+{
+  BLAM_DEBUG_OUT("cublasSspr");
 
+  cublasSspr(handle, upLo,
+             n,
+             alpha,
+             x, incX,
+             A);
+}
+
+// dspr
+void
+spr(cublasHandle_t handle, cublasFillMode_t upLo,
+    int n,
+    const double* alpha,
+    const double* x, int incX,
+    double* A)
+{
+  BLAM_DEBUG_OUT("cublasDspr");
+
+  cublasDspr(handle, upLo,
+             n,
+             alpha,
+             x, incX,
+             A);
+}
+
+// blam -> cublas
+template <typename DerivedPolicy,
+          typename Alpha,
+          typename VX, typename MA>
+auto
+spr(const execution_policy<DerivedPolicy>& exec,
+    StorageUpLo upLo,
+    int n,
+    const Alpha& alpha,
+    const VX* x, int incX,
+    MA* A)
+    -> decltype(spr(handle(derived_cast(exec)), cublas_type(upLo),
+                    n, &alpha,
+                    x, incX,
+                    A))
+{
+  return spr(handle(derived_cast(exec)), cublas_type(upLo),
+             n, &alpha,
+             x, incX,
+             A);
+}
+
+// XXX TODO RowMajor -> ColMajor?
+
+} // end namespace cublas
 } // end namespace blam

@@ -35,65 +35,82 @@ namespace blam
 namespace cublas
 {
 
-// saxpy
+// sscal
 void
-axpy(cublasHandle_t handle, int n, const float& alpha,
-     const float* x, int incX,
-     float* y, int incY)
+scal(cublasHandle_t handle, int n, const float* alpha,
+     float* x, int incX)
 {
-    BLAM_DEBUG_OUT("cublasSaxpy");
+  BLAM_DEBUG_OUT("cublasSscal");
 
-    cublasSaxpy(handle, n, alpha, x, incX, y, incY);
+  cublasSscal(handle, n, alpha, x, incX);
 }
 
-// daxpy
+// dscal
 void
-axpy(cublasHandle_t handle, int n, const double& alpha,
-     const double* x, int incX,
-     double* y, int incY)
+scal(cublasHandle_t handle, int n, const double* alpha,
+     double* x, int incX)
 {
-    CXXBLAS_DEBUG_OUT("cublasDaxpy");
+  BLAM_DEBUG_OUT("cublasDscal");
 
-    cublasDaxpy(handle, n, alpha, x, incX, y, incY);
+  cublasDscal(handle, n, alpha, x, incX);
 }
 
-// caxpy
+// csscal
 void
-axpy(cublasHandle_t handle, int n, const ComplexFloat& alpha,
-     const ComplexFloat* x, int incX,
-     ComplexFloat* y, int incY)
+scal(cublasHandle_t handle, int n, const float* alpha,
+     ComplexFloat* x, int incX)
 {
-    CXXBLAS_DEBUG_OUT("cublasCaxpy");
+  BLAM_DEBUG_OUT("cublasCsscal");
 
-    ccublasCaxpy(handle, n, reinterpret_cast<const float*>(&alpha),
-                 reinterpret_cast<const float*>(x), incX,
-                 reinterpret_cast<float*>(y), incY);
+  cublasCsscal(handle, n, alpha, reinterpret_cast<cuFloatComplex*>(x), incX);
 }
 
-// zaxpy
+// csscal
 void
-axpy(cublasHandle_t handle, int n, const ComplexDouble& alpha,
-     const ComplexDouble* x, int incX,
-     ComplexDouble* y, int incY)
+scal(cublasHandle_t handle, int n, const ComplexFloat* alpha,
+     ComplexFloat* x, int incX)
 {
-    CXXBLAS_DEBUG_OUT("cublasZaxpy");
+  BLAM_DEBUG_OUT("cublasCscal");
 
-    cublasZaxpy(handle, n, reinterpret_cast<const double*>(&alpha),
-                reinterpret_cast<const double*>(x), incX,
-                reinterpret_cast<double*>(y), incY);
+  cublasCscal(handle, n,
+              reinterpret_cast<const cuFloatComplex*>(alpha),
+              reinterpret_cast<cuFloatComplex*>(x), incX);
 }
 
-// blam -> cblas
+// zdscal
+void
+scal(cublasHandle_t handle, int n, const double* alpha,
+     ComplexDouble* x, int incX)
+{
+  BLAM_DEBUG_OUT("cublasZdscal");
+
+  cublasZdscal(handle, n,
+               alpha,
+               reinterpret_cast<cuDoubleComplex*>(x), incX);
+}
+
+// zscal
+void
+scal(cublasHandle_t handle, int n, const ComplexDouble* alpha,
+     ComplexDouble* x, int incX)
+{
+  BLAM_DEBUG_OUT("cublasZdscal");
+
+  cublasZscal(handle, n,
+              reinterpret_cast<const cuDoubleComplex*>(alpha),
+              reinterpret_cast<cuDoubleComplex*>(x), incX);
+}
+
+// blam -> cublas
 template <typename DerivedPolicy,
-          typename Alpha, typename VX, typename VY>
+          typename Alpha, typename VX>
 auto
-axpy(const execution_policy<DerivedPolicy>& exec,
-     int n, const Alpha& alpha
-     const VX* x, int incX,
-     VY* y, int incY)
-    -> decltype(axpy(handle(derived_cast(exec)), n, alpha, x, incX, y, incY))
+scal(const execution_policy<DerivedPolicy>& exec,
+     int n, const Alpha& alpha,
+     const VX* x, int incX)
+    -> decltype(scal(handle(derived_cast(exec)), n, alpha, x, incX))
 {
-  return axpy(handle(derived_cast(exec)), n, alpha, x, incX, y, incY);
+  return scal(handle(derived_cast(exec)), n, alpha, x, incX);
 }
 
 } // end namespace cublas

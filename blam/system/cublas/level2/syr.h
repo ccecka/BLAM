@@ -28,113 +28,104 @@
 #pragma once
 
 #include <blam/detail/config.h>
+#include <blam/system/cublas/execution_policy.h>
 
 namespace blam
 {
-namespace system
-{
-namespace generic
+namespace cublas
 {
 
-template <typename ExecutionPolicy,
-          typename VX, typename VY, typename R>
+// csyr
 void
-dotc(const ExecutionPolicy& exec,
-     int n,
-     const VX* x, int incX,
-     const VY* y, int incY,
-     R& result);
-
-template <typename ExecutionPolicy,
-          typename VX, typename VY, typename R>
-void
-dotu(const ExecutionPolicy& exec,
-     int n,
-     const VX* x, int incX,
-     const VY* y, int incY,
-     R& result);
-
-template <typename ExecutionPolicy,
-          typename VX, typename VY, typename R>
-void
-dot(const ExecutionPolicy& exec,
+syr(cublasHandle_t handle, cublasFillMode_t upLo,
     int n,
-    const VX* x, int incX,
-    const VY* y, int incY,
-    R& result);
-
-// incX,incY -> 1,1
-template <typename ExecutionPolicy,
-          typename VX, typename VY, typename R>
-void
-dot(const ExecutionPolicy& exec,
-    int n,
-    const VX* x,
-    const VY* y,
-    R& result);
-
-// incX,incY -> 1,1
-template <typename ExecutionPolicy,
-          typename VX, typename VY, typename R>
-void
-dotc(const ExecutionPolicy& exec,
-     int n,
-     const VX* x,
-     const VY* y,
-     R& result);
-
-// incX,incY -> 1,1
-template <typename ExecutionPolicy,
-          typename VX, typename VY, typename R>
-void
-dotu(const ExecutionPolicy& exec,
-     int n,
-     const VX* x,
-     const VY* y,
-     R& result);
-
-// sdot -> sdotu
-template <typename ExecutionPolicy,
-          typename R>
-void
-dot(const ExecutionPolicy& exec,
-    int n,
+    const float* alpha,
     const float* x, int incX,
-    const float* y, int incY,
-    R& result);
+    float* A, int ldA)
+{
+  BLAM_DEBUG_OUT("cublasSsyr");
 
-// ddot -> ddotu
-template <typename ExecutionPolicy,
-          typename R>
+  cublasSsyr(handle, upLo,
+             n,
+             alpha,
+             x, incX,
+             A, ldA);
+}
+
+// zsyr
 void
-dot(const ExecutionPolicy& exec,
+syr(cublasHandle_t handle, cublasFillMode_t upLo,
     int n,
+    const double* alpha,
     const double* x, int incX,
-    const double* y, int incY,
-    R& result);
+    double* A, int ldA)
+{
+  BLAM_DEBUG_OUT("cublasDsyr");
 
-// cdot -> cdotc
-template <typename ExecutionPolicy,
-          typename R>
+  cublasDsyr(handle, upLo,
+             n,
+             alpha,
+             x, incX,
+             A, ldA);
+}
+
+// csyr
 void
-dot(const ExecutionPolicy& exec,
+syr(cublasHandle_t handle, cublasFillMode_t upLo,
     int n,
+    const ComplexFloat* alpha,
     const ComplexFloat* x, int incX,
-    const ComplexFloat* y, int incY,
-    R& result);
+    ComplexFloat* A, int ldA)
+{
+  BLAM_DEBUG_OUT("cublasCsyr");
 
-// zdot -> zdotc
-template <typename ExecutionPolicy,
-          typename R>
+  cublasCsyr(handle, upLo,
+             n,
+             reinterpret_cast<const cuFloatComplex*>(alpha),
+             reinterpret_cast<const cuFloatComplex*>(x), incX,
+             reinterpret_cast<cuFloatComplex*>(A), ldA);
+}
+
+// zsyr
 void
-dot(const ExecutionPolicy& exec,
+syr(cublasHandle_t handle, cublasFillMode_t upLo,
     int n,
+    const ComplexDouble* alpha,
     const ComplexDouble* x, int incX,
-    const ComplexDouble* y, int incY,
-    R& result);
+    ComplexDouble* A, int ldA)
+{
+  BLAM_DEBUG_OUT("cublasZsyr");
 
-} // end namespace generic
-} // end namespace system
+  cublasZsyr(handle, upLo,
+             n,
+             reinterpret_cast<const cuDoubleComplex*>(alpha),
+             reinterpret_cast<const cuDoubleComplex*>(x), incX,
+             reinterpret_cast<cuDoubleComplex*>(A), ldA);
+}
+
+// blam -> cublas
+template <typename DerivedPolicy,
+          typename Alpha,
+          typename VX, typename MA>
+auto
+syr(const execution_policy<DerivedPolicy>& exec,
+    StorageUpLo upLo,
+    int n,
+    const Alpha& alpha,
+    const VX* x, int incX,
+    MA* A, int ldA)
+    -> decltype(syr(handle(derived_cast(exec)), cublas_type(upLo),
+                    n, &alpha,
+                    x, incX,
+                    A, ldA))
+{
+  return syr(handle(derived_cast(exec)), cublas_type(upLo),
+             n, &alpha,
+             x, incX,
+             A, ldA);
+}
+
+// XXX TODO RowMajor -> ColMajor?
+
+} // end namespace cublas
 } // end namespace blam
-
-#include <blam/system/generic/detail/dot.inl>

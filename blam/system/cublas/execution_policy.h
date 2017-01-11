@@ -158,12 +158,39 @@ static const execute_on_handle par;
 
 
 cublasOperation_t
-cublas_transpose(Transpose trans) {
+cublas_type(Transpose trans) {
   switch (trans) {
     case NoTrans:   return CUBLAS_OP_N;
     case Trans:     return CUBLAS_OP_T;
     case ConjTrans: return CUBLAS_OP_C;
-    default:        assert(false); return CUBLAS_OP_N;
+    default:        assert(false && "Invalid Transpose Parameter"); return CUBLAS_OP_N;
+  }
+}
+
+cublasFillMode_t
+cublas_type(StorageUpLo uplo) {
+  switch (uplo) {
+    case Upper: return CUBLAS_FILL_MODE_UPPER;
+    case Lower: return CUBLAS_FILL_MODE_LOWER;
+    default: assert(false && "Invalid StorageUpLo Parameter"); return CUBLAS_FILL_MODE_UPPER;
+  }
+}
+
+cublasSideMode_t
+cublas_type(Side side) {
+  switch (side) {
+    case Left:  return CUBLAS_SIDE_LEFT;
+    case Right: return CUBLAS_SIDE_RIGHT;
+    default: assert(false && "Invalid Side Parameter"); return CUBLAS_SIDE_LEFT;
+  }
+}
+
+cublasDiagType_t
+cublas_type(Diag diag) {
+  switch (diag) {
+    case Unit:    return CUBLAS_DIAG_UNIT;
+    case NonUnit: return CUBLAS_DIAG_NON_UNIT;
+    default: assert(false && "Invalid Diag Parameter"); return CUBLAS_DIAG_UNIT;
   }
 }
 

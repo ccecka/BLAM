@@ -253,7 +253,7 @@ batch_gemm(const execution_policy<DerivedPolicy>& exec,
            int batch_size)
 {
   return batch_gemm(handle(derived_cast(exec)),
-                    cublas_transpose(transA), cublas_transpose(transB),
+                    cublas_type(transA), cublas_type(transB),
                     m, n, k,
                     &alpha,
                     A, ldA, loA,

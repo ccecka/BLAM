@@ -152,25 +152,6 @@ ger(const ExecutionPolicy& exec,
                  A, ldA);
 }
 
-// sgerc -> sgeru
-template <typename ExecutionPolicy,
-          typename MA>
-void
-gerc(const ExecutionPolicy& exec,
-     StorageOrder order, int m, int n,
-     const float& alpha,
-     const float* x, int incX,
-     const float* y, int incY,
-     MA* A, int ldA)
-{
-  blam::adl::geru(exec,
-                 order, m, n,
-                 alpha,
-                 x, incX,
-                 y, incY,
-                 A, ldA);
-}
-
 // dger -> dgeru
 template <typename ExecutionPolicy,
           typename MA>
@@ -181,25 +162,6 @@ ger(const ExecutionPolicy& exec,
     const double* x, int incX,
     const double* y, int incY,
     MA* A, int ldA)
-{
-  blam::adl::geru(exec,
-                  order, m, n,
-                  alpha,
-                  x, incX,
-                  y, incY,
-                  A, ldA);
-}
-
-// dgerc -> dgeru
-template <typename ExecutionPolicy,
-          typename MA>
-void
-gerc(const ExecutionPolicy& exec,
-     StorageOrder order, int m, int n,
-     const double& alpha,
-     const double* x, int incX,
-     const double* y, int incY,
-     MA* A, int ldA)
 {
   blam::adl::geru(exec,
                   order, m, n,

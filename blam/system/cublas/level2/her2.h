@@ -28,73 +28,77 @@
 #pragma once
 
 #include <blam/detail/config.h>
-#include <blam/system/cblas/execution_policy.h>
+#include <blam/system/cublas/execution_policy.h>
 
 namespace blam
 {
-namespace cblas
+namespace cublas
 {
 
-// saxpy
+// cher2
 void
-axpy(int n, const float& alpha,
-     const float* x, int incX,
-     float* y, int incY)
-{
-  BLAM_DEBUG_OUT("cblas_saxpy");
-
-  cblas_saxpy(n, alpha, x, incX, y, incY);
-}
-
-// daxpy
-void
-axpy(int n, const double& alpha,
-     const double* x, int incX,
-     double* y, int incY)
-{
-  BLAM_DEBUG_OUT("cblas_daxpy");
-
-  cblas_daxpy(n, alpha, x, incX, y, incY);
-}
-
-// caxpy
-void
-axpy(int n, const ComplexFloat& alpha,
+her2(cublasHandle_t handle, cublasFillMode_t upLo,
+     int n,
+     const ComplexFloat* alpha,
      const ComplexFloat* x, int incX,
-     ComplexFloat* y, int incY)
+     const ComplexFloat* y, int incY,
+     ComplexFloat* A, int ldA)
 {
-  BLAM_DEBUG_OUT("cblas_caxpy");
+  BLAM_DEBUG_OUT("cublasCher2");
 
-  cblas_caxpy(n, reinterpret_cast<const float*>(&alpha),
-              reinterpret_cast<const float*>(x), incX,
-              reinterpret_cast<float*>(y), incY);
+  cublasCher2(handle, upLo,
+              n,
+              reinterpret_cast<const cuFloatComplex*>(alpha),
+              reinterpret_cast<const cuFloatComplex*>(x), incX,
+              reinterpret_cast<const cuFloatComplex*>(y), incY,
+              reinterpret_cast<cuFloatComplex*>(A), ldA);
 }
 
-// zaxpy
+// zher2
 void
-axpy(int n, const ComplexDouble& alpha,
+her2(cublasHandle_t handle, cublasFillMode_t upLo,
+     int n,
+     const ComplexDouble* alpha,
      const ComplexDouble* x, int incX,
-     ComplexDouble* y, int incY)
+     const ComplexDouble* y, int incY,
+     ComplexDouble* A, int ldA)
 {
-  BLAM_DEBUG_OUT("cblas_zaxpy");
+  BLAM_DEBUG_OUT("cublasZher2");
 
-  cblas_zaxpy(n, reinterpret_cast<const double*>(&alpha),
-              reinterpret_cast<const double*>(x), incX,
-              reinterpret_cast<double*>(y), incY);
+  cublasZher2(handle, upLo,
+              n,
+              reinterpret_cast<const cuDoubleComplex*>(alpha),
+              reinterpret_cast<const cuDoubleComplex*>(x), incX,
+              reinterpret_cast<const cuDoubleComplex*>(y), incY,
+              reinterpret_cast<cuDoubleComplex*>(A), ldA);
 }
 
-// blam -> cblas
+// blam -> cublas
 template <typename DerivedPolicy,
-          typename Alpha, typename VX, typename VY>
+          typename Alpha,
+          typename VX, typename VY, typename MA>
 auto
-axpy(const execution_policy<DerivedPolicy>& /*exec*/,
-     int n, const Alpha& alpha,
+her2(const execution_policy<DerivedPolicy>& exec,
+     StorageUpLo upLo,
+     int n,
+     const Alpha& alpha,
      const VX* x, int incX,
-     VY* y, int incY)
-    -> decltype(axpy(n, alpha, x, incX, y, incY))
+     const VY* y, int incY,
+     MA* A, int ldA)
+    -> decltype(her2(handle(derived_cast(exec)), cublas_type(upLo),
+                     n, &alpha,
+                     x, incX,
+                     y, incY,
+                     A, ldA))
 {
-  return axpy(n, alpha, x, incX, y, incY);
+  return her2(handle(derived_cast(exec)), cublas_type(upLo),
+              n, &alpha,
+              x, incX,
+              y, incY,
+              A, ldA);
 }
 
-} // end namespace cblas
+// XXX TODO RowMajor -> ColMajor?
+
+} // end namespace cublas
 } // end namespace blam
