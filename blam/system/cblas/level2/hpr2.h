@@ -27,53 +27,77 @@
 
 #pragma once
 
-// Execution policy first
+#include <blam/detail/config.h>
 #include <blam/system/cblas/execution_policy.h>
 
-// Include all algorithms
+namespace blam
+{
+namespace cblas
+{
 
-// Level 1
-#include <blam/system/cblas/level1/asum.h>
-#include <blam/system/cblas/level1/axpy.h>
-#include <blam/system/cblas/level1/copy.h>
-#include <blam/system/cblas/level1/dot.h>
-#include <blam/system/cblas/level1/iamax.h>
-#include <blam/system/cblas/level1/nrm2.h>
-#include <blam/system/cblas/level1/scal.h>
-#include <blam/system/cblas/level1/swap.h>
+// chpr2
+void
+hpr2(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
+     int n,
+     const float& alpha,
+     const ComplexFloat* x, int incX,
+     const ComplexFloat* y, int incY,
+     ComplexFloat* A)
+{
+  BLAM_DEBUG_OUT("cblas_chpr2");
 
-// Level 2
-#include <blam/system/cblas/level2/gbmv.h>
-#include <blam/system/cblas/level2/gemv.h>
-#include <blam/system/cblas/level2/ger.h>
-#include <blam/system/cblas/level2/hbmv.h>
-#include <blam/system/cblas/level2/hemv.h>
-#include <blam/system/cblas/level2/her.h>
-#include <blam/system/cblas/level2/her2.h>
-#include <blam/system/cblas/level2/hpmv.h>
-#include <blam/system/cblas/level2/hpr.h>
-#include <blam/system/cblas/level2/hpr2.h>
-#include <blam/system/cblas/level2/sbmv.h>
-#include <blam/system/cblas/level2/spmv.h>
-#include <blam/system/cblas/level2/spr.h>
-#include <blam/system/cblas/level2/spr2.h>
-#include <blam/system/cblas/level2/symv.h>
-#include <blam/system/cblas/level2/syr.h>
-#include <blam/system/cblas/level2/syr2.h>
-#include <blam/system/cblas/level2/tbmv.h>
-#include <blam/system/cblas/level2/tbsv.h>
-#include <blam/system/cblas/level2/tpmv.h>
-#include <blam/system/cblas/level2/tpsv.h>
-#include <blam/system/cblas/level2/trmv.h>
-#include <blam/system/cblas/level2/trsv.h>
+  cblas_chpr2(order, upLo,
+              n,
+              reinterpret_cast<const float*>(&alpha),
+              reinterpret_cast<const float*>(x), incX,
+              reinterpret_cast<const float*>(y), incY,
+              reinterpret_cast<float*>(A));
+}
 
-// Level 3
-#include <blam/system/cblas/level3/gemm.h>
-#include <blam/system/cblas/level3/hemm.h>
-#include <blam/system/cblas/level3/her2k.h>
-#include <blam/system/cblas/level3/herk.h>
-#include <blam/system/cblas/level3/symm.h>
-#include <blam/system/cblas/level3/syr2k.h>
-#include <blam/system/cblas/level3/syrk.h>
-#include <blam/system/cblas/level3/trmm.h>
-#include <blam/system/cblas/level3/trsm.h>
+// zhpr2
+void
+hpr2(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
+     int n,
+     const double& alpha,
+     const ComplexDouble* x, int incX,
+     const ComplexDouble* y, int incY,
+     ComplexDouble* A)
+{
+  BLAM_DEBUG_OUT("cblas_zhpr2");
+
+  cblas_zhpr2(order, upLo,
+              n,
+              reinterpret_cast<const double*>(&alpha),
+              reinterpret_cast<const double*>(x), incX,
+              reinterpret_cast<const double*>(y), incY,
+              reinterpret_cast<double*>(A));
+}
+
+// blam -> cblas
+template <typename DerivedPolicy,
+          typename Alpha,
+          typename VX, typename VY, typename MA>
+auto
+hpr2(const execution_policy<DerivedPolicy>& /*exec*/,
+     StorageOrder order, StorageUpLo upLo,
+     int n,
+     const Alpha& alpha,
+     const VX* x, int incX,
+     const VY* y, int incY,
+     MA* A)
+    -> decltype(hpr2(cblas_type(order), cblas_type(upLo),
+                     n, alpha,
+                     x, incX,
+                     y, incY,
+                     A))
+{
+  return hpr2(cblas_type(order), cblas_type(upLo),
+              n, alpha,
+              x, incX,
+              y, incY,
+              A);
+}
+
+
+} // end namespace cblas
+} // end namespace blam

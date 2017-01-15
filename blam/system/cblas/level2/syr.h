@@ -35,65 +35,58 @@ namespace blam
 namespace cblas
 {
 
-// saxpy
+// ssyr
 void
-axpy(int n, const float& alpha,
-     const float* x, int incX,
-     float* y, int incY)
+syr(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
+    int n,
+    const float& alpha,
+    const float* x, int incX,
+    float* A, int ldA)
 {
-  BLAM_DEBUG_OUT("cblas_saxpy");
+  BLAM_DEBUG_OUT("cblas_ssyr");
 
-  cblas_saxpy(n, alpha, x, incX, y, incY);
+  cblas_ssyr(order, upLo,
+             n, alpha,
+             x, incX,
+             A, ldA);
 }
 
-// daxpy
+// dsyr
 void
-axpy(int n, const double& alpha,
-     const double* x, int incX,
-     double* y, int incY)
+syr(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
+    int n,
+    const double& alpha,
+    const double* x, int incX,
+    double* A, int ldA)
 {
-  BLAM_DEBUG_OUT("cblas_daxpy");
+  BLAM_DEBUG_OUT("cblas_dsyr");
 
-  cblas_daxpy(n, alpha, x, incX, y, incY);
-}
-
-// caxpy
-void
-axpy(int n, const ComplexFloat& alpha,
-     const ComplexFloat* x, int incX,
-     ComplexFloat* y, int incY)
-{
-  BLAM_DEBUG_OUT("cblas_caxpy");
-
-  cblas_caxpy(n, reinterpret_cast<const float*>(&alpha),
-              reinterpret_cast<const float*>(x), incX,
-              reinterpret_cast<float*>(y), incY);
-}
-
-// zaxpy
-void
-axpy(int n, const ComplexDouble& alpha,
-     const ComplexDouble* x, int incX,
-     ComplexDouble* y, int incY)
-{
-  BLAM_DEBUG_OUT("cblas_zaxpy");
-
-  cblas_zaxpy(n, reinterpret_cast<const double*>(&alpha),
-              reinterpret_cast<const double*>(x), incX,
-              reinterpret_cast<double*>(y), incY);
+  cblas_dsyr(order, upLo,
+             n, alpha,
+             x, incX,
+             A, ldA);
 }
 
 // blam -> cblas
 template <typename DerivedPolicy,
-          typename Alpha, typename VX, typename VY>
+          typename Alpha,
+          typename VX, typename MA>
 auto
-axpy(const execution_policy<DerivedPolicy>& /*exec*/,
-     int n, const Alpha& alpha,
-     const VX* x, int incX,
-     VY* y, int incY)
-    -> decltype(axpy(n, alpha, x, incX, y, incY))
+syr(const execution_policy<DerivedPolicy>& /*exec*/,
+    StorageOrder order, StorageUpLo upLo,
+    int n,
+    const Alpha& alpha,
+    const VX* x, int incX,
+    MA* A, int ldA)
+    -> decltype(syr(cblas_type(order), cblas_type(upLo),
+                    n, alpha,
+                    x, incX,
+                    A, ldA))
 {
-  return axpy(n, alpha, x, incX, y, incY);
+  return syr(cblas_type(order), cblas_type(upLo),
+             n, alpha,
+             x, incX,
+             A, ldA);
 }
 
 } // end namespace cblas

@@ -155,10 +155,10 @@ batch_gemm(const execution_policy<DerivedPolicy>& /*exec*/,
     b_array[i] = B + i*loB;
     c_array[i] = C + i*loC;
   }
-  CBLAS_TRANSPOSE tA = cblas_transpose(transA);
-  CBLAS_TRANSPOSE tB = cblas_transpose(transB);
+  CBLAS_TRANSPOSE tA = cblas_type(transA);
+  CBLAS_TRANSPOSE tB = cblas_type(transB);
 
-  return batch_gemm(cblas_order(order), &tA, &tB,
+  return batch_gemm(cblas_type(order), &tA, &tB,
                     &m, &n, &k,
                     &alpha,
                     a_array, &ldA,

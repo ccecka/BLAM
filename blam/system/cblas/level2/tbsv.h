@@ -35,118 +35,90 @@ namespace blam
 namespace cblas
 {
 
-// sgemv
+// stbsv
 void
-gemv(const CBLAS_LAYOUT order, const CBLAS_TRANSPOSE trans,
-     int m, int n,
-     const float& alpha,
+tbsv(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
+     const CBLAS_TRANSPOSE transA, const CBLAS_DIAG diag,
+     int n, int k,
      const float* A, int ldA,
-     const float* x, int incX,
-     const float& beta,
-     float* y, int incY)
+     float* x, int incX)
 {
-  BLAM_DEBUG_OUT("cblas_sgemv");
+  BLAM_DEBUG_OUT("cblas_stbsv");
 
-  cblas_sgemv(order, trans,
-              m, n,
-              alpha,
+  cblas_stbsv(order, upLo, transA, diag,
+              n, k,
               A, ldA,
-              x, incX,
-              beta,
-              y, incY);
+              x, incX);
 }
 
-// dgemv
+// dtbsv
 void
-gemv(const CBLAS_LAYOUT order, const CBLAS_TRANSPOSE trans,
-     int m, int n,
-     const double& alpha,
+tbsv(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
+     const CBLAS_TRANSPOSE transA, const CBLAS_DIAG diag,
+     int n, int k,
      const double* A, int ldA,
-     const double* x, int incX,
-     const double& beta,
-     double* y, int incY)
+     double* x, int incX)
 {
-  BLAM_DEBUG_OUT("cblas_dgemv");
+  BLAM_DEBUG_OUT("cblas_dtbsv");
 
-  cblas_dgemv(order, trans,
-              m, n,
-              alpha,
+  cblas_dtbsv(order, upLo, transA, diag,
+              n, k,
               A, ldA,
-              x, incX,
-              beta,
-              y, incY);
+              x, incX);
 }
 
-// cgemv
+// ctbsv
 void
-gemv(const CBLAS_LAYOUT order, const CBLAS_TRANSPOSE trans,
-     int m, int n,
-     const ComplexFloat& alpha,
+tbsv(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
+     const CBLAS_TRANSPOSE transA, const CBLAS_DIAG diag,
+     int n, int k,
      const ComplexFloat* A, int ldA,
-     const ComplexFloat* x, int incX,
-     const ComplexFloat& beta,
-     ComplexFloat* y, int incY)
+     ComplexFloat* x, int incX)
 {
-  BLAM_DEBUG_OUT("cblas_cgemv");
+  BLAM_DEBUG_OUT("cblas_ctbsv");
 
-  cblas_cgemv(order, trans,
-              m, n,
-              reinterpret_cast<const float*>(&alpha),
+  cblas_ctbsv(order, upLo, transA, diag,
+              n, k,
               reinterpret_cast<const float*>(A), ldA,
-              reinterpret_cast<const float*>(x), incX,
-              reinterpret_cast<const float*>(&beta),
-              reinterpret_cast<float*>(y), incY);
+              reinterpret_cast<float*>(x), incX);
 }
 
-// zgemv
+// ztbsv
 void
-gemv(const CBLAS_LAYOUT order, const CBLAS_TRANSPOSE trans,
-     int m, int n,
-     const ComplexDouble& alpha,
+tbsv(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
+     const CBLAS_TRANSPOSE transA, const CBLAS_DIAG diag,
+     int n, int k,
      const ComplexDouble* A, int ldA,
-     const ComplexDouble* x, int incX,
-     const ComplexDouble& beta,
-     ComplexDouble* y, int incY)
+     ComplexDouble* x, int incX)
 {
-  BLAM_DEBUG_OUT("cblas_zgemv");
+  BLAM_DEBUG_OUT("cblas_ztbsv");
 
-  cblas_zgemv(order, trans,
-              m, n,
-              reinterpret_cast<const double*>(&alpha),
+  cblas_ztbsv(order, upLo, transA, diag,
+              n, k,
               reinterpret_cast<const double*>(A), ldA,
-              reinterpret_cast<const double*>(x), incX,
-              reinterpret_cast<const double*>(&beta),
-              reinterpret_cast<double*>(y), incY);
+              reinterpret_cast<double*>(x), incX);
 }
 
 // blam -> cblas
 template <typename DerivedPolicy,
-          typename Alpha, typename MA, typename VX,
-          typename Beta, typename VY>
+          typename MA, typename VX>
 auto
-gemv(const execution_policy<DerivedPolicy>& /*exec*/,
-     StorageOrder order, Transpose trans,
-     int m, int n,
-     const Alpha& alpha,
+tbsv(const execution_policy<DerivedPolicy>& /*exec*/,
+     StorageOrder order, StorageUpLo upLo, Transpose transA, Diag diag,
+     int n, int k,
      const MA* A, int ldA,
-     const VX* x, int incX,
-     const Beta& beta,
-     VY* y, int incY)
-    -> decltype(gemv(cblas_order(order), cblas_transpose(trans),
-                     m, n,
-                     alpha,
+     VX* x, int incX)
+    -> decltype(tbsv(cblas_type(order), cblas_type(upLo),
+                     cblas_type(transA), cblas_type(diag),
+                     n, k,
                      A, ldA,
-                     x, incX,
-                     beta,
-                     y, incY))
+                     x, incX))
 {
-  return gemv(cblas_order(order), cblas_transpose(trans),
-              m, n,
-              alpha,
+  return tbsv(cblas_type(order), cblas_type(upLo),
+              cblas_type(transA), cblas_type(diag),
+              n, k,
               A, ldA,
-              x, incX,
-              beta,
-              y, incY);
+              x, incX);
 }
 
 } // end namespace cblas

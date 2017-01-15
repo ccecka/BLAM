@@ -35,63 +35,78 @@ namespace blam
 namespace cblas
 {
 
-// scopy
+// cher2k
 void
-copy(int n,
-     const float* x, int incX,
-     float* y, int incY)
+her2k(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
+      const CBLAS_TRANSPOSE trans,
+      int n, int k,
+      const ComplexFloat& alpha,
+      const ComplexFloat* A, int ldA,
+      const ComplexFloat* B, int ldB,
+      const float& beta,
+      ComplexFloat* C, int ldC)
 {
-  BLAM_DEBUG_OUT("cblas_scopy");
+  BLAM_DEBUG_OUT("cblas_cher2k");
 
-  cblas_scopy(n, x, incX, y, incY);
+  cblas_cher2k(order, upLo, trans,
+               n, k,
+               reinterpret_cast<const float*>(&alpha),
+               reinterpret_cast<const float*>(A), ldA,
+               reinterpret_cast<const float*>(B), ldB,
+               beta,
+               reinterpret_cast<float*>(C), ldC);
 }
 
-// dcopy
+// zher2k
 void
-copy(int n,
-     const double* x, int incX,
-     double* y, int incY)
+her2k(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
+      const CBLAS_TRANSPOSE trans,
+      int n, int k,
+      const ComplexDouble& alpha,
+      const ComplexDouble* A, int ldA,
+      const ComplexDouble* B, int ldB,
+      const double& beta,
+      ComplexDouble* C, int ldC)
 {
-  BLAM_DEBUG_OUT("cblas_dcopy");
+  BLAM_DEBUG_OUT("cblas_zher2k");
 
-  cblas_dcopy(n, x, incX, y, incY);
-}
-
-// ccopy
-void
-copy(int n,
-     const ComplexFloat* x, int incX,
-     ComplexFloat *y, int incY)
-{
-  BLAM_DEBUG_OUT("cblas_ccopy");
-
-  cblas_ccopy(n, reinterpret_cast<const float*>(x), incX,
-              reinterpret_cast<float*>(y), incY);
-}
-
-// zcopy
-void
-copy(int n,
-     const ComplexDouble* x, int incX,
-     ComplexDouble* y, int incY)
-{
-  BLAM_DEBUG_OUT("cblas_zcopy");
-
-  cblas_zcopy(n, reinterpret_cast<const double*>(x), incX,
-              reinterpret_cast<double*>(y), incY);
+  cblas_zher2k(order, upLo, trans,
+               n, k,
+               reinterpret_cast<const double*>(&alpha),
+               reinterpret_cast<const double*>(A), ldA,
+               reinterpret_cast<const double*>(B), ldB,
+               beta,
+               reinterpret_cast<double*>(C), ldC);
 }
 
 // blam -> cblas
 template <typename DerivedPolicy,
-          typename VX, typename VY>
+          typename Alpha, typename MA, typename MB,
+          typename Beta, typename MC>
 auto
-copy(const execution_policy<DerivedPolicy>& /*exec*/,
-     int n,
-     const VX* x, int incX,
-     VY* y, int incY)
-    -> decltype(copy(n, x, incX, y, incY))
+her2k(const execution_policy<DerivedPolicy>& /*exec*/,
+      StorageOrder order, StorageUpLo upLo, Transpose trans,
+      int n, int k,
+      const Alpha& alpha,
+      const MA* A, int ldA,
+      const MB* B, int ldB,
+      const Beta& beta,
+      MC* C, int ldC)
+    -> decltype(her2k(cblas_type(order), cblas_type(upLo), cblas_type(trans),
+                      n, k,
+                      alpha,
+                      A, ldA,
+                      B, ldB,
+                      beta,
+                      C, ldC))
 {
-  return copy(n, x, incX, y, incY);
+  return her2k(cblas_type(order), cblas_type(upLo), cblas_type(trans),
+               n, k,
+               alpha,
+               A, ldA,
+               B, ldB,
+               beta,
+               C, ldC);
 }
 
 } // end namespace cblas

@@ -27,53 +27,85 @@
 
 #pragma once
 
-// Execution policy first
+#include <blam/detail/config.h>
 #include <blam/system/cblas/execution_policy.h>
 
-// Include all algorithms
+namespace blam
+{
+namespace cblas
+{
 
-// Level 1
-#include <blam/system/cblas/level1/asum.h>
-#include <blam/system/cblas/level1/axpy.h>
-#include <blam/system/cblas/level1/copy.h>
-#include <blam/system/cblas/level1/dot.h>
-#include <blam/system/cblas/level1/iamax.h>
-#include <blam/system/cblas/level1/nrm2.h>
-#include <blam/system/cblas/level1/scal.h>
-#include <blam/system/cblas/level1/swap.h>
+// sspmv
+void
+spmv(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
+     int n,
+     const float& alpha,
+     const float* A,
+     const float* x, int incX,
+     const float& beta,
+     float* y, int incY)
+{
+  BLAM_DEBUG_OUT("cblas_sspmv");
 
-// Level 2
-#include <blam/system/cblas/level2/gbmv.h>
-#include <blam/system/cblas/level2/gemv.h>
-#include <blam/system/cblas/level2/ger.h>
-#include <blam/system/cblas/level2/hbmv.h>
-#include <blam/system/cblas/level2/hemv.h>
-#include <blam/system/cblas/level2/her.h>
-#include <blam/system/cblas/level2/her2.h>
-#include <blam/system/cblas/level2/hpmv.h>
-#include <blam/system/cblas/level2/hpr.h>
-#include <blam/system/cblas/level2/hpr2.h>
-#include <blam/system/cblas/level2/sbmv.h>
-#include <blam/system/cblas/level2/spmv.h>
-#include <blam/system/cblas/level2/spr.h>
-#include <blam/system/cblas/level2/spr2.h>
-#include <blam/system/cblas/level2/symv.h>
-#include <blam/system/cblas/level2/syr.h>
-#include <blam/system/cblas/level2/syr2.h>
-#include <blam/system/cblas/level2/tbmv.h>
-#include <blam/system/cblas/level2/tbsv.h>
-#include <blam/system/cblas/level2/tpmv.h>
-#include <blam/system/cblas/level2/tpsv.h>
-#include <blam/system/cblas/level2/trmv.h>
-#include <blam/system/cblas/level2/trsv.h>
+  cblas_sspmv(order, upLo,
+              n,
+              alpha,
+              A,
+              x, incX,
+              beta,
+              y, incY);
+}
 
-// Level 3
-#include <blam/system/cblas/level3/gemm.h>
-#include <blam/system/cblas/level3/hemm.h>
-#include <blam/system/cblas/level3/her2k.h>
-#include <blam/system/cblas/level3/herk.h>
-#include <blam/system/cblas/level3/symm.h>
-#include <blam/system/cblas/level3/syr2k.h>
-#include <blam/system/cblas/level3/syrk.h>
-#include <blam/system/cblas/level3/trmm.h>
-#include <blam/system/cblas/level3/trsm.h>
+// dspmv
+void
+spmv(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
+     int n,
+     const double& alpha,
+     const double* A,
+     const double* x, int incX,
+     const double& beta,
+     double* y, int incY)
+{
+  BLAM_DEBUG_OUT("cblas_dspmv");
+
+  cblas_dspmv(order, upLo,
+              n,
+              alpha,
+              A,
+              x, incX,
+              beta,
+              y, incY);
+}
+
+// blam -> cblas
+template <typename DerivedPolicy,
+          typename Alpha, typename MA, typename VX,
+          typename Beta, typename VY>
+auto
+spmv(const execution_policy<DerivedPolicy>& /*exec*/,
+     StorageOrder order, StorageUpLo upLo,
+     int n,
+     const Alpha& alpha,
+     const MA* A,
+     const VX* x, int incX,
+     const Beta& beta,
+     VY* y, int incY)
+    -> decltype(spmv(cblas_type(order), cblas_type(upLo),
+                     n,
+                     alpha,
+                     A,
+                     x, incX,
+                     beta,
+                     y, incY))
+{
+  return spmv(cblas_type(order), cblas_type(upLo),
+              n,
+              alpha,
+              A,
+              x, incX,
+              beta,
+              y, incY);
+}
+
+} // end namespace cblas
+} // end namespace blam
