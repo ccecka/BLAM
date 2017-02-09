@@ -147,5 +147,3 @@ ger(const ExecutionPolicy& exec,
 } // end namespace generic
 } // end namespace system
 } // end namespace blam
-
-#include <blam/system/generic/detail/ger.inl>

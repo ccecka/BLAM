@@ -34,41 +34,8 @@ namespace blam
 {
 
 #if 0
-template <typename ExecutionPolicy,
-          typename T, typename U>
-void
-dot(ExecutionPolicy&& exec,
-    int n,
-    const T* x, int incX,
-    const T* y, int incY,
-    U& result);
-
-template <typename ExecutionPolicy,
-          typename T, typename U>
-void
-dot(ExecutionPolicy&& exec,
-    int n,
-    const T* x,
-    const T* y,
-    U& result);
-
-template <typename ExecutionPolicy,
-          typename T, typename U>
-void
-dotu(ExecutionPolicy&& exec,
-     int n,
-     const T* x, int incX,
-     const T* y, int incY,
-     U& result);
-
-template <typename ExecutionPolicy,
-          typename T, typename U>
-void
-dotu(ExecutionPolicy&& exec,
-     int n,
-     const T* x,
-     const T* y,
-     U& result);
+// See <blam/system/generic/dot.h> for interfaces
+// XXX TODO: Import for Doxygen
 #endif
 
 using blam::adl::dot;

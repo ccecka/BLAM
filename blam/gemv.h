@@ -34,44 +34,8 @@ namespace blam
 {
 
 #if 0
-template <typename ExecutionPolicy,
-          typename Alpha, typename MA, typename VX,
-          typename Beta, typename VY>
-void
-gemv(ExecutionPolicy&& exec,
-     int m, int n,
-     const Alpha& alpha,
-     const MA* A, int ldA,
-     const VX* x, int incX,
-     const Beta& beta,
-     VY* y, int incY);
-
-template <typename ExecutionPolicy,
-          typename Alpha, typename MA, typename VX,
-          typename Beta, typename VY>
-void
-gemv(ExecutionPolicy&& exec,
-     Transpose trans,
-     int m, int n,
-     const Alpha& alpha,
-     const MA* A, int ldA,
-     const VX* x, int incX,
-     const Beta& beta,
-     VY* y, int incY);
-
-template <typename ExecutionPolicy,
-          typename Alpha, typename MA, typename VX,
-          typename Beta, typename VY>
-void
-gemv(ExecutionPolicy&& exec,
-     StorageOrder order, Transpose trans,
-     int m, int n,
-     const Alpha& alpha,
-     const MA* A, int ldA,
-     const VX* x, int incX,
-     const Beta& beta,
-     VY* y, int incY);
-
+// See <blam/system/generic/gemv.h> for interfaces
+// XXX TODO: Import for Doxygen
 #endif
 
 using blam::adl::gemv;

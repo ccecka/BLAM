@@ -28,30 +28,18 @@
 #pragma once
 
 #include <blam/detail/config.h>
-#include <blam/adl/detail/detail/static_const.h>
+#include <blam/adl/detail/customization_point.h>
+
+#include <blam/system/generic/gemv.h>
 
 namespace blam
 {
 namespace adl
 {
-namespace detail
-{
 
-struct _gemv
-{
-  template <typename... T>
-  void operator()(T&&... t) const;
-};
-
-} // end namespace detail
-
-// blam::adl::gemv is a global function object
-namespace
-{
-static const auto gemv = detail::static_const<detail::_gemv>::value;
-}
+BLAM_CUSTOMIZATION_POINT(gemv);
 
 } // end namespace adl
 } // end namespace blam
 
-#include <blam/adl/detail/gemv.inl>
+#include <blam/system/generic/detail/gemv.inl>

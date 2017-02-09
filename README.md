@@ -47,6 +47,6 @@ TODO
 
 [ ] Better name?
 
-[ ] Write a generator that yeilds the majority boilerplate based on the cblas/cublas specifications. Only `generic` and some of the BLAS extensions should be need to be written by hand.
+[x] Write a generator that yeilds the majority boilerplate based on the cblas/cublas specifications. Only `generic` and some of the BLAS extensions should be need to be written by hand.
 
 [ ] More ThrustBlas implementations.

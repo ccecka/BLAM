@@ -34,21 +34,8 @@ namespace blam
 {
 
 #if 0
-template <typename ExecutionPolicy,
-          typename T, typename U>
-void
-copy(ExecutionPolicy&& exec,
-     int n,
-     const T* x, int incX,
-     U* y, int incY);
-
-template <typename ExecutionPolicy,
-          typename T, typename U>
-void
-copy(ExecutionPolicy&& exec,
-     int n,
-     const T* x,
-     U* y);
+// See <blam/system/generic/copy.h> for interfaces
+// XXX TODO: Import for Doxygen
 #endif
 
 using blam::adl::copy;

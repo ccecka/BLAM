@@ -34,48 +34,12 @@ namespace blam
 {
 
 #if 0
-template <typename ExecutionPolicy,
-          typename Alpha, typename T, typename U>
-void
-ger(ExecutionPolicy&& exec,
-    StorageOrder order, int m, int n,
-    const Alpha& alpha,
-    const T* x, int incX,
-    const T* y, int incY,
-    U* A, int ldA);
-
-template <typename ExecutionPolicy,
-          typename Alpha, typename T, typename U>
-void
-geru(ExecutionPolicy&& exec,
-     StorageOrder order, int m, int n,
-     const Alpha& alpha,
-     const T* x, int incX,
-     const T* y, int incY,
-     U* A, int ldA);
-
-template <typename ExecutionPolicy,
-          typename Alpha, typename T, typename U>
-void
-ger(ExecutionPolicy&& exec,
-    int m, int n,
-    const Alpha& alpha,
-    const T* x, int incX,
-    const T* y, int incY,
-    U* A, int ldA);
-
-template <typename ExecutionPolicy,
-          typename Alpha, typename T, typename U>
-void
-geru(ExecutionPolicy&& exec,
-     int m, int n,
-     const Alpha& alpha,
-     const T* x, int incX,
-     const T* y, int incY,
-     U* A, int ldA);
+// See <blam/system/generic/ger.h> for interfaces
+// XXX TODO: Import for Doxygen
 #endif
 
 using blam::adl::ger;
 using blam::adl::geru;
+using blam::adl::gerc;
 
 } // end namespace blam

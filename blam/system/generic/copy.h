@@ -28,7 +28,6 @@
 #pragma once
 
 #include <blam/detail/config.h>
-#include <blam/system/generic/execution_policy.h>
 
 namespace blam
 {
@@ -57,5 +56,3 @@ copy(const ExecutionPolicy& exec,
 } // end namespace generic
 } // end namespace system
 } // end namespace blam
-
-#include <blam/system/generic/detail/copy.inl>
