@@ -30,6 +30,8 @@
 #include <blam/detail/config.h>
 #include <blam/detail/execution_policy.h>
 
+#include <blam/system/cblas/types.h>
+
 namespace blam
 {
 namespace cblas
@@ -72,51 +74,5 @@ struct execution_policy
 static const tag par{};
 
 } // end namespace cblas
-
-CBLAS_LAYOUT
-cblas_type(StorageOrder order) {
-  switch (order) {
-    case ColMajor: return CblasColMajor;
-    case RowMajor: return CblasRowMajor;
-    default:  assert(false && "Invalid StorageOrder Parameter"); return CblasColMajor;
-  }
-}
-
-CBLAS_TRANSPOSE
-cblas_type(Transpose trans) {
-  switch (trans) {
-    case NoTrans:   return CblasNoTrans;
-    case Trans:     return CblasTrans;
-    case ConjTrans: return CblasConjTrans;
-    default: assert(false && "Invalid Transpose Parameter"); return CblasNoTrans;
-  }
-}
-
-CBLAS_UPLO
-cblas_type(StorageUpLo upLo) {
-  switch (upLo) {
-    case Upper: return CblasUpper;
-    case Lower: return CblasLower;
-    default: assert(false && "Invalid StorageUpLo Parameter"); return CblasUpper;
-  }
-}
-
-CBLAS_SIDE
-cblas_type(Side side) {
-  switch (side) {
-    case Left:  return CblasLeft;
-    case Right: return CblasRight;
-    default: assert(false && "Invalid Side Parameter"); return CblasLeft;
-  }
-}
-
-CBLAS_DIAG
-cblas_type(Diag diag) {
-  switch (diag) {
-    case Unit:    return CblasUnit;
-    case NonUnit: return CblasNonUnit;
-    default: assert(false && "Invalid Diag Parameter"); return CblasUnit;
-  }
-}
 
 } // end namespace blam

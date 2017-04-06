@@ -27,20 +27,55 @@
 
 #pragma once
 
-#include <cassert>
+#include <blam/detail/config.h>
 
-#include <blam/detail/types.h>
+namespace blam
+{
 
-//-- BLAM_DEBUG_OUT ---------------------------------------------------------
-#ifdef BLAM_DEBUG
-# include <iostream>
-# ifndef BLAM_DEBUG_OUT
-#  define BLAM_DEBUG_OUT(msg)    std::cerr << "BLAM: " << msg << std::endl
-#  define BLAM_DEBUG_OUT_2(msg)  std::cerr << msg << std::endl
-# endif // BLAM_DEBUG_OUT
-#else
-# ifndef BLAM_DEBUG_OUT
-#  define BLAM_DEBUG_OUT(msg)
-#  define BLAM_DEBUG_OUT_2(msg)
-# endif // BLAM_DEBUG_OUT
-#endif // BLAM_DEBUG
+CBLAS_LAYOUT
+cblas_type(StorageOrder order) {
+  switch (order) {
+    case StorageOrder::ColMajor: return CblasColMajor;
+    case StorageOrder::RowMajor: return CblasRowMajor;
+    default:  assert(false && "Invalid StorageOrder Parameter"); return CblasColMajor;
+  }
+}
+
+CBLAS_TRANSPOSE
+cblas_type(Transpose trans) {
+  switch (trans) {
+    case Transpose::NoTrans:   return CblasNoTrans;
+    case Transpose::Trans:     return CblasTrans;
+    case Transpose::ConjTrans: return CblasConjTrans;
+    default: assert(false && "Invalid Transpose Parameter"); return CblasNoTrans;
+  }
+}
+
+CBLAS_UPLO
+cblas_type(StorageUpLo upLo) {
+  switch (upLo) {
+    case StorageUpLo::Upper: return CblasUpper;
+    case StorageUpLo::Lower: return CblasLower;
+    default: assert(false && "Invalid StorageUpLo Parameter"); return CblasUpper;
+  }
+}
+
+CBLAS_SIDE
+cblas_type(Side side) {
+  switch (side) {
+    case Side::Left:  return CblasLeft;
+    case Side::Right: return CblasRight;
+    default: assert(false && "Invalid Side Parameter"); return CblasLeft;
+  }
+}
+
+CBLAS_DIAG
+cblas_type(Diag diag) {
+  switch (diag) {
+    case Diag::Unit:    return CblasUnit;
+    case Diag::NonUnit: return CblasNonUnit;
+    default: assert(false && "Invalid Diag Parameter"); return CblasUnit;
+  }
+}
+
+} // end namespace blam

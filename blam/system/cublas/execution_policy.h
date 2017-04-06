@@ -33,6 +33,8 @@
 #include <cuda.h>
 #include <cublas_v2.h>
 
+#include <blam/system/cublas/types.h>
+
 namespace blam
 {
 namespace cublas
@@ -155,71 +157,5 @@ class execute_on_handle
 static const execute_on_handle par;
 
 } // end namespace cublas
-
-
-cublasOperation_t
-cublas_type(Transpose trans) {
-  switch (trans) {
-    case NoTrans:   return CUBLAS_OP_N;
-    case Trans:     return CUBLAS_OP_T;
-    case ConjTrans: return CUBLAS_OP_C;
-    default:        assert(false && "Invalid Transpose Parameter"); return CUBLAS_OP_N;
-  }
-}
-
-cublasFillMode_t
-cublas_type(StorageUpLo uplo) {
-  switch (uplo) {
-    case Upper: return CUBLAS_FILL_MODE_UPPER;
-    case Lower: return CUBLAS_FILL_MODE_LOWER;
-    default: assert(false && "Invalid StorageUpLo Parameter"); return CUBLAS_FILL_MODE_UPPER;
-  }
-}
-
-cublasSideMode_t
-cublas_type(Side side) {
-  switch (side) {
-    case Left:  return CUBLAS_SIDE_LEFT;
-    case Right: return CUBLAS_SIDE_RIGHT;
-    default: assert(false && "Invalid Side Parameter"); return CUBLAS_SIDE_LEFT;
-  }
-}
-
-cublasDiagType_t
-cublas_type(Diag diag) {
-  switch (diag) {
-    case Unit:    return CUBLAS_DIAG_UNIT;
-    case NonUnit: return CUBLAS_DIAG_NON_UNIT;
-    default: assert(false && "Invalid Diag Parameter"); return CUBLAS_DIAG_UNIT;
-  }
-}
-
-void
-checkStatus(cublasStatus_t status)
-{
-  if (status==CUBLAS_STATUS_SUCCESS) {
-    return;
-  }
-
-  if (status==CUBLAS_STATUS_NOT_INITIALIZED) {
-    std::cerr << "CUBLAS: Library was not initialized!" << std::endl;
-  } else if  (status==CUBLAS_STATUS_INVALID_VALUE) {
-    std::cerr << "CUBLAS: Parameter had illegal value!" << std::endl;
-  } else if  (status==CUBLAS_STATUS_MAPPING_ERROR) {
-    std::cerr << "CUBLAS: Error accessing GPU memory!" << std::endl;
-  } else if  (status==CUBLAS_STATUS_ALLOC_FAILED) {
-    std::cerr << "CUBLAS: allocation failed!" << std::endl;
-  } else if  (status==CUBLAS_STATUS_ARCH_MISMATCH) {
-    std::cerr << "CUBLAS: Device does not support double precision!" << std::endl;
-  } else if  (status==CUBLAS_STATUS_EXECUTION_FAILED) {
-    std::cerr << "CUBLAS: Failed to launch function on the GPU" << std::endl;
-  } else if  (status==CUBLAS_STATUS_INTERNAL_ERROR) {
-    std::cerr << "CUBLAS: An internal operation failed" << std::endl;
-  } else {
-    std::cerr << "CUBLAS: Unkown error" << std::endl;
-  }
-
-  assert(status==CUBLAS_STATUS_SUCCESS); // false
-}
 
 } // end namespace blam

@@ -29,8 +29,6 @@
 
 #include <blam/detail/config.h>
 
-#include <type_traits>
-
 namespace blam
 {
 namespace detail
@@ -87,6 +85,5 @@ template <typename DerivedPolicy>
 struct execution_policy
     : blam::detail::execution_policy_base<DerivedPolicy>
 {};
-
 
 } // end namespace blam
