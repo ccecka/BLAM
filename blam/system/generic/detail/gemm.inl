@@ -28,11 +28,10 @@
 #pragma once
 
 #include <blam/detail/config.h>
-
-#include <blam/adl/gemm.h>
+#include <blam/adl/level3/gemm.h>
 
 #if defined(BLAM_USE_DECAY)
-//# include <blam/adl/gemv.h>
+//# include <blam/adl/level2/gemv.h>
 #endif
 
 namespace blam

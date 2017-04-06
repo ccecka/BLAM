@@ -28,7 +28,7 @@
 #pragma once
 
 #include <blam/detail/config.h>
-#include <blam/adl/batch_gemm.h>
+#include <blam/adl/level3/batch_gemm.h>
 
 namespace blam
 {

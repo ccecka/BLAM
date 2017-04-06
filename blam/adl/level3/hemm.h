@@ -28,38 +28,18 @@
 #pragma once
 
 #include <blam/detail/config.h>
-#include <blam/adl/level1/copy.h>
+#include <blam/adl/detail/customization_point.h>
+
+#include <blam/system/generic/hemm.h>
 
 namespace blam
 {
-namespace system
-{
-namespace generic
+namespace adl
 {
 
-template <typename ExecutionPolicy,
-          typename T, typename U>
-void
-copy(const ExecutionPolicy& exec,
-     int n,
-     const T* x, int incX,
-     U* y, int incY)
-{
-  static_assert(sizeof(ExecutionPolicy) == 0, "BLAM UNIMPLEMENTED");
-}
+BLAM_CUSTOMIZATION_POINT(hemm);
 
-// incX,incY -> 1,1
-template <typename ExecutionPolicy,
-          typename T, typename U>
-void
-copy(const ExecutionPolicy& exec,
-     int n,
-     const T* x,
-     U* y)
-{
-  blam::adl::copy(exec, n, x, 1, y, 1);
-}
-
-} // end namespace generic
-} // end namespace system
+} // end namespace adl
 } // end namespace blam
+
+#include <blam/system/generic/detail/hemm.inl>

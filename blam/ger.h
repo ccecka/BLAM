@@ -28,7 +28,7 @@
 #pragma once
 
 #include <blam/detail/config.h>
-#include <blam/adl/ger.h>
+#include <blam/adl/level2/ger.h>
 
 namespace blam
 {

@@ -28,11 +28,10 @@
 #pragma once
 
 #include <blam/detail/config.h>
-
-#include <blam/adl/dot.h>
+#include <blam/adl/level2/ger.h>
 
 #if defined(BLAM_USE_DECAY)
-//# include <blam/adl/axpy.h>
+//# include <blam/adl/level1/axpy.h>
 #endif
 
 namespace blam
