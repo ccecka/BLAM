@@ -27,7 +27,7 @@
 
 #pragma once
 
-#include <utility>  // std::forward
+#include <utility>  // std::forward, std::declval
 
 #include <blam/adl/detail/static_const.h>
 

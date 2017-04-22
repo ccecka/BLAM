@@ -37,7 +37,9 @@ cblas_type(StorageOrder order) {
   switch (order) {
     case StorageOrder::ColMajor: return CblasColMajor;
     case StorageOrder::RowMajor: return CblasRowMajor;
-    default:  assert(false && "Invalid StorageOrder Parameter"); return CblasColMajor;
+    default:
+      assert(false && "Invalid StorageOrder Parameter");
+      return CblasColMajor;
   }
 }
 
@@ -47,7 +49,9 @@ cblas_type(Transpose trans) {
     case Transpose::NoTrans:   return CblasNoTrans;
     case Transpose::Trans:     return CblasTrans;
     case Transpose::ConjTrans: return CblasConjTrans;
-    default: assert(false && "Invalid Transpose Parameter"); return CblasNoTrans;
+    default:
+      assert(false && "Invalid Transpose Parameter");
+      return CblasNoTrans;
   }
 }
 
@@ -56,7 +60,9 @@ cblas_type(StorageUpLo upLo) {
   switch (upLo) {
     case StorageUpLo::Upper: return CblasUpper;
     case StorageUpLo::Lower: return CblasLower;
-    default: assert(false && "Invalid StorageUpLo Parameter"); return CblasUpper;
+    default:
+      assert(false && "Invalid StorageUpLo Parameter");
+      return CblasUpper;
   }
 }
 
@@ -65,7 +71,9 @@ cblas_type(Side side) {
   switch (side) {
     case Side::Left:  return CblasLeft;
     case Side::Right: return CblasRight;
-    default: assert(false && "Invalid Side Parameter"); return CblasLeft;
+    default:
+      assert(false && "Invalid Side Parameter");
+      return CblasLeft;
   }
 }
 
@@ -74,7 +82,9 @@ cblas_type(Diag diag) {
   switch (diag) {
     case Diag::Unit:    return CblasUnit;
     case Diag::NonUnit: return CblasNonUnit;
-    default: assert(false && "Invalid Diag Parameter"); return CblasUnit;
+    default:
+      assert(false && "Invalid Diag Parameter");
+      return CblasUnit;
   }
 }
 

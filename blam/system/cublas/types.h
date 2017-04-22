@@ -38,7 +38,9 @@ cublas_type(Transpose trans) {
     case Transpose::NoTrans:   return CUBLAS_OP_N;
     case Transpose::Trans:     return CUBLAS_OP_T;
     case Transpose::ConjTrans: return CUBLAS_OP_C;
-    default:        assert(false && "Invalid Transpose Parameter"); return CUBLAS_OP_N;
+    default:
+      assert(false && "Invalid Transpose Parameter");
+      return CUBLAS_OP_N;
   }
 }
 
@@ -47,7 +49,9 @@ cublas_type(StorageUpLo uplo) {
   switch (uplo) {
     case StorageUpLo::Upper: return CUBLAS_FILL_MODE_UPPER;
     case StorageUpLo::Lower: return CUBLAS_FILL_MODE_LOWER;
-    default: assert(false && "Invalid StorageUpLo Parameter"); return CUBLAS_FILL_MODE_UPPER;
+    default:
+      assert(false && "Invalid StorageUpLo Parameter");
+      return CUBLAS_FILL_MODE_UPPER;
   }
 }
 
@@ -56,7 +60,9 @@ cublas_type(Side side) {
   switch (side) {
     case Side::Left:  return CUBLAS_SIDE_LEFT;
     case Side::Right: return CUBLAS_SIDE_RIGHT;
-    default: assert(false && "Invalid Side Parameter"); return CUBLAS_SIDE_LEFT;
+    default:
+      assert(false && "Invalid Side Parameter");
+      return CUBLAS_SIDE_LEFT;
   }
 }
 
@@ -65,7 +71,9 @@ cublas_type(Diag diag) {
   switch (diag) {
     case Diag::Unit:    return CUBLAS_DIAG_UNIT;
     case Diag::NonUnit: return CUBLAS_DIAG_NON_UNIT;
-    default: assert(false && "Invalid Diag Parameter"); return CUBLAS_DIAG_UNIT;
+    default:
+      assert(false && "Invalid Diag Parameter");
+      return CUBLAS_DIAG_UNIT;
   }
 }
 
