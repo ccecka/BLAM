@@ -28,31 +28,35 @@
 #pragma once
 
 #include <blam/detail/config.h>
+#include <blam/copy.h>
 
 namespace blam
 {
-namespace system
-{
-namespace generic
+namespace adl
 {
 
 template <typename ExecutionPolicy,
-          typename T, typename U>
+          typename VX, typename VY>
 void
-copy(const ExecutionPolicy& exec,
-     int n,
-     const T* x, int incX,
-     U* y, int incY);
+generic(blam::_copy, const ExecutionPolicy& exec,
+        int n,
+        const VX* x, int incX,
+        VY* y, int incY)
+{
+  static_assert(sizeof(ExecutionPolicy) == 0, "BLAM UNIMPLEMENTED");
+}
 
 // incX,incY -> 1,1
 template <typename ExecutionPolicy,
-          typename T, typename U>
+          typename VX, typename VY>
 void
-copy(const ExecutionPolicy& exec,
-     int n,
-     const T* x,
-     U* y);
+generic(blam::_copy, const ExecutionPolicy& exec,
+        int n,
+        const VX* x,
+        VY* y)
+{
+  blam::copy(exec, n, x, 1, y, 1);
+}
 
-} // end namespace generic
-} // end namespace system
+} // end namespace adl
 } // end namespace blam

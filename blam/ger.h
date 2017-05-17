@@ -38,8 +38,14 @@ namespace blam
 // XXX TODO: Import for Doxygen
 #endif
 
+using blam::adl::_ger;
+using blam::adl::_geru;
+using blam::adl::_gerc;
+
 using blam::adl::ger;
 using blam::adl::geru;
 using blam::adl::gerc;
 
 } // end namespace blam
+
+#include <blam/system/generic/ger.h>

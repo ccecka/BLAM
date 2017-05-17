@@ -1,6 +1,6 @@
 /******************************************************************************
- * Copyright (C) 2016-2017, Cris Cecka.  All rights reserved.
- * Copyright (C) 2016-2017, NVIDIA CORPORATION.  All rights reserved.
+ * Copyright (C) 2016, Cris Cecka.  All rights reserved.
+ * Copyright (C) 2016, NVIDIA CORPORATION.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -29,8 +29,7 @@
 
 #include <blam/detail/config.h>
 #include <blam/adl/detail/customization_point.h>
-
-#include <blam/system/generic/ger.h>
+#include <blam/adl/detail/preference.h>
 
 namespace blam
 {
@@ -43,5 +42,3 @@ BLAM_CUSTOMIZATION_POINT(gerc);
 
 } // end namespace adl
 } // end namespace blam
-
-#include <blam/system/generic/detail/ger.inl>

@@ -34,6 +34,16 @@
 
 #include <thrust/system/omp/execution_policy.h>
 
+
+namespace mine {
+
+struct tag {};
+
+}
+
+
+
+
 int main()
 {
   const int n = 4;
@@ -86,4 +96,7 @@ int main()
 
   blam::dot(thrust::omp::par, n, x, y, result);
   std::cout << result << std::endl;
+
+  //blam::dot(mine::tag{}, n, x, y, result);
+  //std::cout << result << std::endl;
 }

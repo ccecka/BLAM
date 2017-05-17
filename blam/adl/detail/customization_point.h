@@ -30,34 +30,40 @@
 #include <utility>  // std::forward, std::declval
 
 #include <blam/adl/detail/static_const.h>
+#include <blam/adl/detail/preference.h>
+
+// XXX TODO: EDG/NVCC Bug?
+// XXX TODO: Qualified call to blam::adl::generic?
+// XXX TODO: Move generic to subdirectory of adl?
 
 #define BLAM_CUSTOMIZATION_POINT(NAME)                                         \
-  namespace detail {                                                           \
-  namespace generic = blam::system::generic;                                   \
-                                                                               \
   struct _##NAME {                                                             \
    private:                                                                    \
     template <class... T,                                                      \
+              class R = decltype(invoke (_##NAME {}, std::declval<T>()...))>   \
+    static constexpr R impl(detail::preference<2>, T&&... t) {                 \
+      return invoke (_##NAME {}, std::forward<T>(t)...);                       \
+    }                                                                          \
+                                                                               \
+    template <class... T,                                                      \
               class R = decltype(NAME (std::declval<T>()...))>                 \
-    static constexpr R impl(int, T&&... t) {                                   \
+    static constexpr R impl(detail::preference<1>, T&&... t) {                 \
       return NAME (std::forward<T>(t)...);                                     \
     }                                                                          \
                                                                                \
     template <class... T,                                                      \
-              class R = decltype(generic::NAME (std::declval<T>()...))>        \
-    static constexpr R impl(long, T&&... t) {                                  \
-      return generic::NAME (std::forward<T>(t)...);                            \
+              class R = decltype(generic (_##NAME {}, std::declval<T>()...))>  \
+    static constexpr R impl(detail::preference<0>, T&&... t) {                 \
+      return generic (_##NAME {}, std::forward<T>(t)...);                      \
     }                                                                          \
    public:                                                                     \
-    template <typename... T>                                                   \
-    constexpr auto operator()(T&&... t) const                                  \
-        -> decltype(impl(42, std::forward<T>(t)...)) {                         \
-      return impl(42, std::forward<T>(t)...);                                  \
+    template <class... T,                                                      \
+              class R = decltype(_##NAME::impl(detail::preference<2>{}, std::declval<T>()...))> \
+    constexpr R operator()(T&&... t) const {                                   \
+      return _##NAME::impl(detail::preference<2>{}, std::forward<T>(t)...);    \
     }                                                                          \
   };                                                                           \
                                                                                \
-  }                                                                            \
-                                                                               \
   namespace {                                                                  \
-  constexpr auto const& NAME = detail::static_const<detail::_##NAME>::value;   \
+  constexpr auto const& NAME = detail::static_const<_##NAME>::value;           \
   }

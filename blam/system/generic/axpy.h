@@ -28,87 +28,35 @@
 #pragma once
 
 #include <blam/detail/config.h>
-#include <blam/adl/level3/gemm.h>
-
-#if defined(BLAM_USE_DECAY)
-//# include <blam/adl/level2/gemv.h>
-#endif
+#include <blam/copy.h>
 
 namespace blam
 {
-namespace system
-{
-namespace generic
+namespace adl
 {
 
-// Swap to remove dependence on StorageOrder
 template <typename ExecutionPolicy,
-          typename Alpha, typename MA, typename MB,
-          typename Beta, typename MC>
+          typename Alpha, typename VX, typename VY>
 void
-gemm(const ExecutionPolicy& exec,
-     StorageOrder order, Transpose transA, Transpose transB,
-     int m, int n, int k,
-     const Alpha& alpha,
-     const MA* A, int ldA,
-     const MB* B, int ldB,
-     const Beta& beta,
-     MC* C, int ldC)
+generic(blam::_axpy, const ExecutionPolicy& exec,
+        int n, const Alpha& alpha,
+        const VX* x, int incX,
+        VY* y, int incY)
 {
-#if defined(BLAM_USE_DECAY)
-  // gemv
-#else
   static_assert(sizeof(ExecutionPolicy) == 0, "BLAM UNIMPLEMENTED");
-#endif
 }
 
-// Default to ColMajor
+// incX,incY -> 1,1
 template <typename ExecutionPolicy,
-          typename Alpha, typename MA, typename MB,
-          typename Beta, typename MC>
+          typename Alpha, typename VX, typename VY>
 void
-gemm(const ExecutionPolicy& exec,
-     Transpose transA, Transpose transB,
-     int m, int n, int k,
-     const Alpha& alpha,
-     const MA* A, int ldA,
-     const MB* B, int ldB,
-     const Beta& beta,
-     MC* C, int ldC)
+generic(blam::_axpy, const ExecutionPolicy& exec,
+        int n, const Alpha& alpha,
+        const VX* x,
+        VY* y)
 {
-  blam::adl::gemm(exec,
-                  ColMajor, transA, transB,
-                  m, n, k,
-                  alpha,
-                  A, ldA,
-                  B, ldB,
-                  beta,
-                  C, ldC);
+  blam::axpy(exec, n, alpha, x, 1, y, 1);
 }
 
-// Default to NoTrans
-template <typename ExecutionPolicy,
-          typename Alpha, typename MA, typename MB,
-          typename Beta, typename MC>
-void
-gemm(const ExecutionPolicy& exec,
-     int m, int n, int k,
-     const Alpha& alpha,
-     const MA* A, int ldA,
-     const MB* B, int ldB,
-     const Beta& beta,
-     MC* C, int ldC)
-{
-  blam::adl::gemm(exec,
-                  NoTrans, NoTrans,
-                  m, n, k,
-                  alpha,
-                  A, ldA,
-                  B, ldB,
-                  beta,
-                  C, ldC);
-}
-
-} // end namespace generic
-} // end namespace system
+} // end namespace adl
 } // end namespace blam

@@ -28,122 +28,200 @@
 #pragma once
 
 #include <blam/detail/config.h>
+#include <blam/ger.h>
+
+#if defined(BLAM_USE_DECAY)
+//# include <blam/axpy.h>
+#endif
 
 namespace blam
 {
-namespace system
-{
-namespace generic
+namespace adl
 {
 
 template <typename ExecutionPolicy,
           typename Alpha, typename VX, typename VY, typename MA>
 void
-gerc(const ExecutionPolicy& exec,
-     StorageOrder order, int m, int n,
-     const Alpha& alpha,
-     const VX* x, int incX,
-     const VY* y, int incY,
-     MA* A, int ldA);
+generic(blam::_ger, const ExecutionPolicy& exec,
+        StorageOrder order, int m, int n,
+        const Alpha& alpha,
+        const VX* x, int incX,
+        const VY* y, int incY,
+        MA* A, int ldA)
+{
+  //#if defined(BLAM_USE_DECAY)
+  // axpy
+  //#else
+  static_assert(sizeof(ExecutionPolicy) == 0, "BLAM UNIMPLEMENTED");
+  //#endif
+}
+
+template <typename ExecutionPolicy,
+          typename Alpha, typename VX, typename VY, typename MA>
+void
+generic(blam::_geru, const ExecutionPolicy& exec,
+        StorageOrder order, int m, int n,
+        const Alpha& alpha,
+        const VX* x, int incX,
+        const VY* y, int incY,
+        MA* A, int ldA)
+{
+  //#if defined(BLAM_USE_DECAY)
+  // axpy
+  //#else
+  static_assert(sizeof(ExecutionPolicy) == 0, "BLAM UNIMPLEMENTED");
+  //#endif
+}
+
+template <typename ExecutionPolicy,
+          typename Alpha, typename VX, typename VY, typename MA>
+void
+generic(blam::_gerc, const ExecutionPolicy& exec,
+        StorageOrder order, int m, int n,
+        const Alpha& alpha,
+        const VX* x, int incX,
+        const VY* y, int incY,
+        MA* A, int ldA)
+{
+  //#if defined(BLAM_USE_DECAY)
+  // axpy
+  //#else
+  static_assert(sizeof(ExecutionPolicy) == 0, "BLAM UNIMPLEMENTED");
+  //#endif
+}
 
 // Default to ColMajor
 template <typename ExecutionPolicy,
           typename Alpha, typename VX, typename VY, typename MA>
 void
-gerc(const ExecutionPolicy& exec,
-     int m, int n,
-     const Alpha& alpha,
-     const VX* x, int incX,
-     const VY* y, int incY,
-     MA* A, int ldA);
-
-template <typename ExecutionPolicy,
-          typename Alpha, typename VX, typename VY, typename MA>
-void
-geru(const ExecutionPolicy& exec,
-     StorageOrder order, int m, int n,
-     const Alpha& alpha,
-     const VX* x, int incX,
-     const VY* y, int incY,
-     MA* A, int ldA);
+generic(blam::_ger, const ExecutionPolicy& exec,
+        int m, int n,
+        const Alpha& alpha,
+        const VX* x, int incX,
+        const VY* y, int incY,
+        MA* A, int ldA)
+{
+  blam::ger(exec,
+            ColMajor, m, n,
+            alpha,
+            x, incX,
+            y, incY,
+            A, ldA);
+}
 
 // Default to ColMajor
 template <typename ExecutionPolicy,
           typename Alpha, typename VX, typename VY, typename MA>
 void
-geru(const ExecutionPolicy& exec,
-     int m, int n,
-     const Alpha& alpha,
-     const VX* x, int incX,
-     const VY* y, int incY,
-     MA* A, int ldA);
+generic(blam::_gerc, const ExecutionPolicy& exec,
+        int m, int n,
+        const Alpha& alpha,
+        const VX* x, int incX,
+        const VY* y, int incY,
+        MA* A, int ldA)
+{
+  blam::gerc(exec,
+             ColMajor, m, n,
+             alpha,
+             x, incX,
+             y, incY,
+             A, ldA);
+}
 
 // Default to ColMajor
 template <typename ExecutionPolicy,
           typename Alpha, typename VX, typename VY, typename MA>
 void
-gerc(const ExecutionPolicy& exec,
-    int m, int n,
-    const Alpha& alpha,
-    const VX* x, int incX,
-    const VY* y, int incY,
-     MA* A, int ldA);
-
-// Default to ColMajor
-template <typename ExecutionPolicy,
-          typename Alpha, typename VX, typename VY, typename MA>
-void
-ger(const ExecutionPolicy& exec,
-    int m, int n,
-    const Alpha& alpha,
-    const VX* x, int incX,
-    const VY* y, int incY,
-    MA* A, int ldA);
+generic(blam::_geru, const ExecutionPolicy& exec,
+        int m, int n,
+        const Alpha& alpha,
+        const VX* x, int incX,
+        const VY* y, int incY,
+        MA* A, int ldA)
+{
+  blam::geru(exec,
+             ColMajor, m, n,
+             alpha,
+             x, incX,
+             y, incY,
+             A, ldA);
+}
 
 // sger -> sgeru
 template <typename ExecutionPolicy,
           typename MA>
 void
-ger(const ExecutionPolicy& exec,
-    StorageOrder order, int m, int n,
-    const float& alpha,
-    const float* x, int incX,
-    const float* y, int incY,
-    MA* A, int ldA);
+generic(blam::_ger, const ExecutionPolicy& exec,
+        StorageOrder order, int m, int n,
+        const float& alpha,
+        const float* x, int incX,
+        const float* y, int incY,
+        MA* A, int ldA)
+{
+  blam::geru(exec,
+             order, m, n,
+             alpha,
+             x, incX,
+             y, incY,
+             A, ldA);
+}
 
 // dger -> dgeru
 template <typename ExecutionPolicy,
           typename MA>
 void
-ger(const ExecutionPolicy& exec,
-    StorageOrder order, int m, int n,
-    const double& alpha,
-    const double* x, int incX,
-    const double* y, int incY,
-    MA* A, int ldA);
+generic(blam::_ger, const ExecutionPolicy& exec,
+        StorageOrder order, int m, int n,
+        const double& alpha,
+        const double* x, int incX,
+        const double* y, int incY,
+        MA* A, int ldA)
+{
+  blam::geru(exec,
+             order, m, n,
+             alpha,
+             x, incX,
+             y, incY,
+             A, ldA);
+}
 
 // cger -> cgerc
 template <typename ExecutionPolicy,
           typename MA>
 void
-ger(const ExecutionPolicy& exec,
-    StorageOrder order, int m, int n,
-    const ComplexFloat& alpha,
-    const ComplexFloat* x, int incX,
-    const ComplexFloat* y, int incY,
-    MA* A, int ldA);
+generic(blam::_ger, const ExecutionPolicy& exec,
+        StorageOrder order, int m, int n,
+        const ComplexFloat& alpha,
+        const ComplexFloat* x, int incX,
+        const ComplexFloat* y, int incY,
+        MA* A, int ldA)
+{
+  blam::gerc(exec,
+             order, m, n,
+             alpha,
+             x, incX,
+             y, incY,
+             A, ldA);
+}
 
 // zger -> zgerc
 template <typename ExecutionPolicy,
           typename MA>
 void
-ger(const ExecutionPolicy& exec,
-    StorageOrder order, int m, int n,
-    const ComplexDouble& alpha,
-    const ComplexDouble* x, int incX,
-    const ComplexDouble* y, int incY,
-    MA* A, int ldA);
+generic(blam::_ger, const ExecutionPolicy& exec,
+        StorageOrder order, int m, int n,
+        const ComplexDouble& alpha,
+        const ComplexDouble* x, int incX,
+        const ComplexDouble* y, int incY,
+        MA* A, int ldA)
+{
+  blam::gerc(exec,
+             order, m, n,
+             alpha,
+             x, incX,
+             y, incY,
+             A, ldA);
+}
 
-} // end namespace generic
-} // end namespace system
+} // end namespace adl
 } // end namespace blam

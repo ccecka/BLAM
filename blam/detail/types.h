@@ -41,6 +41,27 @@ using ComplexFloat  = complex<float>;
 using ComplexDouble = complex<double>;
 #endif // BLAM_COMPLEX_TYPES
 
+float abs1(float v) {
+  using std::abs;
+  return abs(v);
+}
+
+double abs1(double v) {
+  using std::abs;
+  return abs(v);
+}
+
+long double abs1(long double v) {
+  using std::abs;
+  return abs(v);
+}
+
+template <typename T>
+T abs1(const complex<T>& v) {
+  using std::real; using std::imag;
+  return abs1(real(v)) + abs1(imag(v));
+}
+
 } // end namespace blam
 
 

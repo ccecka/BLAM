@@ -25,85 +25,46 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  ******************************************************************************/
 
-#pragma once
+#include <iostream>
 
-#include <blam/detail/config.h>
-#include <blam/adl/level2/gemv.h>
-
-#if defined(BLAM_USE_DECAY)
-//# include <blam/adl/level1/dot.h>
+#ifndef _MSC_VER
+#   include <cxxabi.h>
 #endif
+#include <typeinfo>
+#include <memory>
 
-namespace blam
+template <class T>
+std::string type_name()
 {
-namespace system
-{
-namespace generic
-{
-
-template <typename ExecutionPolicy,
-          typename Alpha, typename MA, typename VX,
-          typename Beta, typename VY>
-void
-gemv(const ExecutionPolicy& exec,
-     StorageOrder order, Transpose trans,
-     int m, int n,
-     const Alpha& alpha,
-     const MA* A, int ldA,
-     const VX* x, int incX,
-     const Beta& beta,
-     VY* y, int incY)
-{
-#if defined(BLAM_USE_DECAY)
-  // dot
+    typedef typename std::remove_reference<T>::type TR;
+    std::unique_ptr<char, void(*)(void*)> own
+           (
+#ifndef _MSC_VER
+                abi::__cxa_demangle(typeid(TR).name(), nullptr, nullptr, nullptr),
 #else
-  static_assert(sizeof(ExecutionPolicy) == 0, "BLAM UNIMPLEMENTED");
+                nullptr,
 #endif
+                std::free
+           );
+    std::string r = own != nullptr ? own.get() : typeid(TR).name();
+    if (std::is_const<TR>::value)
+        r += " const";
+    if (std::is_volatile<TR>::value)
+        r += " volatile";
+    if (std::is_lvalue_reference<T>::value)
+        r += "&";
+    else if (std::is_rvalue_reference<T>::value)
+        r += "&&";
+    return r;
 }
 
-template <typename ExecutionPolicy,
-          typename Alpha, typename MA, typename VX,
-          typename Beta, typename VY>
-void
-gemv(const ExecutionPolicy& exec,
-     int m, int n,
-     const Alpha& alpha,
-     const MA* A, int ldA,
-     const VX* x, int incX,
-     const Beta& beta,
-     VY* y, int incY)
-{
-  blam::adl::gemv(exec, NoTrans,
-                  m, n,
-                  alpha,
-                  A, ldA,
-                  x, incX,
-                  beta,
-                  y, incY);
+template <class T>
+void print_all(T&& t) {
+  std::cout << type_name<T>();
 }
 
-template <typename ExecutionPolicy,
-          typename Alpha, typename MA, typename VX,
-          typename Beta, typename VY>
-void
-gemv(const ExecutionPolicy& exec,
-     Transpose trans,
-     int m, int n,
-     const Alpha& alpha,
-     const MA* A, int ldA,
-     const VX* x, int incX,
-     const Beta& beta,
-     VY* y, int incY)
-{
-  blam::adl::gemv(exec, ColMajor, NoTrans,
-                  m, n,
-                  alpha,
-                  A, ldA,
-                  x, incX,
-                  beta,
-                  y, incY);
+template <class T, class... Ts>
+void print_all(T&& t, Ts&&... ts) {
+  std::cout << type_name<T>() << ", ";
+  print_all(std::forward<Ts>(ts)...);
 }
-
-} // end namespace generic
-} // end namespace system
-} // end namespace blam

@@ -25,41 +25,74 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  ******************************************************************************/
 
-#pragma once
+#include "disable_function.h"
+#include "print_type.h"
 
-#include <blam/detail/config.h>
-#include <blam/adl/level1/copy.h>
+#define BLAM_USE_DECAY
+#include <blam/batch_gemm.h>
+#include <blam/system/mkl/mkl.h>
 
-namespace blam
-{
-namespace system
-{
-namespace generic
-{
+#include <thrust/host_vector.h>
 
-template <typename ExecutionPolicy,
-          typename T, typename U>
+namespace mine {
+
+template <class DerivedPolicy>
+struct execution_policy : DerivedPolicy {
+  mutable std::string prefix_;
+};
+
+
+template <class Function, class DerivedPolicy, class... T>
 void
-copy(const ExecutionPolicy& exec,
-     int n,
-     const T* x, int incX,
-     U* y, int incY)
+invoke(Function f, const execution_policy<DerivedPolicy>& exec, T&&... t)
 {
-  static_assert(sizeof(ExecutionPolicy) == 0, "BLAM UNIMPLEMENTED");
+  std::cout << exec.prefix_ << type_name<Function>() << "(" << type_name<DerivedPolicy>() << ", ";
+  print_all(std::forward<T>(t)...);
+  std::cout << ")" << std::endl;
+  exec.prefix_ += "  ";
+
+  using namespace experimental;
+  f(remove_customization_point<Function>(exec), std::forward<T>(t)...);
+
+  exec.prefix_.erase(exec.prefix_.size()-2);
 }
 
-// incX,incY -> 1,1
-template <typename ExecutionPolicy,
-          typename T, typename U>
+} // end namespace mine
+
+
+template <typename T, typename ExecutionPolicy>
 void
-copy(const ExecutionPolicy& exec,
-     int n,
-     const T* x,
-     U* y)
+test(const ExecutionPolicy& exec, int n)
 {
-  blam::adl::copy(exec, n, x, 1, y, 1);
+  int m = n;
+  int k = n;
+  int p = n;
+
+  T alpha = 1.0, beta = 0.0;
+  thrust::host_vector<T> A(m*k, T(0.5));
+  thrust::host_vector<T> B(k*n*p, T(2.0));
+  thrust::host_vector<T> C(m*n*p, T(0.0));
+
+  blam::batch_gemm(exec,
+                   m, n, k,
+                   alpha,
+                   thrust::raw_pointer_cast(A.data()), m, 0,
+                   thrust::raw_pointer_cast(B.data()), k, k*n,
+                   beta,
+                   thrust::raw_pointer_cast(C.data()), m, m*n,
+                   p);
 }
 
-} // end namespace generic
-} // end namespace system
-} // end namespace blam
+
+int main()
+{
+  {
+  mine::execution_policy<blam::mkl::tag> exec;
+  test<float>(exec, 4);
+  }
+
+  {
+  mine::execution_policy<blam::cblas::tag> exec;
+  test<float>(exec, 4);
+  }
+}

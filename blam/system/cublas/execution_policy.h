@@ -157,5 +157,4 @@ class execute_on_handle
 static const execute_on_handle par;
 
 } // end namespace cublas
-
 } // end namespace blam

@@ -38,6 +38,10 @@ namespace blam
 // XXX TODO: Import for Doxygen
 #endif
 
+using blam::adl::_batch_gemm;
+
 using blam::adl::batch_gemm;
 
 } // end namespace blam
+
+#include <blam/system/generic/batch_gemm.h>

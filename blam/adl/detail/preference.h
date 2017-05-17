@@ -1,6 +1,6 @@
 /******************************************************************************
- * Copyright (C) 2016, Cris Cecka.  All rights reserved.
- * Copyright (C) 2016, NVIDIA CORPORATION.  All rights reserved.
+ * Copyright (C) 2016-2017, Cris Cecka.  All rights reserved.
+ * Copyright (C) 2016-2017, NVIDIA CORPORATION.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -27,16 +27,22 @@
 
 #pragma once
 
-#include <blam/detail/config.h>
-#include <blam/adl/detail/customization_point.h>
-#include <blam/adl/detail/preference.h>
-
 namespace blam
 {
 namespace adl
 {
+namespace detail
+{
 
-BLAM_CUSTOMIZATION_POINT(spr2);
+template <int I>
+struct preference;
 
+template <>
+struct preference<0> {};
+
+template <int I>
+struct preference : public preference<I-1> {};
+
+} // end namespace detail
 } // end namespace adl
 } // end namespace blam

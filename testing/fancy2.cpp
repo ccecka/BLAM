@@ -25,53 +25,74 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  ******************************************************************************/
 
-#pragma once
+#include "disable_prototype.h"
+#include "print_type.h"
 
-#include <blam/detail/config.h>
-#include <blam/detail/execution_policy.h>
+#define BLAM_USE_DECAY
+#include <blam/batch_gemm.h>
+#include <blam/system/mkl/mkl.h>
 
-#include <blam/system/cblas/types.h>
+#include <thrust/host_vector.h>
 
-namespace blam
-{
-namespace cblas
-{
+namespace mine {
 
-// this awkward sequence of definitions arise
-// from the desire both for tag to derive
-// from execution_policy and for execution_policy
-// to convert to tag (when execution_policy is not
-// an ancestor of tag)
-
-// forward declaration of tag
-struct tag;
-
-// forward declaration of execution_policy
-template <typename>
-struct execution_policy;
-
-// specialize execution_policy for tag
-template <>
-struct execution_policy<tag>
-    : blam::execution_policy<tag>
-{};
-
-// tag's definition comes before the
-// generic definition of execution_policy
-struct tag : execution_policy<tag> {};
-
-// allow conversion to tag when it is not a successor
-template <typename Derived>
-struct execution_policy
-    : blam::execution_policy<Derived>
-{
-  // allow conversion to tag
-  inline operator tag () const {
-    return tag();
-  }
+template <class DerivedPolicy>
+struct execution_policy : DerivedPolicy {
+  mutable std::string prefix_;
 };
 
-static const tag par{};
 
-} // end namespace cblas
-} // end namespace blam
+template <class Function, class DerivedPolicy, class... T>
+void
+invoke(Function f, const execution_policy<DerivedPolicy>& exec, T&&... t)
+{
+  std::cout << exec.prefix_ << type_name<Function>() << "(" << type_name<DerivedPolicy>() << ", ";
+  print_all(std::forward<T>(t)...);
+  std::cout << ")" << std::endl;
+  exec.prefix_ += "  ";
+
+  using namespace experimental;
+  f(remove_customization_point<prototype<Function, T...>>(exec), std::forward<T>(t)...);
+
+  exec.prefix_.erase(exec.prefix_.size()-2);
+}
+
+} // end namespace mine
+
+
+template <typename T, typename ExecutionPolicy>
+void
+test(const ExecutionPolicy& exec, int n)
+{
+  int m = n;
+  int k = n;
+  int p = n;
+
+  T alpha = 1.0, beta = 0.0;
+  thrust::host_vector<T> A(m*k, T(0.5));
+  thrust::host_vector<T> B(k*n*p, T(2.0));
+  thrust::host_vector<T> C(m*n*p, T(0.0));
+
+  blam::batch_gemm(exec,
+                   m, n, k,
+                   alpha,
+                   thrust::raw_pointer_cast(A.data()), m, 0,
+                   thrust::raw_pointer_cast(B.data()), k, k*n,
+                   beta,
+                   thrust::raw_pointer_cast(C.data()), m, m*n,
+                   p);
+}
+
+
+int main()
+{
+  {
+  mine::execution_policy<blam::mkl::tag> exec;
+  test<float>(exec, 4);
+  }
+
+  {
+  mine::execution_policy<blam::cblas::tag> exec;
+  test<float>(exec, 4);
+  }
+}

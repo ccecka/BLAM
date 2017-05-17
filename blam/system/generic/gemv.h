@@ -28,52 +28,81 @@
 #pragma once
 
 #include <blam/detail/config.h>
+#include <blam/gemv.h>
+
+#if defined(BLAM_USE_DECAY)
+//# include <blam/dot.h>
+#endif
 
 namespace blam
 {
-namespace system
-{
-namespace generic
+namespace adl
 {
 
 template <typename ExecutionPolicy,
           typename Alpha, typename MA, typename VX,
           typename Beta, typename VY>
 void
-gemv(const ExecutionPolicy& exec,
-     int m, int n,
-     const Alpha& alpha,
-     const MA* A, int ldA,
-     const VX* x, int incX,
-     const Beta& beta,
-     VY* y, int incY);
+generic(blam::_gemv, const ExecutionPolicy& exec,
+        StorageOrder order, Transpose trans,
+        int m, int n,
+        const Alpha& alpha,
+        const MA* A, int ldA,
+        const VX* x, int incX,
+        const Beta& beta,
+        VY* y, int incY)
+{
+  //#if defined(BLAM_USE_DECAY)
+  // dot
+  //#else
+  static_assert(sizeof(ExecutionPolicy) == 0, "BLAM UNIMPLEMENTED");
+  //#endif
+}
 
+// Default ColMajor
 template <typename ExecutionPolicy,
           typename Alpha, typename MA, typename VX,
           typename Beta, typename VY>
 void
-gemv(const ExecutionPolicy& exec,
-     Transpose trans,
-     int m, int n,
-     const Alpha& alpha,
-     const MA* A, int ldA,
-     const VX* x, int incX,
-     const Beta& beta,
-     VY* y, int incY);
+generic(blam::_gemv, const ExecutionPolicy& exec,
+        Transpose trans,
+        int m, int n,
+        const Alpha& alpha,
+        const MA* A, int ldA,
+        const VX* x, int incX,
+        const Beta& beta,
+        VY* y, int incY)
+{
+  blam::gemv(exec, ColMajor, trans,
+             m, n,
+             alpha,
+             A, ldA,
+             x, incX,
+             beta,
+             y, incY);
+}
 
+// Default NoTrans
 template <typename ExecutionPolicy,
           typename Alpha, typename MA, typename VX,
           typename Beta, typename VY>
 void
-gemv(const ExecutionPolicy& exec,
-     StorageOrder order, Transpose trans,
-     int m, int n,
-     const Alpha& alpha,
-     const MA* A, int ldA,
-     const VX* x, int incX,
-     const Beta& beta,
-     VY* y, int incY);
+generic(blam::_gemv, const ExecutionPolicy& exec,
+        int m, int n,
+        const Alpha& alpha,
+        const MA* A, int ldA,
+        const VX* x, int incX,
+        const Beta& beta,
+        VY* y, int incY)
+{
+  blam::gemv(exec, NoTrans,
+             m, n,
+             alpha,
+             A, ldA,
+             x, incX,
+             beta,
+             y, incY);
+}
 
-} // end namespace generic
-} // end namespace system
+} // end namespace adl
 } // end namespace blam
