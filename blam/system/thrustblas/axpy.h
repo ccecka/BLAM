@@ -31,7 +31,7 @@
 #include <blam/system/thrustblas/execution_policy.h>
 
 #include <blam/system/thrustblas/detail/strided_range.h>
-#include <thrust/copy.h>
+#include <thrust/transform.h>
 
 namespace thrust
 {
@@ -62,22 +62,22 @@ axpy(const execution_policy<DerivedPolicy>& exec,
      const VX* x, int incX,
      VY* y, int incY)
 {
-  BLAM_DEBUG_OUT("thrust copy");
+  BLAM_DEBUG_OUT("thrust axpy");
 
-  using axpy = detail::axpy<Alpha, VX, VY>;
+  using axpy_functor = detail::axpy<Alpha, VX, VY>;
 
   if (incX == 1 && incY == 1) {
-    thrust::transform(exec, x, x+n, y, y, axpy{alpha});
+    thrust::transform(exec, x, x+n, y, y, axpy_functor{alpha});
   } else if (incX == 1) {
-    auto yi = blam::make_strided_range(y, incY);
-    thrust::transform(exec, x, x+n, yi, yi, axpy{alpha});
+    auto yi = blam::make_strided_iterator(y, incY);
+    thrust::transform(exec, x, x+n, yi, yi, axpy_functor{alpha});
   } else if (incY == 1) {
     auto xi = blam::make_strided_iterator(x, incX);
-    thrust::transform(exec, xi, xi+n, y, y, axpy{alpha});
+    thrust::transform(exec, xi, xi+n, y, y, axpy_functor{alpha});
   } else {
     auto xi = blam::make_strided_iterator(x, incY);
     auto yi = blam::make_strided_iterator(y, incY);
-    thrust::transform(exec, xi, xi+n, yi, yi, axpy{alpha});
+    thrust::transform(exec, xi, xi+n, yi, yi, axpy_functor{alpha});
   }
 }
 

@@ -100,9 +100,9 @@ axpy(const execution_policy<DerivedPolicy>& exec,
      const Alpha& alpha,
      const VX* x, int incX,
      VY* y, int incY)
-    -> decltype(axpy(handle(derived_cast(exec)), n, alpha, x, incX, y, incY))
+    -> decltype(axpy(handle(derived_cast(exec)), n, &alpha, x, incX, y, incY))
 {
-  return axpy(handle(derived_cast(exec)), n, alpha, x, incX, y, incY);
+  return axpy(handle(derived_cast(exec)), n, &alpha, x, incX, y, incY);
 }
 
 } // end namespace cublas

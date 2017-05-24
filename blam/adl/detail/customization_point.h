@@ -32,7 +32,6 @@
 #include <blam/adl/detail/static_const.h>
 #include <blam/adl/detail/preference.h>
 
-// XXX TODO: EDG/NVCC Bug?
 // XXX TODO: Qualified call to blam::adl::generic?
 // XXX TODO: Move generic to subdirectory of adl?
 

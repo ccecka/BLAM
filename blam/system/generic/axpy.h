@@ -28,7 +28,7 @@
 #pragma once
 
 #include <blam/detail/config.h>
-#include <blam/copy.h>
+#include <blam/axpy.h>
 
 namespace blam
 {

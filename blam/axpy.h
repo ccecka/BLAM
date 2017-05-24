@@ -25,19 +25,23 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  ******************************************************************************/
 
-#define BLAM_DEBUG 1
-#include <blam/axpy.h>
-#include <blam/dot.h>
-#include <blam/copy.h>
-#include <blam/ger.h>
-#include <blam/gemv.h>
-#include <blam/gemm.h>
-#include <blam/batch_gemm.h>
+#pragma once
 
-#include <blam/system/mkl/mkl.h>
-#include <blam/system/cublas/cublas.h>
-#include <blam/system/thrustblas/thrustblas.h>
+#include <blam/detail/config.h>
+#include <blam/adl/level1/axpy.h>
 
-int main()
+namespace blam
 {
-}
+
+#if 0
+// See <blam/system/generic/axpy.h> for interfaces
+// XXX TODO: Import for Doxygen
+#endif
+
+using blam::adl::_axpy;
+
+using blam::adl::axpy;
+
+} // end namespace blam
+
+#include <blam/system/generic/axpy.h>
