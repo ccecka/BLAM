@@ -39,7 +39,7 @@
   struct _##NAME {                                                             \
    private:                                                                    \
     template <class... T,                                                      \
-              class R = decltype(invoke (_##NAME {}, std::declval<T>()...))>   \
+              class R = decltype(invoke (std::declval<_##NAME>(), std::declval<T>()...))> \
     static constexpr R impl(detail::preference<2>, T&&... t) {                 \
       return invoke (_##NAME {}, std::forward<T>(t)...);                       \
     }                                                                          \
@@ -51,7 +51,7 @@
     }                                                                          \
                                                                                \
     template <class... T,                                                      \
-              class R = decltype(generic (_##NAME {}, std::declval<T>()...))>  \
+              class R = decltype(generic (std::declval<_##NAME>(), std::declval<T>()...))>  \
     static constexpr R impl(detail::preference<0>, T&&... t) {                 \
       return generic (_##NAME {}, std::forward<T>(t)...);                      \
     }                                                                          \
