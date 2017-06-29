@@ -75,7 +75,7 @@ axpy(const execution_policy<DerivedPolicy>& exec,
     auto xi = blam::make_strided_iterator(x, incX);
     thrust::transform(exec, xi, xi+n, y, y, axpy_functor{alpha});
   } else {
-    auto xi = blam::make_strided_iterator(x, incY);
+    auto xi = blam::make_strided_iterator(x, incX);
     auto yi = blam::make_strided_iterator(y, incY);
     thrust::transform(exec, xi, xi+n, yi, yi, axpy_functor{alpha});
   }
