@@ -25,7 +25,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  ******************************************************************************/
 
-#include "disable_prototype.h"
+#include "disable_signature.h"
 #include "print_type.h"
 
 #define BLAM_USE_DECAY
@@ -44,7 +44,7 @@ struct execution_policy : DerivedPolicy {
 
 template <class Function, class DerivedPolicy, class... T>
 void
-invoke(Function f, const execution_policy<DerivedPolicy>& exec, T&&... t)
+mutate(Function f, const execution_policy<DerivedPolicy>& exec, T&&... t)
 {
   std::cout << exec.prefix_ << type_name<Function>() << "(" << type_name<DerivedPolicy>() << ", ";
   print_all(std::forward<T>(t)...);
@@ -52,7 +52,7 @@ invoke(Function f, const execution_policy<DerivedPolicy>& exec, T&&... t)
   exec.prefix_ += "  ";
 
   using namespace experimental;
-  f(remove_customization_point<prototype<Function, T...>>(exec), std::forward<T>(t)...);
+  f(remove_customization_point<signature<Function, T...>>(exec), std::forward<T>(t)...);
 
   exec.prefix_.erase(exec.prefix_.size()-2);
 }

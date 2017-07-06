@@ -32,6 +32,7 @@
 #include <blam/adl/detail/static_const.h>
 #include <blam/adl/detail/preference.h>
 
+// XXX TODO: Alternate name for mutate? invoke-dispatch customization pattern?
 // XXX TODO: Qualified call to blam::adl::generic?
 // XXX TODO: Move generic to subdirectory of adl?
 
@@ -39,9 +40,9 @@
   struct _##NAME {                                                             \
    private:                                                                    \
     template <class... T,                                                      \
-              class R = decltype(invoke (std::declval<_##NAME>(), std::declval<T>()...))> \
+              class R = decltype(mutate (std::declval<_##NAME>(), std::declval<T>()...))> \
     static constexpr R impl(detail::preference<2>, T&&... t) {                 \
-      return invoke (_##NAME {}, std::forward<T>(t)...);                       \
+      return mutate (_##NAME {}, std::forward<T>(t)...);                       \
     }                                                                          \
                                                                                \
     template <class... T,                                                      \

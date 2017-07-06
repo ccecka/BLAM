@@ -44,7 +44,7 @@ struct execution_policy : DerivedPolicy {
 
 template <class Function, class DerivedPolicy, class... T>
 void
-invoke(Function f, const execution_policy<DerivedPolicy>& exec, T&&... t)
+mutate(Function f, const execution_policy<DerivedPolicy>& exec, T&&... t)
 {
   std::cout << exec.prefix_ << type_name<Function>() << "(" << type_name<DerivedPolicy>() << ", ";
   print_all(std::forward<T>(t)...);

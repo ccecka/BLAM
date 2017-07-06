@@ -40,7 +40,7 @@ template <class... T>
 struct type_list {};
 
 template <class F, class... Args>
-struct prototype;
+struct signature;
 
 
 template <class T, class Set>
@@ -75,10 +75,10 @@ template <class Function,
           class DerivedPolicy,
           class Disabled,
           class... Args,
-          __REQUIRES(!is_member<prototype<Function,Args...>, Disabled>::value),
+          __REQUIRES(!is_member<signature<Function,Args...>, Disabled>::value),
           class R = decltype(std::declval<Function>()(std::declval<DerivedPolicy>(), std::declval<Args>()...))>
 R
-invoke(Function f, const disabled_execution_policy<DerivedPolicy,Disabled>& exec, Args&&... args)
+mutate(Function f, const disabled_execution_policy<DerivedPolicy,Disabled>& exec, Args&&... args)
 {
   return f(exec.base(), std::forward<Args>(args)...);
 }
@@ -87,9 +87,9 @@ template <class Function,
           class DerivedPolicy,
           class Disabled,
           class... Args,
-          __REQUIRES(is_member<prototype<Function,Args...>, Disabled>::value),
+          __REQUIRES(is_member<signature<Function,Args...>, Disabled>::value),
           class R = decltype(std::declval<Function>()(std::declval<DerivedPolicy>(), std::declval<Args>()...))>
-R invoke(Function f, const disabled_execution_policy<DerivedPolicy,Disabled>& exec, Args&&... args) = delete;
+R mutate(Function f, const disabled_execution_policy<DerivedPolicy,Disabled>& exec, Args&&... args) = delete;
 
 } // end namespace experimental
 

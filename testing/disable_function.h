@@ -74,7 +74,7 @@ template <class Function,
           __REQUIRES(!is_member<Function,Disabled>::value),
           class R = decltype(std::declval<Function>()(std::declval<DerivedPolicy>(), std::declval<Args>()...))>
 R
-invoke(Function f, const disabled_execution_policy<DerivedPolicy,Disabled>& exec, Args&&... args)
+mutate(Function f, const disabled_execution_policy<DerivedPolicy,Disabled>& exec, Args&&... args)
 {
   return f(exec.base(), std::forward<Args>(args)...);
 }
@@ -85,7 +85,7 @@ template <class Function,
           class... Args,
           __REQUIRES(is_member<Function,Disabled>::value),
           class R = decltype(std::declval<Function>()(std::declval<DerivedPolicy>(), std::declval<Args>()...))>
-R invoke(Function f, const disabled_execution_policy<DerivedPolicy,Disabled>& exec, Args&&... args) = delete;
+R mutate(Function f, const disabled_execution_policy<DerivedPolicy,Disabled>& exec, Args&&... args) = delete;
 
 } // end namespace experimental
 
