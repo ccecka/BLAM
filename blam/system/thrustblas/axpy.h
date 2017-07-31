@@ -36,22 +36,6 @@
 namespace thrust
 {
 
-namespace detail
-{
-
-template <typename Alpha, typename X, typename Y>
-struct axpy
-{
-  Alpha a;
-
-  __host__ __device__
-  auto operator()(const X& x, const Y& y) const -> decltype(a*x+y) {
-    return a*x+y;
-  }
-};
-
-} // end namespace detail
-
 // axpy
 template <typename DerivedPolicy,
           typename Alpha, typename VX, typename VY>
@@ -64,20 +48,21 @@ axpy(const execution_policy<DerivedPolicy>& exec,
 {
   BLAM_DEBUG_OUT("thrust axpy");
 
-  using axpy_functor = detail::axpy<Alpha, VX, VY>;
+  auto axpy_functor = [=] __host__ __device__ (const VX& x, const VY& y)
+      { return alpha*x+y; };
 
   if (incX == 1 && incY == 1) {
-    thrust::transform(exec, x, x+n, y, y, axpy_functor{alpha});
+    thrust::transform(exec, x, x+n, y, y, axpy_functor);
   } else if (incX == 1) {
     auto yi = blam::make_strided_iterator(y, incY);
-    thrust::transform(exec, x, x+n, yi, yi, axpy_functor{alpha});
+    thrust::transform(exec, x, x+n, yi, yi, axpy_functor);
   } else if (incY == 1) {
     auto xi = blam::make_strided_iterator(x, incX);
-    thrust::transform(exec, xi, xi+n, y, y, axpy_functor{alpha});
+    thrust::transform(exec, xi, xi+n, y, y, axpy_functor);
   } else {
     auto xi = blam::make_strided_iterator(x, incX);
     auto yi = blam::make_strided_iterator(y, incY);
-    thrust::transform(exec, xi, xi+n, yi, yi, axpy_functor{alpha});
+    thrust::transform(exec, xi, xi+n, yi, yi, axpy_functor);
   }
 }
 

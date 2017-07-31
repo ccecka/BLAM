@@ -71,7 +71,7 @@ axpy(cublasHandle_t handle,
 {
   BLAM_DEBUG_OUT("cublasCaxpy");
 
-  cublasCaxpy(handle, n, reinterpret_cast<const cuFloatComplex*>(&alpha),
+  cublasCaxpy(handle, n, reinterpret_cast<const cuFloatComplex*>(alpha),
               reinterpret_cast<const cuFloatComplex*>(x), incX,
               reinterpret_cast<cuFloatComplex*>(y), incY);
 }
@@ -86,7 +86,7 @@ axpy(cublasHandle_t handle,
 {
   BLAM_DEBUG_OUT("cublasZaxpy");
 
-  cublasZaxpy(handle, n, reinterpret_cast<const cuDoubleComplex*>(&alpha),
+  cublasZaxpy(handle, n, reinterpret_cast<const cuDoubleComplex*>(alpha),
               reinterpret_cast<const cuDoubleComplex*>(x), incX,
               reinterpret_cast<cuDoubleComplex*>(y), incY);
 }
