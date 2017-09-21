@@ -30,18 +30,9 @@
 #include <blam/detail/config.h>
 #include <blam/adl/level1/axpy.h>
 
-namespace blam
-{
-
 #if 0
 // See <blam/system/generic/axpy.h> for interfaces
 // XXX TODO: Import for Doxygen
 #endif
-
-using blam::adl::_axpy;
-
-using blam::adl::axpy;
-
-} // end namespace blam
 
 #include <blam/system/generic/axpy.h>

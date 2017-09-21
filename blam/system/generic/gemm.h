@@ -36,36 +36,27 @@
 
 namespace blam
 {
-namespace adl
-{
 
-// Swap to remove dependence on StorageOrder
+// Backend entry point
 template <typename ExecutionPolicy,
           typename Alpha, typename MA, typename MB,
           typename Beta, typename MC>
 void
-generic(blam::_gemm, const ExecutionPolicy& exec,
+generic(blam::gemm_t, const ExecutionPolicy& exec,
         StorageOrder order, Transpose transA, Transpose transB,
         int m, int n, int k,
         const Alpha& alpha,
         const MA* A, int ldA,
         const MB* B, int ldB,
         const Beta& beta,
-        MC* C, int ldC)
-{
-  //#if defined(BLAM_USE_DECAY)
-  // gemv
-  //#else
-  static_assert(sizeof(ExecutionPolicy) == 0, "BLAM UNIMPLEMENTED");
-  //#endif
-}
+        MC* C, int ldC) = delete;
 
 // Default to ColMajor
 template <typename ExecutionPolicy,
           typename Alpha, typename MA, typename MB,
           typename Beta, typename MC>
 void
-generic(blam::_gemm, const ExecutionPolicy& exec,
+generic(blam::gemm_t, const ExecutionPolicy& exec,
         Transpose transA, Transpose transB,
         int m, int n, int k,
         const Alpha& alpha,
@@ -89,7 +80,7 @@ template <typename ExecutionPolicy,
           typename Alpha, typename MA, typename MB,
           typename Beta, typename MC>
 void
-generic(blam::_gemm, const ExecutionPolicy& exec,
+generic(blam::gemm_t, const ExecutionPolicy& exec,
         int m, int n, int k,
         const Alpha& alpha,
         const MA* A, int ldA,
@@ -107,5 +98,4 @@ generic(blam::_gemm, const ExecutionPolicy& exec,
              C, ldC);
 }
 
-} // end namespace adl
 } // end namespace blam

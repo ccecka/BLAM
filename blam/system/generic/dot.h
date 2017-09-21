@@ -32,50 +32,42 @@
 
 namespace blam
 {
-namespace adl
-{
 
+// Backend entry point
 template <typename ExecutionPolicy,
           typename VX, typename VY, typename R>
 void
-generic(blam::_dot, const ExecutionPolicy& exec,
+generic(blam::dot_t, const ExecutionPolicy& exec,
         int n,
         const VX* x, int incX,
         const VY* y, int incY,
-        R& result)
-{
-  static_assert(sizeof(ExecutionPolicy) == 0, "BLAM UNIMPLEMENTED");
-}
+        R& result) = delete;
 
+// Backend entry point
 template <typename ExecutionPolicy,
           typename VX, typename VY, typename R>
 void
-generic(blam::_dotc, const ExecutionPolicy& exec,
+generic(blam::dotc_t, const ExecutionPolicy& exec,
         int n,
         const VX* x, int incX,
         const VY* y, int incY,
-        R& result)
-{
-  static_assert(sizeof(ExecutionPolicy) == 0, "BLAM UNIMPLEMENTED");
-}
+        R& result) = delete;
 
+// Backend entry point
 template <typename ExecutionPolicy,
           typename VX, typename VY, typename R>
 void
-generic(blam::_dotu, const ExecutionPolicy& exec,
+generic(blam::dotu_t, const ExecutionPolicy& exec,
         int n,
         const VX* x, int incX,
         const VY* y, int incY,
-        R& result)
-{
-  static_assert(sizeof(ExecutionPolicy) == 0, "BLAM UNIMPLEMENTED");
-}
+        R& result) = delete;
 
 // incX,incY -> 1,1
 template <typename ExecutionPolicy,
           typename VX, typename VY, typename R>
 void
-generic(blam::_dot, const ExecutionPolicy& exec,
+generic(blam::dot_t, const ExecutionPolicy& exec,
         int n,
         const VX* x,
         const VY* y,
@@ -88,7 +80,7 @@ generic(blam::_dot, const ExecutionPolicy& exec,
 template <typename ExecutionPolicy,
           typename VX, typename VY, typename R>
 void
-generic(blam::_dotc, const ExecutionPolicy& exec,
+generic(blam::dotc_t, const ExecutionPolicy& exec,
         int n,
         const VX* x,
         const VY* y,
@@ -101,7 +93,7 @@ generic(blam::_dotc, const ExecutionPolicy& exec,
 template <typename ExecutionPolicy,
           typename VX, typename VY, typename R>
 void
-generic(blam::_dotu, const ExecutionPolicy& exec,
+generic(blam::dotu_t, const ExecutionPolicy& exec,
         int n,
         const VX* x,
         const VY* y,
@@ -114,7 +106,7 @@ generic(blam::_dotu, const ExecutionPolicy& exec,
 template <typename ExecutionPolicy,
           typename R>
 void
-generic(blam::_dot, const ExecutionPolicy& exec,
+generic(blam::dot_t, const ExecutionPolicy& exec,
         int n,
         const float* x, int incX,
         const float* y, int incY,
@@ -127,7 +119,7 @@ generic(blam::_dot, const ExecutionPolicy& exec,
 template <typename ExecutionPolicy,
           typename R>
 void
-generic(blam::_dot, const ExecutionPolicy& exec,
+generic(blam::dot_t, const ExecutionPolicy& exec,
         int n,
         const double* x, int incX,
         const double* y, int incY,
@@ -140,7 +132,7 @@ generic(blam::_dot, const ExecutionPolicy& exec,
 template <typename ExecutionPolicy,
           typename R>
 void
-generic(blam::_dot, const ExecutionPolicy& exec,
+generic(blam::dot_t, const ExecutionPolicy& exec,
         int n,
         const ComplexFloat* x, int incX,
         const ComplexFloat* y, int incY,
@@ -153,7 +145,7 @@ generic(blam::_dot, const ExecutionPolicy& exec,
 template <typename ExecutionPolicy,
           typename R>
 void
-generic(blam::_dot, const ExecutionPolicy& exec,
+generic(blam::dot_t, const ExecutionPolicy& exec,
         int n,
         const ComplexDouble* x, int incX,
         const ComplexDouble* y, int incY,
@@ -162,5 +154,4 @@ generic(blam::_dot, const ExecutionPolicy& exec,
   blam::dotc(exec, n, x, incX, y, incY, result);
 }
 
-} // end namespace adl
 } // end namespace blam

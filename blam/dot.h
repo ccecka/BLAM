@@ -30,22 +30,9 @@
 #include <blam/detail/config.h>
 #include <blam/adl/level1/dot.h>
 
-namespace blam
-{
-
 #if 0
 // See <blam/system/generic/dot.h> for interfaces
 // XXX TODO: Import for Doxygen
 #endif
-
-using blam::adl::_dot;
-using blam::adl::_dotu;
-using blam::adl::_dotc;
-
-using blam::adl::dot;
-using blam::adl::dotu;
-using blam::adl::dotc;
-
-} // end namespace blam
 
 #include <blam/system/generic/dot.h>

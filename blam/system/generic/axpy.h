@@ -32,25 +32,21 @@
 
 namespace blam
 {
-namespace adl
-{
 
+// Backend entry point
 template <typename ExecutionPolicy,
           typename Alpha, typename VX, typename VY>
 void
-generic(blam::_axpy, const ExecutionPolicy& exec,
+generic(blam::axpy_t, const ExecutionPolicy& exec,
         int n, const Alpha& alpha,
         const VX* x, int incX,
-        VY* y, int incY)
-{
-  static_assert(sizeof(ExecutionPolicy) == 0, "BLAM UNIMPLEMENTED");
-}
+        VY* y, int incY) = delete;
 
 // incX,incY -> 1,1
 template <typename ExecutionPolicy,
           typename Alpha, typename VX, typename VY>
 void
-generic(blam::_axpy, const ExecutionPolicy& exec,
+generic(blam::axpy_t, const ExecutionPolicy& exec,
         int n, const Alpha& alpha,
         const VX* x,
         VY* y)
@@ -58,5 +54,4 @@ generic(blam::_axpy, const ExecutionPolicy& exec,
   blam::axpy(exec, n, alpha, x, 1, y, 1);
 }
 
-} // end namespace adl
 } // end namespace blam

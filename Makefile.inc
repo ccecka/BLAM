@@ -48,7 +48,7 @@ endif
 
 BLAM_PATH := $(dir $(lastword $(MAKEFILE_LIST)))
 
-CUDA_PATH = /usr/local/cuda
+CUDA_PATH = /usr/local/cuda-9.0
 
 INTEL_PATH = /opt/intel
 MKL_PATH = $(INTEL_PATH)/mkl
@@ -71,12 +71,13 @@ ifeq ($(kernel-name),Darwin)
 	USE_CXX := $(shell which g++)
 endif
 ifeq ($(kernel-name),Linux)
-	USE_CXX := $(shell which g++-4.8)
+	USE_CXX := $(shell which g++-6)
+	#USE_CXX := $(shell which clang++)
 endif
 CXX := $(USE_CXX) -std=c++11
 # Check for CUDA compiler
 USE_NVCC := $(shell which nvcc)
-NVCC     := $(USE_NVCC) -std=c++11 -ccbin=$(USE_CXX)
+NVCC     := $(USE_NVCC) -std=c++11 -ccbin=$(USE_CXX) --expt-extended-lambda
 
 # Dependency directory and flags
 DEPSDIR := $(shell mkdir -p .deps; echo .deps)
@@ -118,6 +119,7 @@ endif
 ifeq ($(PROFILE),1)
 	CXXFLAGS += -g -pg
 endif
+
 # Set up for CUDA if available
 ifeq ($(USE_NVCC),)    # NVCC is not available
 else                   # NVCC is available

@@ -36,35 +36,27 @@
 
 namespace blam
 {
-namespace adl
-{
 
+// Backend entry point
 template <typename ExecutionPolicy,
           typename Alpha, typename MA, typename VX,
           typename Beta, typename VY>
 void
-generic(blam::_gemv, const ExecutionPolicy& exec,
+generic(blam::gemv_t, const ExecutionPolicy& exec,
         StorageOrder order, Transpose trans,
         int m, int n,
         const Alpha& alpha,
         const MA* A, int ldA,
         const VX* x, int incX,
         const Beta& beta,
-        VY* y, int incY)
-{
-  //#if defined(BLAM_USE_DECAY)
-  // dot
-  //#else
-  static_assert(sizeof(ExecutionPolicy) == 0, "BLAM UNIMPLEMENTED");
-  //#endif
-}
+        VY* y, int incY) = delete;
 
 // Default ColMajor
 template <typename ExecutionPolicy,
           typename Alpha, typename MA, typename VX,
           typename Beta, typename VY>
 void
-generic(blam::_gemv, const ExecutionPolicy& exec,
+generic(blam::gemv_t, const ExecutionPolicy& exec,
         Transpose trans,
         int m, int n,
         const Alpha& alpha,
@@ -87,7 +79,7 @@ template <typename ExecutionPolicy,
           typename Alpha, typename MA, typename VX,
           typename Beta, typename VY>
 void
-generic(blam::_gemv, const ExecutionPolicy& exec,
+generic(blam::gemv_t, const ExecutionPolicy& exec,
         int m, int n,
         const Alpha& alpha,
         const MA* A, int ldA,
@@ -104,5 +96,4 @@ generic(blam::_gemv, const ExecutionPolicy& exec,
              y, incY);
 }
 
-} // end namespace adl
 } // end namespace blam

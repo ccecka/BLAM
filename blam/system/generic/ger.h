@@ -36,65 +36,45 @@
 
 namespace blam
 {
-namespace adl
-{
 
+// Backend entry point
 template <typename ExecutionPolicy,
           typename Alpha, typename VX, typename VY, typename MA>
 void
-generic(blam::_ger, const ExecutionPolicy& exec,
+generic(blam::ger_t, const ExecutionPolicy& exec,
         StorageOrder order, int m, int n,
         const Alpha& alpha,
         const VX* x, int incX,
         const VY* y, int incY,
-        MA* A, int ldA)
-{
-  //#if defined(BLAM_USE_DECAY)
-  // axpy
-  //#else
-  static_assert(sizeof(ExecutionPolicy) == 0, "BLAM UNIMPLEMENTED");
-  //#endif
-}
+        MA* A, int ldA) = delete;
 
+// Backend entry point
 template <typename ExecutionPolicy,
           typename Alpha, typename VX, typename VY, typename MA>
 void
-generic(blam::_geru, const ExecutionPolicy& exec,
+generic(blam::geru_t, const ExecutionPolicy& exec,
         StorageOrder order, int m, int n,
         const Alpha& alpha,
         const VX* x, int incX,
         const VY* y, int incY,
-        MA* A, int ldA)
-{
-  //#if defined(BLAM_USE_DECAY)
-  // axpy
-  //#else
-  static_assert(sizeof(ExecutionPolicy) == 0, "BLAM UNIMPLEMENTED");
-  //#endif
-}
+        MA* A, int ldA) = delete;
 
+// Backend entry point
 template <typename ExecutionPolicy,
           typename Alpha, typename VX, typename VY, typename MA>
 void
-generic(blam::_gerc, const ExecutionPolicy& exec,
+generic(blam::gerc_t, const ExecutionPolicy& exec,
         StorageOrder order, int m, int n,
         const Alpha& alpha,
         const VX* x, int incX,
         const VY* y, int incY,
-        MA* A, int ldA)
-{
-  //#if defined(BLAM_USE_DECAY)
-  // axpy
-  //#else
-  static_assert(sizeof(ExecutionPolicy) == 0, "BLAM UNIMPLEMENTED");
-  //#endif
-}
+        MA* A, int ldA) = delete;
 
 // Default to ColMajor
 template <typename ExecutionPolicy,
           typename Alpha, typename VX, typename VY, typename MA>
 void
-generic(blam::_ger, const ExecutionPolicy& exec,
+generic(blam::ger_t, const ExecutionPolicy& exec,
         int m, int n,
         const Alpha& alpha,
         const VX* x, int incX,
@@ -113,7 +93,7 @@ generic(blam::_ger, const ExecutionPolicy& exec,
 template <typename ExecutionPolicy,
           typename Alpha, typename VX, typename VY, typename MA>
 void
-generic(blam::_gerc, const ExecutionPolicy& exec,
+generic(blam::gerc_t, const ExecutionPolicy& exec,
         int m, int n,
         const Alpha& alpha,
         const VX* x, int incX,
@@ -132,7 +112,7 @@ generic(blam::_gerc, const ExecutionPolicy& exec,
 template <typename ExecutionPolicy,
           typename Alpha, typename VX, typename VY, typename MA>
 void
-generic(blam::_geru, const ExecutionPolicy& exec,
+generic(blam::geru_t, const ExecutionPolicy& exec,
         int m, int n,
         const Alpha& alpha,
         const VX* x, int incX,
@@ -151,7 +131,7 @@ generic(blam::_geru, const ExecutionPolicy& exec,
 template <typename ExecutionPolicy,
           typename MA>
 void
-generic(blam::_ger, const ExecutionPolicy& exec,
+generic(blam::ger_t, const ExecutionPolicy& exec,
         StorageOrder order, int m, int n,
         const float& alpha,
         const float* x, int incX,
@@ -170,7 +150,7 @@ generic(blam::_ger, const ExecutionPolicy& exec,
 template <typename ExecutionPolicy,
           typename MA>
 void
-generic(blam::_ger, const ExecutionPolicy& exec,
+generic(blam::ger_t, const ExecutionPolicy& exec,
         StorageOrder order, int m, int n,
         const double& alpha,
         const double* x, int incX,
@@ -189,7 +169,7 @@ generic(blam::_ger, const ExecutionPolicy& exec,
 template <typename ExecutionPolicy,
           typename MA>
 void
-generic(blam::_ger, const ExecutionPolicy& exec,
+generic(blam::ger_t, const ExecutionPolicy& exec,
         StorageOrder order, int m, int n,
         const ComplexFloat& alpha,
         const ComplexFloat* x, int incX,
@@ -208,7 +188,7 @@ generic(blam::_ger, const ExecutionPolicy& exec,
 template <typename ExecutionPolicy,
           typename MA>
 void
-generic(blam::_ger, const ExecutionPolicy& exec,
+generic(blam::ger_t, const ExecutionPolicy& exec,
         StorageOrder order, int m, int n,
         const ComplexDouble& alpha,
         const ComplexDouble* x, int incX,
@@ -223,5 +203,4 @@ generic(blam::_ger, const ExecutionPolicy& exec,
              A, ldA);
 }
 
-} // end namespace adl
 } // end namespace blam

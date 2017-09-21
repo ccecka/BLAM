@@ -30,18 +30,9 @@
 #include <blam/detail/config.h>
 #include <blam/adl/level2/gemv.h>
 
-namespace blam
-{
-
 #if 0
 // See <blam/system/generic/gemv.h> for interfaces
 // XXX TODO: Import for Doxygen
 #endif
-
-using blam::adl::_gemv;
-
-using blam::adl::gemv;
-
-} // end namespace blam
 
 #include <blam/system/generic/gemv.h>

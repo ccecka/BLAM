@@ -27,22 +27,5 @@
 
 #pragma once
 
-namespace blam
-{
-namespace adl
-{
-namespace detail
-{
-
-template <int I>
-struct preference;
-
-template <>
-struct preference<0> {};
-
-template <int I>
-struct preference : public preference<I-1> {};
-
-} // end namespace detail
-} // end namespace adl
-} // end namespace blam
+#include <blam/detail/config.h>
+#include <blam/adl/invoke.h>

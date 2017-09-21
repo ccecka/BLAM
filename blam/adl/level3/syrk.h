@@ -29,14 +29,5 @@
 
 #include <blam/detail/config.h>
 #include <blam/adl/detail/customization_point.h>
-#include <blam/adl/detail/preference.h>
-
-namespace blam
-{
-namespace adl
-{
 
 BLAM_CUSTOMIZATION_POINT(syrk);
-
-} // end namespace adl
-} // end namespace blam

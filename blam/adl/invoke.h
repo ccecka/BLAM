@@ -1,6 +1,6 @@
 /******************************************************************************
- * Copyright (C) 2016, Cris Cecka.  All rights reserved.
- * Copyright (C) 2016, NVIDIA CORPORATION.  All rights reserved.
+ * Copyright (C) 2016-2017, Cris Cecka.  All rights reserved.
+ * Copyright (C) 2016-2017, NVIDIA CORPORATION.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -27,7 +27,53 @@
 
 #pragma once
 
-#include <blam/detail/config.h>
-#include <blam/adl/detail/customization_point.h>
+#include <utility>
 
-BLAM_CUSTOMIZATION_POINT(trmv);
+#include <blam/adl/detail/static_const.h>
+#include <blam/adl/detail/multi_function.h>
+
+namespace blamadl
+{
+
+struct member_function_invoke
+{
+  template <class Policy, class... Args>
+  constexpr auto operator()(Policy&& policy, Args&&... args) const ->
+      decltype(std::forward<Policy>(policy).invoke(std::forward<Args>(args)...))
+  {
+    return std::forward<Policy>(policy).invoke(std::forward<Args>(args)...);
+  }
+};
+
+struct free_function_invoke
+{
+  template <class Policy, class... Args>
+  constexpr auto operator()(Policy&& policy, Args&&... args) const ->
+      decltype(invoke(std::forward<Policy>(policy), std::forward<Args>(args)...))
+  {
+    return invoke(std::forward<Policy>(policy), std::forward<Args>(args)...);
+  }
+};
+
+struct invoke_function
+{
+  template <class Function, class... Args>
+  constexpr auto operator()(Function&& f, Args&&... args) const ->
+      decltype(std::forward<Function>(f)(std::forward<Args>(args)...))
+  {
+    return std::forward<Function>(f)(std::forward<Args>(args)...);
+  }
+};
+
+} // end namespace blamadl
+
+namespace blam
+{
+using invoke_t = detail::multi_function<blamadl::member_function_invoke,
+                                        blamadl::free_function_invoke,
+                                        blamadl::invoke_function>;
+namespace {
+constexpr auto const& invoke = detail::static_const<invoke_t>::value;
+} // end anon namespace
+
+} // end namespace blam

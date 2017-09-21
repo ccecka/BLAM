@@ -29,16 +29,7 @@
 
 #include <blam/detail/config.h>
 #include <blam/adl/detail/customization_point.h>
-#include <blam/adl/detail/preference.h>
-
-namespace blam
-{
-namespace adl
-{
 
 BLAM_CUSTOMIZATION_POINT(ger);
 BLAM_CUSTOMIZATION_POINT(geru);
 BLAM_CUSTOMIZATION_POINT(gerc);
-
-} // end namespace adl
-} // end namespace blam

@@ -25,26 +25,27 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  ******************************************************************************/
 
+#include <vector>
+
 #include "disable_function.h"
 #include "print_type.h"
 
 #define BLAM_USE_DECAY
 #include <blam/batch_gemm.h>
 #include <blam/system/mkl/mkl.h>
-
-#include <thrust/host_vector.h>
+#include <blam/system/decay/decay.h>
 
 namespace mine {
 
 template <class DerivedPolicy>
-struct execution_policy : DerivedPolicy {
+struct execution_policy : public DerivedPolicy {
   mutable std::string prefix_;
 };
 
 
 template <class Function, class DerivedPolicy, class... T>
 void
-mutate(Function f, const execution_policy<DerivedPolicy>& exec, T&&... t)
+invoke(const execution_policy<DerivedPolicy>& exec, Function f, T&&... t)
 {
   std::cout << exec.prefix_ << type_name<Function>() << "(" << type_name<DerivedPolicy>() << ", ";
   print_all(std::forward<T>(t)...);
@@ -69,17 +70,17 @@ test(const ExecutionPolicy& exec, int n)
   int p = n;
 
   T alpha = 1.0, beta = 0.0;
-  thrust::host_vector<T> A(m*k, T(0.5));
-  thrust::host_vector<T> B(k*n*p, T(2.0));
-  thrust::host_vector<T> C(m*n*p, T(0.0));
+  std::vector<T> A(m*k, T(0.5));
+  std::vector<T> B(k*n*p, T(2.0));
+  std::vector<T> C(m*n*p, T(0.0));
 
   blam::batch_gemm(exec,
                    m, n, k,
                    alpha,
-                   thrust::raw_pointer_cast(A.data()), m, 0,
-                   thrust::raw_pointer_cast(B.data()), k, k*n,
+                   A.data(), m, 0,
+                   B.data(), k, k*n,
                    beta,
-                   thrust::raw_pointer_cast(C.data()), m, m*n,
+                   C.data(), m, m*n,
                    p);
 }
 

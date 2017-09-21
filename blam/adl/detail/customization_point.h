@@ -27,43 +27,120 @@
 
 #pragma once
 
-#include <utility>  // std::forward, std::declval
+#include <utility>
 
+#include <blam/adl/detail/multi_function.h>
 #include <blam/adl/detail/static_const.h>
-#include <blam/adl/detail/preference.h>
+#include <blam/invoke.h>
 
-// XXX TODO: Alternate name for mutate? invoke-dispatch customization pattern?
-// XXX TODO: Qualified call to blam::adl::generic?
-// XXX TODO: Move generic to subdirectory of adl?
+namespace blam
+{
+namespace detail
+{
 
-#define BLAM_CUSTOMIZATION_POINT(NAME)                                         \
-  struct _##NAME {                                                             \
-   private:                                                                    \
-    template <class... T,                                                      \
-              class R = decltype(mutate (std::declval<_##NAME>(), std::declval<T>()...))> \
-    static constexpr R impl(detail::preference<2>, T&&... t) {                 \
-      return mutate (_##NAME {}, std::forward<T>(t)...);                       \
-    }                                                                          \
-                                                                               \
-    template <class... T,                                                      \
-              class R = decltype(NAME (std::declval<T>()...))>                 \
-    static constexpr R impl(detail::preference<1>, T&&... t) {                 \
-      return NAME (std::forward<T>(t)...);                                     \
-    }                                                                          \
-                                                                               \
-    template <class... T,                                                      \
-              class R = decltype(generic (std::declval<_##NAME>(), std::declval<T>()...))>  \
-    static constexpr R impl(detail::preference<0>, T&&... t) {                 \
-      return generic (_##NAME {}, std::forward<T>(t)...);                      \
-    }                                                                          \
-   public:                                                                     \
-    template <class... T,                                                      \
-              class R = decltype(_##NAME::impl(detail::preference<2>{}, std::declval<T>()...))> \
-    constexpr R operator()(T&&... t) const {                                   \
-      return _##NAME::impl(detail::preference<2>{}, std::forward<T>(t)...);    \
-    }                                                                          \
-  };                                                                           \
-                                                                               \
-  namespace {                                                                  \
-  constexpr auto const& NAME = detail::static_const<_##NAME>::value;           \
+template <class Derived, class... Functions>
+class customization_point : multi_function<Functions...>
+{
+ private:
+  using super_t = multi_function<Functions...>;
+  using derived_type = Derived;
+
+  const derived_type& self() const
+  {
+    return static_cast<const derived_type&>(*this);
+  }
+
+ public:
+  constexpr customization_point() = default;
+
+  constexpr customization_point(Functions... funcs)
+      : super_t(funcs...)
+  {}
+
+  /*
+  template <class... Args>
+  constexpr auto operator()(Args&&... args) const ->
+      decltype(super_t::operator()(self(), std::forward<Args>(args)...))
+  {
+    return super_t::operator()(self(), std::forward<Args>(args)...);
+  }
+  */
+
+  // NVCC EDG Bug Workaround
+  template <class... Args>
+  constexpr auto operator()(Args&&... args) const ->
+      decltype(static_cast<const super_t&>(*this)(self(), std::forward<Args>(args)...))
+  {
+    return static_cast<const super_t&>(*this)(self(), std::forward<Args>(args)...);
+  }
+};
+
+} // end namespace detail
+} // end namespace blam
+
+// A BLAM Customization Point is a forward-facing, extendable function
+// provided by BLAM that:
+// 1. Is a Neibler-style customization point and is always the BLAM entry-point.
+// 2. When a Customization Point is called like a function, it:
+//   a. First, tries to call the Customization Point by name as a member function
+//       arg1.customization-point(args...)
+//      I.e. if arg1 is an execution policy that provides this member function
+//   b. Second, tries to call the Customization Point as a free function
+//       customization-point(arg1, args...)
+//       blam::invoke(arg1, customization-point, args...)
+//      I.e. with ADL the arguments will determine the appropriate namespace
+//      Note invoke(...) is considered equally to the free function.
+//   c. Finally, tries to call a 'generic' fallback function
+//       generic(customization-point, args...)
+//      The generic fallbacks implement general argument defaults and transforms.
+
+// This implementation works around an NVCC EDG Bug by defining the
+// call_ functors in a separate namespace, which should not be necessary.
+
+#define BLAM_CUSTOMIZATION_POINT(NAME)                                  \
+  namespace blamadl {                                                   \
+  struct call_member_##NAME {                                           \
+    template <class CP, class Arg1, class... Args>                      \
+    constexpr auto operator()(CP&&, Arg1&& arg1, Args&&... args) const -> \
+        decltype(std::forward<Arg1>(arg1).NAME(std::forward<Args>(args)...)) \
+    {                                                                   \
+      return std::forward<Arg1>(arg1).NAME(std::forward<Args>(args)...); \
+    }                                                                   \
+  };                                                                    \
+                                                                        \
+  struct call_free_##NAME {                                             \
+    template <class CP, class Arg1, class... Args>                      \
+    constexpr auto operator()(CP&& cp, Arg1&& arg1, Args&&... args) const -> \
+        decltype(blam::invoke(std::forward<Arg1>(arg1), std::forward<CP>(cp), std::forward<Args>(args)...)) \
+    {                                                                   \
+      return blam::invoke(std::forward<Arg1>(arg1), std::forward<CP>(cp), std::forward<Args>(args)...); \
+    }                                                                   \
+                                                                        \
+    template <class CP, class... Args>                                  \
+    constexpr auto operator()(CP&&, Args&&... args) const ->            \
+        decltype(NAME(std::forward<Args>(args)...))                     \
+    {                                                                   \
+      return NAME(std::forward<Args>(args)...);                         \
+    }                                                                   \
+  };                                                                    \
+                                                                        \
+  struct call_generic_##NAME {                                          \
+    template <class CP, class... Args>                                  \
+    constexpr auto operator()(CP&& cp, Args&&... args) const ->         \
+        decltype(generic(std::forward<CP>(cp), std::forward<Args>(args)...)) \
+    {                                                                   \
+      return generic(std::forward<CP>(cp), std::forward<Args>(args)...); \
+    }                                                                   \
+  };                                                                    \
+  }                                                                     \
+                                                                        \
+  namespace blam {                                                      \
+  struct NAME##_t : detail::customization_point<NAME##_t,               \
+                                                blamadl::call_member_##NAME, \
+                                                blamadl::call_free_##NAME, \
+                                                blamadl::call_generic_##NAME> \
+  {};                                                                   \
+  namespace {                                                           \
+  constexpr auto const& NAME = detail::static_const<NAME##_t>::value;   \
+  }                                                                     \
   }
