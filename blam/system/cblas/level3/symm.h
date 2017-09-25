@@ -37,7 +37,7 @@ namespace cblas
 
 // ssymm
 void
-symm(const CBLAS_LAYOUT order, const CBLAS_SIDE side, const CBLAS_UPLO uplo,
+symm(CBLAS_LAYOUT order, CBLAS_SIDE side, CBLAS_UPLO uplo,
      int m, int n,
      const float& alpha,
      const float* A, int ldA,
@@ -58,7 +58,7 @@ symm(const CBLAS_LAYOUT order, const CBLAS_SIDE side, const CBLAS_UPLO uplo,
 
 // dsymm
 void
-symm(const CBLAS_LAYOUT order, const CBLAS_SIDE side, const CBLAS_UPLO uplo,
+symm(CBLAS_LAYOUT order, CBLAS_SIDE side, CBLAS_UPLO uplo,
      int m, int n,
      const double& alpha,
      const double* A, int ldA,
@@ -79,7 +79,7 @@ symm(const CBLAS_LAYOUT order, const CBLAS_SIDE side, const CBLAS_UPLO uplo,
 
 // csymm
 void
-symm(const CBLAS_LAYOUT order, const CBLAS_SIDE side, const CBLAS_UPLO uplo,
+symm(CBLAS_LAYOUT order, CBLAS_SIDE side, CBLAS_UPLO uplo,
      int m, int n,
      const ComplexFloat& alpha,
      const ComplexFloat* A, int ldA,
@@ -100,7 +100,7 @@ symm(const CBLAS_LAYOUT order, const CBLAS_SIDE side, const CBLAS_UPLO uplo,
 
 // zsymm
 void
-symm(const CBLAS_LAYOUT order, const CBLAS_SIDE side, const CBLAS_UPLO uplo,
+symm(CBLAS_LAYOUT order, CBLAS_SIDE side, CBLAS_UPLO uplo,
      int m, int n,
      const ComplexDouble& alpha,
      const ComplexDouble* A, int ldA,

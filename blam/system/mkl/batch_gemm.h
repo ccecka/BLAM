@@ -39,7 +39,7 @@ namespace mkl
 
 // sgemm
 void
-batch_gemm(const CBLAS_LAYOUT order,
+batch_gemm(CBLAS_LAYOUT order,
            const CBLAS_TRANSPOSE* transA, const CBLAS_TRANSPOSE* transB,
            const int* m, const int* n, const int* k,
            const float* alpha,
@@ -63,7 +63,7 @@ batch_gemm(const CBLAS_LAYOUT order,
 
 // dgemm
 void
-batch_gemm(const CBLAS_LAYOUT order,
+batch_gemm(CBLAS_LAYOUT order,
            const CBLAS_TRANSPOSE* transA, const CBLAS_TRANSPOSE* transB,
            const int* m, const int* n, const int* k,
            const double* alpha,
@@ -87,7 +87,7 @@ batch_gemm(const CBLAS_LAYOUT order,
 
 // cgemm
 void
-batch_gemm(const CBLAS_LAYOUT order,
+batch_gemm(CBLAS_LAYOUT order,
            const CBLAS_TRANSPOSE* transA, const CBLAS_TRANSPOSE* transB,
            const int* m, const int* n, const int* k,
            const ComplexFloat* alpha,
@@ -111,7 +111,7 @@ batch_gemm(const CBLAS_LAYOUT order,
 
 // zgemm
 void
-batch_gemm(const CBLAS_LAYOUT order,
+batch_gemm(CBLAS_LAYOUT order,
            const CBLAS_TRANSPOSE* transA, const CBLAS_TRANSPOSE* transB,
            const int* m, const int* n, const int* k,
            const ComplexDouble* alpha,

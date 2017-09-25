@@ -37,8 +37,8 @@ namespace cblas
 
 // strsv
 void
-trsv(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
-     const CBLAS_TRANSPOSE transA, const CBLAS_DIAG diag,
+trsv(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
+     CBLAS_TRANSPOSE transA, CBLAS_DIAG diag,
      int n,
      const float* A, int ldA,
      float* x, int incX)
@@ -53,8 +53,8 @@ trsv(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
 
 // dtrsv
 void
-trsv(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
-     const CBLAS_TRANSPOSE transA, const CBLAS_DIAG diag,
+trsv(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
+     CBLAS_TRANSPOSE transA, CBLAS_DIAG diag,
      int n,
      const double* A, int ldA,
      double* x, int incX)
@@ -69,8 +69,8 @@ trsv(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
 
 // ctrsv
 void
-trsv(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
-     const CBLAS_TRANSPOSE transA, const CBLAS_DIAG diag,
+trsv(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
+     CBLAS_TRANSPOSE transA, CBLAS_DIAG diag,
      int n,
      const ComplexFloat* A, int ldA,
      ComplexFloat* x, int incX)
@@ -85,8 +85,8 @@ trsv(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
 
 // ztrsv
 void
-trsv(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
-     const CBLAS_TRANSPOSE transA, const CBLAS_DIAG diag,
+trsv(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
+     CBLAS_TRANSPOSE transA, CBLAS_DIAG diag,
      int n,
      const ComplexDouble* A, int ldA,
      ComplexDouble* x, int incX)

@@ -37,7 +37,7 @@ namespace cblas
 
 // sgbmv
 void
-gbmv(const CBLAS_LAYOUT order, const CBLAS_TRANSPOSE trans,
+gbmv(CBLAS_LAYOUT order, CBLAS_TRANSPOSE trans,
      int m, int n, int kl, int ku,
      const float& alpha,
      const float* A, int ldA,
@@ -58,7 +58,7 @@ gbmv(const CBLAS_LAYOUT order, const CBLAS_TRANSPOSE trans,
 
 // dgbmv
 void
-gbmv(const CBLAS_LAYOUT order, const CBLAS_TRANSPOSE trans,
+gbmv(CBLAS_LAYOUT order, CBLAS_TRANSPOSE trans,
      int m, int n, int kl, int ku,
      const double& alpha,
      const double* A, int ldA,
@@ -79,7 +79,7 @@ gbmv(const CBLAS_LAYOUT order, const CBLAS_TRANSPOSE trans,
 
 // cgbmv
 void
-gbmv(const CBLAS_LAYOUT order, const CBLAS_TRANSPOSE trans,
+gbmv(CBLAS_LAYOUT order, CBLAS_TRANSPOSE trans,
      int m, int n, int kl, int ku,
      const ComplexFloat& alpha,
      const ComplexFloat* A, int ldA,
@@ -100,7 +100,7 @@ gbmv(const CBLAS_LAYOUT order, const CBLAS_TRANSPOSE trans,
 
 // zgbmv
 void
-gbmv(const CBLAS_LAYOUT order, const CBLAS_TRANSPOSE trans,
+gbmv(CBLAS_LAYOUT order, CBLAS_TRANSPOSE trans,
      int m, int n, int kl, int ku,
      const ComplexDouble& alpha,
      const ComplexDouble* A, int ldA,

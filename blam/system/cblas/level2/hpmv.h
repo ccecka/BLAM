@@ -37,7 +37,7 @@ namespace cblas
 
 // chpmv
 void
-hpmv(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
+hpmv(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
      int n,
      const ComplexFloat& alpha,
      const ComplexFloat* A,
@@ -58,7 +58,7 @@ hpmv(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
 
 // zhpmv
 void
-hpmv(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
+hpmv(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
      int n,
      const ComplexDouble& alpha,
      const ComplexDouble* A,

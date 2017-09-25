@@ -37,8 +37,8 @@ namespace cblas
 
 // ssyrk
 void
-syrk(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
-     const CBLAS_TRANSPOSE trans,
+syrk(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
+     CBLAS_TRANSPOSE trans,
      int n, int k,
      const float& alpha,
      const float* A, int ldA,
@@ -57,8 +57,8 @@ syrk(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
 
 // dsyrk
 void
-syrk(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
-     const CBLAS_TRANSPOSE trans,
+syrk(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
+     CBLAS_TRANSPOSE trans,
      int n, int k,
      const double& alpha,
      const double* A, int ldA,
@@ -77,8 +77,8 @@ syrk(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
 
 // csyrk
 void
-syrk(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
-     const CBLAS_TRANSPOSE trans,
+syrk(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
+     CBLAS_TRANSPOSE trans,
      int n, int k,
      const ComplexFloat& alpha,
      const ComplexFloat* A, int ldA,
@@ -97,8 +97,8 @@ syrk(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
 
 // zsyrk
 void
-syrk(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
-     const CBLAS_TRANSPOSE trans,
+syrk(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
+     CBLAS_TRANSPOSE trans,
      int n, int k,
      const ComplexDouble& alpha,
      const ComplexDouble* A, int ldA,

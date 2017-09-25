@@ -37,7 +37,7 @@ namespace cblas
 
 // ssyr
 void
-syr(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
+syr(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
     int n,
     const float& alpha,
     const float* x, int incX,
@@ -53,7 +53,7 @@ syr(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
 
 // dsyr
 void
-syr(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
+syr(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
     int n,
     const double& alpha,
     const double* x, int incX,

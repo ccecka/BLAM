@@ -37,7 +37,7 @@ namespace cblas
 
 // chemv
 void
-hemv(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
+hemv(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
      int n,
      const ComplexFloat& alpha,
      const ComplexFloat* A, int ldA,
@@ -58,7 +58,7 @@ hemv(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
 
 // zhemv
 void
-hemv(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
+hemv(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
      int n,
      const ComplexDouble& alpha,
      const ComplexDouble* A, int ldA,

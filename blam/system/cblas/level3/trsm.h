@@ -37,8 +37,8 @@ namespace cblas
 
 // strsm
 void
-trsm(const CBLAS_LAYOUT order, const CBLAS_SIDE side, const CBLAS_UPLO uplo,
-     const CBLAS_TRANSPOSE transA, const CBLAS_DIAG diag,
+trsm(CBLAS_LAYOUT order, CBLAS_SIDE side, CBLAS_UPLO uplo,
+     CBLAS_TRANSPOSE transA, CBLAS_DIAG diag,
      int m, int n,
      const float& alpha,
      const float* A, int ldA,
@@ -55,8 +55,8 @@ trsm(const CBLAS_LAYOUT order, const CBLAS_SIDE side, const CBLAS_UPLO uplo,
 
 // dtrsm
 void
-trsm(const CBLAS_LAYOUT order, const CBLAS_SIDE side, const CBLAS_UPLO uplo,
-     const CBLAS_TRANSPOSE transA, const CBLAS_DIAG diag,
+trsm(CBLAS_LAYOUT order, CBLAS_SIDE side, CBLAS_UPLO uplo,
+     CBLAS_TRANSPOSE transA, CBLAS_DIAG diag,
      int m, int n,
      const double& alpha,
      const double* A, int ldA,
@@ -73,8 +73,8 @@ trsm(const CBLAS_LAYOUT order, const CBLAS_SIDE side, const CBLAS_UPLO uplo,
 
 // ctrsm
 void
-trsm(const CBLAS_LAYOUT order, const CBLAS_SIDE side, const CBLAS_UPLO uplo,
-     const CBLAS_TRANSPOSE transA, const CBLAS_DIAG diag,
+trsm(CBLAS_LAYOUT order, CBLAS_SIDE side, CBLAS_UPLO uplo,
+     CBLAS_TRANSPOSE transA, CBLAS_DIAG diag,
      int m, int n,
      const ComplexFloat& alpha,
      const ComplexFloat* A, int ldA,
@@ -91,8 +91,8 @@ trsm(const CBLAS_LAYOUT order, const CBLAS_SIDE side, const CBLAS_UPLO uplo,
 
 // ztrsm
 void
-trsm(const CBLAS_LAYOUT order, const CBLAS_SIDE side, const CBLAS_UPLO uplo,
-     const CBLAS_TRANSPOSE transA, const CBLAS_DIAG diag,
+trsm(CBLAS_LAYOUT order, CBLAS_SIDE side, CBLAS_UPLO uplo,
+     CBLAS_TRANSPOSE transA, CBLAS_DIAG diag,
      int m, int n,
      const ComplexDouble& alpha,
      const ComplexDouble* A, int ldA,

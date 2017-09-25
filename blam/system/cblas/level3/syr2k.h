@@ -37,8 +37,8 @@ namespace cblas
 
 // ssyr2k
 void
-syr2k(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
-      const CBLAS_TRANSPOSE trans,
+syr2k(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
+      CBLAS_TRANSPOSE trans,
       int n, int k,
       const float& alpha,
       const float* A, int ldA,
@@ -59,8 +59,8 @@ syr2k(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
 
 // dsyr2k
 void
-syr2k(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
-      const CBLAS_TRANSPOSE trans,
+syr2k(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
+      CBLAS_TRANSPOSE trans,
       int n, int k,
       const double& alpha,
       const double* A, int ldA,
@@ -81,8 +81,8 @@ syr2k(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
 
 // csyr2k
 void
-syr2k(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
-      const CBLAS_TRANSPOSE trans,
+syr2k(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
+      CBLAS_TRANSPOSE trans,
       int n, int k,
       const ComplexFloat& alpha,
       const ComplexFloat* A, int ldA,
@@ -103,8 +103,8 @@ syr2k(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
 
 // zsyr2k
 void
-syr2k(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
-      const CBLAS_TRANSPOSE trans,
+syr2k(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
+      CBLAS_TRANSPOSE trans,
       int n, int k,
       const ComplexDouble& alpha,
       const ComplexDouble* A, int ldA,

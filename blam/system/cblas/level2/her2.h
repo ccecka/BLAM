@@ -37,7 +37,7 @@ namespace cblas
 
 // cgerc
 void
-her2(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
+her2(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
      int n,
      const ComplexFloat& alpha,
      const ComplexFloat* x, int incX,
@@ -56,7 +56,7 @@ her2(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
 
 // zgerc
 void
-her2(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
+her2(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
      int n,
      const ComplexDouble& alpha,
      const ComplexDouble* x, int incX,

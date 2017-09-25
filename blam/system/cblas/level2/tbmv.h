@@ -37,8 +37,8 @@ namespace cblas
 
 // stbmv
 void
-tbmv(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
-     const CBLAS_TRANSPOSE transA, const CBLAS_DIAG diag,
+tbmv(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
+     CBLAS_TRANSPOSE transA, CBLAS_DIAG diag,
      int n, int k,
      const float* A, int ldA,
      float* x, int incX)
@@ -53,8 +53,8 @@ tbmv(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
 
 // dtbmv
 void
-tbmv(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
-     const CBLAS_TRANSPOSE transA, const CBLAS_DIAG diag,
+tbmv(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
+     CBLAS_TRANSPOSE transA, CBLAS_DIAG diag,
      int n, int k,
      const double* A, int ldA,
      double* x, int incX)
@@ -69,8 +69,8 @@ tbmv(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
 
 // ctbmv
 void
-tbmv(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
-     const CBLAS_TRANSPOSE transA, const CBLAS_DIAG diag,
+tbmv(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
+     CBLAS_TRANSPOSE transA, CBLAS_DIAG diag,
      int n, int k,
      const ComplexFloat* A, int ldA,
      ComplexFloat* x, int incX)
@@ -85,8 +85,8 @@ tbmv(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
 
 // ztbmv
 void
-tbmv(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
-     const CBLAS_TRANSPOSE transA, const CBLAS_DIAG diag,
+tbmv(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
+     CBLAS_TRANSPOSE transA, CBLAS_DIAG diag,
      int n, int k,
      const ComplexDouble* A, int ldA,
      ComplexDouble* x, int incX)

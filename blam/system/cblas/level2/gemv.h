@@ -37,7 +37,7 @@ namespace cblas
 
 // sgemv
 void
-gemv(const CBLAS_LAYOUT order, const CBLAS_TRANSPOSE trans,
+gemv(CBLAS_LAYOUT order, CBLAS_TRANSPOSE trans,
      int m, int n,
      const float& alpha,
      const float* A, int ldA,
@@ -58,7 +58,7 @@ gemv(const CBLAS_LAYOUT order, const CBLAS_TRANSPOSE trans,
 
 // dgemv
 void
-gemv(const CBLAS_LAYOUT order, const CBLAS_TRANSPOSE trans,
+gemv(CBLAS_LAYOUT order, CBLAS_TRANSPOSE trans,
      int m, int n,
      const double& alpha,
      const double* A, int ldA,
@@ -79,7 +79,7 @@ gemv(const CBLAS_LAYOUT order, const CBLAS_TRANSPOSE trans,
 
 // cgemv
 void
-gemv(const CBLAS_LAYOUT order, const CBLAS_TRANSPOSE trans,
+gemv(CBLAS_LAYOUT order, CBLAS_TRANSPOSE trans,
      int m, int n,
      const ComplexFloat& alpha,
      const ComplexFloat* A, int ldA,
@@ -100,7 +100,7 @@ gemv(const CBLAS_LAYOUT order, const CBLAS_TRANSPOSE trans,
 
 // zgemv
 void
-gemv(const CBLAS_LAYOUT order, const CBLAS_TRANSPOSE trans,
+gemv(CBLAS_LAYOUT order, CBLAS_TRANSPOSE trans,
      int m, int n,
      const ComplexDouble& alpha,
      const ComplexDouble* A, int ldA,

@@ -37,8 +37,8 @@ namespace cblas
 
 // stpsv
 void
-tpsv(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
-     const CBLAS_TRANSPOSE transA, const CBLAS_DIAG diag,
+tpsv(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
+     CBLAS_TRANSPOSE transA, CBLAS_DIAG diag,
      int n,
      const float* A,
      float* x, int incX)
@@ -53,8 +53,8 @@ tpsv(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
 
 // dtpsv
 void
-tpsv(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
-     const CBLAS_TRANSPOSE transA, const CBLAS_DIAG diag,
+tpsv(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
+     CBLAS_TRANSPOSE transA, CBLAS_DIAG diag,
      int n,
      const double* A,
      double* x, int incX)
@@ -69,8 +69,8 @@ tpsv(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
 
 // ctpsv
 void
-tpsv(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
-     const CBLAS_TRANSPOSE transA, const CBLAS_DIAG diag,
+tpsv(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
+     CBLAS_TRANSPOSE transA, CBLAS_DIAG diag,
      int n,
      const ComplexFloat* A,
      ComplexFloat* x, int incX)
@@ -85,8 +85,8 @@ tpsv(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
 
 // ztpsv
 void
-tpsv(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
-     const CBLAS_TRANSPOSE transA, const CBLAS_DIAG diag,
+tpsv(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
+     CBLAS_TRANSPOSE transA, CBLAS_DIAG diag,
      int n,
      const ComplexDouble* A,
      ComplexDouble* x, int incX)

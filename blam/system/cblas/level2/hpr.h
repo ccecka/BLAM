@@ -37,7 +37,7 @@ namespace cblas
 
 // chpr
 void
-hpr(const CBLAS_LAYOUT order,   const CBLAS_UPLO uplo,
+hpr(CBLAS_LAYOUT order,   CBLAS_UPLO uplo,
     int n,
     const float& alpha,
     const ComplexFloat* x, int incX,
@@ -53,7 +53,7 @@ hpr(const CBLAS_LAYOUT order,   const CBLAS_UPLO uplo,
 
 // zhpr
 void
-hpr(const CBLAS_LAYOUT order,   const CBLAS_UPLO uplo,
+hpr(CBLAS_LAYOUT order,   CBLAS_UPLO uplo,
     int n,
     const double& alpha,
     const ComplexDouble* x, int incX,

@@ -37,8 +37,8 @@ namespace cblas
 
 // sgemm
 void
-gemm(const CBLAS_LAYOUT order,
-     const CBLAS_TRANSPOSE transA, const CBLAS_TRANSPOSE transB,
+gemm(CBLAS_LAYOUT order,
+     CBLAS_TRANSPOSE transA, CBLAS_TRANSPOSE transB,
      int m, int n, int k,
      const float& alpha,
      const float* A, int ldA,
@@ -59,8 +59,8 @@ gemm(const CBLAS_LAYOUT order,
 
 // dgemm
 void
-gemm(const CBLAS_LAYOUT order,
-     const CBLAS_TRANSPOSE transA, const CBLAS_TRANSPOSE transB,
+gemm(CBLAS_LAYOUT order,
+     CBLAS_TRANSPOSE transA, CBLAS_TRANSPOSE transB,
      int m, int n, int k,
      const double& alpha,
      const double* A, int ldA,
@@ -81,8 +81,8 @@ gemm(const CBLAS_LAYOUT order,
 
 // cgemm
 void
-gemm(const CBLAS_LAYOUT order,
-     const CBLAS_TRANSPOSE transA, const CBLAS_TRANSPOSE transB,
+gemm(CBLAS_LAYOUT order,
+     CBLAS_TRANSPOSE transA, CBLAS_TRANSPOSE transB,
      int m, int n, int k,
      const ComplexFloat& alpha,
      const ComplexFloat* A, int ldA,
@@ -103,8 +103,8 @@ gemm(const CBLAS_LAYOUT order,
 
 // zgemm
 void
-gemm(const CBLAS_LAYOUT order,
-     const CBLAS_TRANSPOSE transA, const CBLAS_TRANSPOSE transB,
+gemm(CBLAS_LAYOUT order,
+     CBLAS_TRANSPOSE transA, CBLAS_TRANSPOSE transB,
      int m, int n, int k,
      const ComplexDouble& alpha,
      const ComplexDouble* A, int ldA,

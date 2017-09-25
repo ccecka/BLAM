@@ -37,8 +37,8 @@ namespace cblas
 
 // cher2k
 void
-her2k(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
-      const CBLAS_TRANSPOSE trans,
+her2k(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
+      CBLAS_TRANSPOSE trans,
       int n, int k,
       const ComplexFloat& alpha,
       const ComplexFloat* A, int ldA,
@@ -59,8 +59,8 @@ her2k(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
 
 // zher2k
 void
-her2k(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
-      const CBLAS_TRANSPOSE trans,
+her2k(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
+      CBLAS_TRANSPOSE trans,
       int n, int k,
       const ComplexDouble& alpha,
       const ComplexDouble* A, int ldA,

@@ -37,7 +37,7 @@ namespace cblas
 
 // sger
 void
-geru(const CBLAS_LAYOUT order,
+geru(CBLAS_LAYOUT order,
      int m, int n,
      const float& alpha,
      const float* x, int incX,
@@ -56,7 +56,7 @@ geru(const CBLAS_LAYOUT order,
 
 // dger
 void
-geru(const CBLAS_LAYOUT order,
+geru(CBLAS_LAYOUT order,
      int m, int n,
      const double& alpha,
      const double* x, int incX,
@@ -75,7 +75,7 @@ geru(const CBLAS_LAYOUT order,
 
 // cgeru
 void
-geru(const CBLAS_LAYOUT order,
+geru(CBLAS_LAYOUT order,
      int m, int n,
      const ComplexFloat& alpha,
      const ComplexFloat* x, int incX,
@@ -94,7 +94,7 @@ geru(const CBLAS_LAYOUT order,
 
 // zgeru
 void
-geru(const CBLAS_LAYOUT order,
+geru(CBLAS_LAYOUT order,
      int m, int n,
      const ComplexDouble& alpha,
      const ComplexDouble* x, int incX,
@@ -113,7 +113,7 @@ geru(const CBLAS_LAYOUT order,
 
 // cgerc
 void
-gerc(const CBLAS_LAYOUT order,
+gerc(CBLAS_LAYOUT order,
      int m, int n,
      const ComplexFloat& alpha,
      const ComplexFloat* x, int incX,
@@ -132,7 +132,7 @@ gerc(const CBLAS_LAYOUT order,
 
 // zgerc
 void
-gerc(const CBLAS_LAYOUT order,
+gerc(CBLAS_LAYOUT order,
      int m, int n,
      const ComplexDouble& alpha,
      const ComplexDouble* x, int incX,

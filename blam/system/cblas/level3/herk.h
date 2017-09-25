@@ -37,8 +37,8 @@ namespace cblas
 
 // cherk
 void
-herk(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
-     const CBLAS_TRANSPOSE trans, int n, int k,
+herk(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
+     CBLAS_TRANSPOSE trans, int n, int k,
      const float& alpha,
      const ComplexFloat* A, int ldA,
      const float& beta,
@@ -56,8 +56,8 @@ herk(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
 
 // zherk
 void
-herk(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
-     const CBLAS_TRANSPOSE trans, int n, int k,
+herk(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
+     CBLAS_TRANSPOSE trans, int n, int k,
      const double& alpha,
      const ComplexDouble* A, int ldA,
      const double& beta,

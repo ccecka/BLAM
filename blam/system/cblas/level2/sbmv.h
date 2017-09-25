@@ -37,7 +37,7 @@ namespace cblas
 
 // ssbmv
 void
-sbmv(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
+sbmv(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
      int n, int k,
      const float& alpha,
      const float* A, int ldA,
@@ -58,7 +58,7 @@ sbmv(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
 
 // dsbmv
 void
-sbmv(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
+sbmv(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
      int n, int k,
      const double& alpha,
      const double* A, int ldA,

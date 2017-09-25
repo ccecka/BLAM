@@ -37,7 +37,7 @@ namespace cblas
 
 // sspr
 void
-spr(const CBLAS_LAYOUT order,   const CBLAS_UPLO uplo,
+spr(CBLAS_LAYOUT order,   CBLAS_UPLO uplo,
     int n,
     const float& alpha,
     const float* x, int incX,
@@ -53,7 +53,7 @@ spr(const CBLAS_LAYOUT order,   const CBLAS_UPLO uplo,
 
 // dspr
 void
-spr(const CBLAS_LAYOUT order,   const CBLAS_UPLO uplo,
+spr(CBLAS_LAYOUT order,   CBLAS_UPLO uplo,
     int n,
     const double& alpha,
     const double* x, int incX,

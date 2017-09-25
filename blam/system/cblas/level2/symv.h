@@ -37,7 +37,7 @@ namespace cblas
 
 // ssymv
 void
-symv(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
+symv(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
      int n, const float& alpha,
      const float* A, int ldA,
      const float* x, int incX,
@@ -56,7 +56,7 @@ symv(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
 
 // dsymv
 void
-symv(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
+symv(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
      int n, const double& alpha,
      const double* A, int ldA,
      const double* x, int incX,

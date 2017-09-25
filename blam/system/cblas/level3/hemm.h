@@ -37,8 +37,8 @@ namespace cblas
 
 // chemm
 void
-hemm(const CBLAS_LAYOUT order,
-     const CBLAS_SIDE side, const CBLAS_UPLO uplo,
+hemm(CBLAS_LAYOUT order,
+     CBLAS_SIDE side, CBLAS_UPLO uplo,
      int m, int n,
      const ComplexFloat& alpha,
      const ComplexFloat* A, int ldA,
@@ -59,8 +59,8 @@ hemm(const CBLAS_LAYOUT order,
 
 // zhemm
 void
-hemm(const CBLAS_LAYOUT order,
-     const CBLAS_SIDE side, const CBLAS_UPLO uplo,
+hemm(CBLAS_LAYOUT order,
+     CBLAS_SIDE side, CBLAS_UPLO uplo,
      int m, int n,
      const ComplexDouble& alpha,
      const ComplexDouble* A, int ldA,

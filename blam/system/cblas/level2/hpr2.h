@@ -37,7 +37,7 @@ namespace cblas
 
 // chpr2
 void
-hpr2(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
+hpr2(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
      int n,
      const float& alpha,
      const ComplexFloat* x, int incX,
@@ -56,7 +56,7 @@ hpr2(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
 
 // zhpr2
 void
-hpr2(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
+hpr2(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
      int n,
      const double& alpha,
      const ComplexDouble* x, int incX,
