@@ -92,8 +92,8 @@ template <typename DerivedPolicy,
           typename VX, typename VY>
 auto
 swap(const execution_policy<DerivedPolicy>& exec, int n,
-     const VX* x, int incX,
-     const VY* y, int incY)
+     VX* x, int incX,
+     VY* y, int incY)
     -> decltype(swap(handle(derived_cast(exec)), n,
                      x, incX,
                      y, incY))
