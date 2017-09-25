@@ -50,6 +50,11 @@ class customization_point : multi_function<Functions...>
     return static_cast<const derived_type&>(*this);
   }
 
+  const super_t& super() const
+  {
+    return static_cast<const super_t&>(*this);
+  }
+
  public:
   constexpr customization_point() = default;
 
@@ -57,21 +62,11 @@ class customization_point : multi_function<Functions...>
       : super_t(funcs...)
   {}
 
-  /*
   template <class... Args>
   constexpr auto operator()(Args&&... args) const ->
-      decltype(super_t::operator()(self(), std::forward<Args>(args)...))
+      decltype(super()(self(), std::forward<Args>(args)...))
   {
-    return super_t::operator()(self(), std::forward<Args>(args)...);
-  }
-  */
-
-  // NVCC EDG Bug Workaround
-  template <class... Args>
-  constexpr auto operator()(Args&&... args) const ->
-      decltype(static_cast<const super_t&>(*this)(self(), std::forward<Args>(args)...))
-  {
-    return static_cast<const super_t&>(*this)(self(), std::forward<Args>(args)...);
+    return super()(self(), std::forward<Args>(args)...);
   }
 };
 
