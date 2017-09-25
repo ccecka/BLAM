@@ -37,7 +37,7 @@ namespace cblas
 
 // stpmv
 void
-tpmv(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
+tpmv(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
      const CBLAS_TRANSPOSE transA, const CBLAS_DIAG diag,
      int n,
      const float* A,
@@ -45,7 +45,7 @@ tpmv(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
 {
   BLAM_DEBUG_OUT("cblas_stpmv");
 
-  cblas_stpmv(order, upLo, transA, diag,
+  cblas_stpmv(order, uplo, transA, diag,
               n,
               A,
               x, incX);
@@ -53,7 +53,7 @@ tpmv(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
 
 // dtpmv
 void
-tpmv(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
+tpmv(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
      const CBLAS_TRANSPOSE transA, const CBLAS_DIAG diag,
      int n,
      const double* A,
@@ -61,7 +61,7 @@ tpmv(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
 {
   BLAM_DEBUG_OUT("cblas_dtpmv");
 
-  cblas_dtpmv(order, upLo, transA, diag,
+  cblas_dtpmv(order, uplo, transA, diag,
               n,
               A,
               x, incX);
@@ -69,7 +69,7 @@ tpmv(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
 
 // ctpmv
 void
-tpmv(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
+tpmv(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
      const CBLAS_TRANSPOSE transA, const CBLAS_DIAG diag,
      int n,
      const ComplexFloat* A,
@@ -77,7 +77,7 @@ tpmv(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
 {
   BLAM_DEBUG_OUT("cblas_ctpmv");
 
-  cblas_ctpmv(order, upLo, transA, diag,
+  cblas_ctpmv(order, uplo, transA, diag,
               n,
               reinterpret_cast<const float*>(A),
               reinterpret_cast<float*>(x), incX);
@@ -85,7 +85,7 @@ tpmv(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
 
 // ztpmv
 void
-tpmv(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
+tpmv(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
      const CBLAS_TRANSPOSE transA, const CBLAS_DIAG diag,
      int n,
      const ComplexDouble* A,
@@ -93,7 +93,7 @@ tpmv(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
 {
   BLAM_DEBUG_OUT("cblas_ztpmv");
 
-  cblas_ztpmv(order, upLo, transA, diag,
+  cblas_ztpmv(order, uplo, transA, diag,
               n,
               reinterpret_cast<const double*>(A),
               reinterpret_cast<double*>(x), incX);
@@ -104,16 +104,16 @@ template <typename DerivedPolicy,
           typename MA, typename VX>
 auto
 tpmv(const execution_policy<DerivedPolicy>& /*exec*/,
-     StorageOrder order, StorageUpLo upLo, Transpose transA, Diag diag,
+     Layout order, Uplo uplo, Op transA, Diag diag,
      int n,
      const MA* A,
      VX* x, int incX)
-    -> decltype(tpmv(cblas_type(order), cblas_type(upLo),
+    -> decltype(tpmv(cblas_type(order), cblas_type(uplo),
                      cblas_type(transA), cblas_type(diag),
                      n, A,
                      x, incX))
 {
-  return tpmv(cblas_type(order), cblas_type(upLo),
+  return tpmv(cblas_type(order), cblas_type(uplo),
               cblas_type(transA), cblas_type(diag),
               n, A,
               x, incX);

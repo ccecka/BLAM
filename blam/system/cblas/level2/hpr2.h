@@ -37,7 +37,7 @@ namespace cblas
 
 // chpr2
 void
-hpr2(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
+hpr2(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
      int n,
      const float& alpha,
      const ComplexFloat* x, int incX,
@@ -46,7 +46,7 @@ hpr2(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
 {
   BLAM_DEBUG_OUT("cblas_chpr2");
 
-  cblas_chpr2(order, upLo,
+  cblas_chpr2(order, uplo,
               n,
               reinterpret_cast<const float*>(&alpha),
               reinterpret_cast<const float*>(x), incX,
@@ -56,7 +56,7 @@ hpr2(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
 
 // zhpr2
 void
-hpr2(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
+hpr2(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
      int n,
      const double& alpha,
      const ComplexDouble* x, int incX,
@@ -65,7 +65,7 @@ hpr2(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
 {
   BLAM_DEBUG_OUT("cblas_zhpr2");
 
-  cblas_zhpr2(order, upLo,
+  cblas_zhpr2(order, uplo,
               n,
               reinterpret_cast<const double*>(&alpha),
               reinterpret_cast<const double*>(x), incX,
@@ -79,19 +79,19 @@ template <typename DerivedPolicy,
           typename VX, typename VY, typename MA>
 auto
 hpr2(const execution_policy<DerivedPolicy>& /*exec*/,
-     StorageOrder order, StorageUpLo upLo,
+     Layout order, Uplo uplo,
      int n,
      const Alpha& alpha,
      const VX* x, int incX,
      const VY* y, int incY,
      MA* A)
-    -> decltype(hpr2(cblas_type(order), cblas_type(upLo),
+    -> decltype(hpr2(cblas_type(order), cblas_type(uplo),
                      n, alpha,
                      x, incX,
                      y, incY,
                      A))
 {
-  return hpr2(cblas_type(order), cblas_type(upLo),
+  return hpr2(cblas_type(order), cblas_type(uplo),
               n, alpha,
               x, incX,
               y, incY,

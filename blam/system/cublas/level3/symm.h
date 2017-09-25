@@ -38,7 +38,7 @@ namespace cublas
 // ssymm
 void
 symm(cublasHandle_t handle,
-     cublasSideMode_t side, cublasFillMode_t upLo,
+     cublasSideMode_t side, cublasFillMode_t uplo,
      int m, int n,
      const float* alpha,
      const float* A, int ldA,
@@ -48,7 +48,7 @@ symm(cublasHandle_t handle,
 {
   BLAM_DEBUG_OUT("cublasSsymm");
 
-  cublasSsymm(handle, side, upLo,
+  cublasSsymm(handle, side, uplo,
               m, n,
               alpha,
               A, ldA,
@@ -60,7 +60,7 @@ symm(cublasHandle_t handle,
 // dsymm
 void
 symm(cublasHandle_t handle,
-     cublasSideMode_t side, cublasFillMode_t upLo,
+     cublasSideMode_t side, cublasFillMode_t uplo,
      int m, int n,
      const double* alpha,
      const double* A, int ldA,
@@ -70,7 +70,7 @@ symm(cublasHandle_t handle,
 {
   BLAM_DEBUG_OUT("cublasDsymm");
 
-  cublasDsymm(handle, side, upLo,
+  cublasDsymm(handle, side, uplo,
               m, n,
               alpha,
               A, ldA,
@@ -82,7 +82,7 @@ symm(cublasHandle_t handle,
 // csymm
 void
 symm(cublasHandle_t handle,
-     cublasSideMode_t side, cublasFillMode_t upLo,
+     cublasSideMode_t side, cublasFillMode_t uplo,
      int m, int n,
      const ComplexFloat* alpha,
      const ComplexFloat* A, int ldA,
@@ -92,7 +92,7 @@ symm(cublasHandle_t handle,
 {
   BLAM_DEBUG_OUT("cublasCsymm");
 
-  cublasCsymm(handle, side, upLo,
+  cublasCsymm(handle, side, uplo,
               m, n,
               reinterpret_cast<const cuFloatComplex*>(&alpha),
               reinterpret_cast<const cuFloatComplex*>(A), ldA,
@@ -104,7 +104,7 @@ symm(cublasHandle_t handle,
 // zsymm
 void
 symm(cublasHandle_t handle,
-     cublasSideMode_t side, cublasFillMode_t upLo,
+     cublasSideMode_t side, cublasFillMode_t uplo,
      int m, int n,
      const ComplexDouble* alpha,
      const ComplexDouble* A, int ldA,
@@ -114,7 +114,7 @@ symm(cublasHandle_t handle,
 {
   BLAM_DEBUG_OUT("cublasZsymm");
 
-  cublasZsymm(handle, side, upLo,
+  cublasZsymm(handle, side, uplo,
               m, n,
               reinterpret_cast<const cuDoubleComplex*>(alpha),
               reinterpret_cast<const cuDoubleComplex*>(A), ldA,
@@ -129,7 +129,7 @@ template <typename DerivedPolicy,
           typename Beta, typename MC>
 auto
 symm(const execution_policy<DerivedPolicy>& exec,
-     Side side, StorageUpLo upLo,
+     Side side, Uplo uplo,
      int m, int n,
      const Alpha& alpha,
      const MA* A, int ldA,
@@ -137,7 +137,7 @@ symm(const execution_policy<DerivedPolicy>& exec,
      const Beta& beta,
      MC* C, int ldC)
     -> decltype(symm(handle(derived_cast(exec)),
-                     cublas_type(side), cublas_type(upLo),
+                     cublas_type(side), cublas_type(uplo),
                      m, n,
                      &alpha,
                      A, ldA,
@@ -146,7 +146,7 @@ symm(const execution_policy<DerivedPolicy>& exec,
                      C, ldC))
 {
   return symm(handle(derived_cast(exec)),
-              cublas_type(side), cublas_type(upLo),
+              cublas_type(side), cublas_type(uplo),
               m, n,
               &alpha,
               A, ldA,
@@ -161,14 +161,14 @@ template <typename DerivedPolicy,
           typename Beta, typename MC>
 auto
 symm(const execution_policy<DerivedPolicy>& exec,
-     StorageOrder order, Side side, StorageUpLo upLo,
+     Layout order, Side side, Uplo uplo,
      int m, int n,
      const Alpha& alpha,
      const MA* A, int ldA,
      const MB* B, int ldB,
      const Beta& beta,
      MC* C, int ldC)
-    -> decltype(symm(exec, side, upLo,
+    -> decltype(symm(exec, side, uplo,
                      m, n,
                      alpha,
                      A, ldA,
@@ -177,7 +177,7 @@ symm(const execution_policy<DerivedPolicy>& exec,
                      C, ldC))
 {
   if (order == ColMajor) {
-    return symm(exec, side, upLo,
+    return symm(exec, side, uplo,
                 m, n,
                 alpha,
                 A, ldA,
@@ -185,7 +185,7 @@ symm(const execution_policy<DerivedPolicy>& exec,
                 beta,
                 C, ldC);
   } else {
-    return symm(exec, (side==Left) ? Right : Left, (upLo==Upper) ? Lower : Upper,
+    return symm(exec, (side==Left) ? Right : Left, (uplo==Upper) ? Lower : Upper,
                 n, m,
                 alpha,
                 A, ldA,

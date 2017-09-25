@@ -37,7 +37,7 @@ namespace cublas
 
 // cher2
 void
-her2(cublasHandle_t handle, cublasFillMode_t upLo,
+her2(cublasHandle_t handle, cublasFillMode_t uplo,
      int n,
      const ComplexFloat* alpha,
      const ComplexFloat* x, int incX,
@@ -46,7 +46,7 @@ her2(cublasHandle_t handle, cublasFillMode_t upLo,
 {
   BLAM_DEBUG_OUT("cublasCher2");
 
-  cublasCher2(handle, upLo,
+  cublasCher2(handle, uplo,
               n,
               reinterpret_cast<const cuFloatComplex*>(alpha),
               reinterpret_cast<const cuFloatComplex*>(x), incX,
@@ -56,7 +56,7 @@ her2(cublasHandle_t handle, cublasFillMode_t upLo,
 
 // zher2
 void
-her2(cublasHandle_t handle, cublasFillMode_t upLo,
+her2(cublasHandle_t handle, cublasFillMode_t uplo,
      int n,
      const ComplexDouble* alpha,
      const ComplexDouble* x, int incX,
@@ -65,7 +65,7 @@ her2(cublasHandle_t handle, cublasFillMode_t upLo,
 {
   BLAM_DEBUG_OUT("cublasZher2");
 
-  cublasZher2(handle, upLo,
+  cublasZher2(handle, uplo,
               n,
               reinterpret_cast<const cuDoubleComplex*>(alpha),
               reinterpret_cast<const cuDoubleComplex*>(x), incX,
@@ -79,19 +79,19 @@ template <typename DerivedPolicy,
           typename VX, typename VY, typename MA>
 auto
 her2(const execution_policy<DerivedPolicy>& exec,
-     StorageUpLo upLo,
+     Uplo uplo,
      int n,
      const Alpha& alpha,
      const VX* x, int incX,
      const VY* y, int incY,
      MA* A, int ldA)
-    -> decltype(her2(handle(derived_cast(exec)), cublas_type(upLo),
+    -> decltype(her2(handle(derived_cast(exec)), cublas_type(uplo),
                      n, &alpha,
                      x, incX,
                      y, incY,
                      A, ldA))
 {
-  return her2(handle(derived_cast(exec)), cublas_type(upLo),
+  return her2(handle(derived_cast(exec)), cublas_type(uplo),
               n, &alpha,
               x, incX,
               y, incY,

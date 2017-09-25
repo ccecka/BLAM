@@ -37,7 +37,7 @@ namespace cblas
 
 // ssyrk
 void
-syrk(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
+syrk(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
      const CBLAS_TRANSPOSE trans,
      int n, int k,
      const float& alpha,
@@ -47,7 +47,7 @@ syrk(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
 {
   BLAM_DEBUG_OUT("cblas_ssyrk");
 
-  cblas_ssyrk(order, upLo, trans,
+  cblas_ssyrk(order, uplo, trans,
               n, k,
               alpha,
               A, ldA,
@@ -57,7 +57,7 @@ syrk(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
 
 // dsyrk
 void
-syrk(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
+syrk(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
      const CBLAS_TRANSPOSE trans,
      int n, int k,
      const double& alpha,
@@ -67,7 +67,7 @@ syrk(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
 {
   BLAM_DEBUG_OUT("cblas_dsyrk");
 
-  cblas_dsyrk(order, upLo, trans,
+  cblas_dsyrk(order, uplo, trans,
               n, k,
               alpha,
               A, ldA,
@@ -77,7 +77,7 @@ syrk(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
 
 // csyrk
 void
-syrk(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
+syrk(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
      const CBLAS_TRANSPOSE trans,
      int n, int k,
      const ComplexFloat& alpha,
@@ -87,7 +87,7 @@ syrk(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
 {
   BLAM_DEBUG_OUT("cblas_csyrk");
 
-  cblas_csyrk(order, upLo, trans,
+  cblas_csyrk(order, uplo, trans,
               n, k,
               reinterpret_cast<const float*>(&alpha),
               reinterpret_cast<const float*>(A), ldA,
@@ -97,7 +97,7 @@ syrk(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
 
 // zsyrk
 void
-syrk(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
+syrk(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
      const CBLAS_TRANSPOSE trans,
      int n, int k,
      const ComplexDouble& alpha,
@@ -107,7 +107,7 @@ syrk(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
 {
   BLAM_DEBUG_OUT("cblas_zsyrk");
 
-  cblas_zsyrk(order, upLo, trans,
+  cblas_zsyrk(order, uplo, trans,
               n, k,
               reinterpret_cast<const double*>(&alpha),
               reinterpret_cast<const double*>(A), ldA,
@@ -121,20 +121,20 @@ template <typename DerivedPolicy,
           typename Beta, typename MC>
 auto
 syrk(const execution_policy<DerivedPolicy>& /*exec*/,
-     StorageOrder order, StorageUpLo upLo, Transpose trans,
+     Layout order, Uplo uplo, Op trans,
      int n, int k,
      const Alpha& alpha,
      const MA* A, int ldA,
      const Beta& beta,
      MC* C, int ldC)
-    -> decltype(syrk(cblas_type(order), cblas_type(upLo), cblas_type(trans),
+    -> decltype(syrk(cblas_type(order), cblas_type(uplo), cblas_type(trans),
                      n, k,
                      alpha,
                      A, ldA,
                      beta,
                      C, ldC))
 {
-  return syrk(cblas_type(order), cblas_type(upLo), cblas_type(trans),
+  return syrk(cblas_type(order), cblas_type(uplo), cblas_type(trans),
               n, k,
               alpha,
               A, ldA,

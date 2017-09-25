@@ -37,7 +37,7 @@ namespace cublas
 
 // chbmv
 void
-hbmv(cublasHandle_t handle, cublasFillMode_t upLo,
+hbmv(cublasHandle_t handle, cublasFillMode_t uplo,
      int n, int k,
      const ComplexFloat* alpha,
      const ComplexFloat* A, int ldA,
@@ -47,7 +47,7 @@ hbmv(cublasHandle_t handle, cublasFillMode_t upLo,
 {
   BLAM_DEBUG_OUT("cublasChbmv");
 
-  cublasChbmv(handle, upLo,
+  cublasChbmv(handle, uplo,
               n, k,
               reinterpret_cast<const cuFloatComplex*>(alpha),
               reinterpret_cast<const cuFloatComplex*>(A), ldA,
@@ -58,7 +58,7 @@ hbmv(cublasHandle_t handle, cublasFillMode_t upLo,
 
 // zhbmv
 void
-hbmv(cublasHandle_t handle, cublasFillMode_t upLo,
+hbmv(cublasHandle_t handle, cublasFillMode_t uplo,
      int n, int k,
      const ComplexDouble* alpha,
      const ComplexDouble* A, int ldA,
@@ -68,7 +68,7 @@ hbmv(cublasHandle_t handle, cublasFillMode_t upLo,
 {
   BLAM_DEBUG_OUT("cublasZhbmv");
 
-  cublasZhbmv(handle, upLo,
+  cublasZhbmv(handle, uplo,
               n, k,
               reinterpret_cast<const cuDoubleComplex*>(alpha),
               reinterpret_cast<const cuDoubleComplex*>(A), ldA,
@@ -83,14 +83,14 @@ template <typename DerivedPolicy,
           typename Beta, typename VY>
 auto
 hbmv(const execution_policy<DerivedPolicy>& exec,
-     StorageUpLo upLo,
+     Uplo uplo,
      int n, int k,
      const Alpha& alpha,
      const MA* A, int ldA,
      const VX* x, int incX,
      const Beta& beta,
      VY* y, int incY)
-    -> decltype(hbmv(handle(derived_cast(exec)), cublas_type(upLo),
+    -> decltype(hbmv(handle(derived_cast(exec)), cublas_type(uplo),
                      n, k,
                      &alpha,
                      A, ldA,
@@ -98,7 +98,7 @@ hbmv(const execution_policy<DerivedPolicy>& exec,
                      &beta,
                      y, incY))
 {
-  return hbmv(handle(derived_cast(exec)), cublas_type(upLo),
+  return hbmv(handle(derived_cast(exec)), cublas_type(uplo),
               n, k,
               &alpha,
               A, ldA,

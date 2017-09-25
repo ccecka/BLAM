@@ -38,7 +38,7 @@ namespace cublas
 // ssyrk
 void
 syrk(cublasHandle_t handle,
-     cublasFillMode_t upLo, cublasOperation_t trans,
+     cublasFillMode_t uplo, cublasOperation_t trans,
      int n, int k,
      const float* alpha,
      const float* A, int ldA,
@@ -47,7 +47,7 @@ syrk(cublasHandle_t handle,
 {
   BLAM_DEBUG_OUT("cublasSsyrk");
 
-  cublasSsyrk(handle, upLo, trans,
+  cublasSsyrk(handle, uplo, trans,
               n, k,
               alpha,
               A, ldA,
@@ -58,7 +58,7 @@ syrk(cublasHandle_t handle,
 // dsyrk
 void
 syrk(cublasHandle_t handle,
-     cublasFillMode_t upLo, cublasOperation_t trans,
+     cublasFillMode_t uplo, cublasOperation_t trans,
      int n, int k,
      const double* alpha,
      const double* A, int ldA,
@@ -67,7 +67,7 @@ syrk(cublasHandle_t handle,
 {
   BLAM_DEBUG_OUT("cublasDsyrk");
 
-  cublasDsyrk(handle, upLo, trans,
+  cublasDsyrk(handle, uplo, trans,
               n, k,
               alpha,
               A, ldA,
@@ -78,7 +78,7 @@ syrk(cublasHandle_t handle,
 // csyrk
 void
 syrk(cublasHandle_t handle,
-     cublasFillMode_t upLo, cublasOperation_t trans,
+     cublasFillMode_t uplo, cublasOperation_t trans,
      int n, int k,
      const ComplexFloat* alpha,
      const ComplexFloat* A, int ldA,
@@ -87,7 +87,7 @@ syrk(cublasHandle_t handle,
 {
   BLAM_DEBUG_OUT("cublasCsyrk");
 
-  cublasCsyrk(handle, upLo, trans,
+  cublasCsyrk(handle, uplo, trans,
               n, k,
               reinterpret_cast<const cuFloatComplex*>(alpha),
               reinterpret_cast<const cuFloatComplex*>(A), ldA,
@@ -98,7 +98,7 @@ syrk(cublasHandle_t handle,
 // zsyrk
 void
 syrk(cublasHandle_t handle,
-     cublasFillMode_t upLo, cublasOperation_t trans,
+     cublasFillMode_t uplo, cublasOperation_t trans,
      int n, int k,
      const ComplexDouble* alpha,
      const ComplexDouble* A, int ldA,
@@ -107,7 +107,7 @@ syrk(cublasHandle_t handle,
 {
   BLAM_DEBUG_OUT("cublasZsyrk");
 
-  cublasZsyrk(handle, upLo, trans,
+  cublasZsyrk(handle, uplo, trans,
               n, k,
               reinterpret_cast<const cuDoubleComplex*>(alpha),
               reinterpret_cast<const cuDoubleComplex*>(A), ldA,
@@ -121,14 +121,14 @@ template <typename DerivedPolicy,
           typename Beta, typename MC>
 auto
 syrk(const execution_policy<DerivedPolicy>& exec,
-     StorageUpLo upLo, Transpose trans,
+     Uplo uplo, Op trans,
      int n, int k,
      const Alpha& alpha,
      const MA* A, int ldA,
      const Beta& beta,
      MC* C, int ldC)
     -> decltype(syrk(handle(derived_cast(exec)),
-                     cublas_type(upLo), cublas_type(trans),
+                     cublas_type(uplo), cublas_type(trans),
                      n, k,
                      &alpha,
                      A, ldA,
@@ -136,7 +136,7 @@ syrk(const execution_policy<DerivedPolicy>& exec,
                      C, ldC))
 {
   return syrk(handle(derived_cast(exec)),
-              cublas_type(upLo), cublas_type(trans),
+              cublas_type(uplo), cublas_type(trans),
               n, k,
               &alpha,
               A, ldA,
@@ -150,14 +150,14 @@ template <typename DerivedPolicy,
           typename Beta, typename MC>
 auto
 syrk(const execution_policy<DerivedPolicy>& exec,
-     StorageOrder order, StorageUpLo upLo, Transpose trans,
+     Layout order, Uplo uplo, Op trans,
      int n, int k,
      const Alpha& alpha,
      const MA* A, int ldA,
      const MB* B, int ldB,
      const Beta& beta,
      MC* C, int ldC)
-    -> decltype(syrk(exec, upLo, trans,
+    -> decltype(syrk(exec, uplo, trans,
                      n, k,
                      alpha,
                      A, ldA,
@@ -165,14 +165,14 @@ syrk(const execution_policy<DerivedPolicy>& exec,
                      C, ldC))
 {
   if (order == ColMajor) {
-    return syrk(exec, upLo, trans,
+    return syrk(exec, uplo, trans,
                 n, k,
                 alpha,
                 A, ldA,
                 beta,
                 C, ldC);
   } else {
-    return syrk(exec, (upLo==Upper) ? Lower : Upper, Transpose(trans^ConjTrans),
+    return syrk(exec, (uplo==Upper) ? Lower : Upper, Op(trans^ConjTrans),
                 n, k,
                 conj(alpha),
                 A, ldA,

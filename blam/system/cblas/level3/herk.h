@@ -37,7 +37,7 @@ namespace cblas
 
 // cherk
 void
-herk(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
+herk(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
      const CBLAS_TRANSPOSE trans, int n, int k,
      const float& alpha,
      const ComplexFloat* A, int ldA,
@@ -46,7 +46,7 @@ herk(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
 {
   BLAM_DEBUG_OUT("cblas_cherk");
 
-  cblas_cherk(order, upLo, trans,
+  cblas_cherk(order, uplo, trans,
               n, k,
               alpha,
               reinterpret_cast<const float*>(A), ldA,
@@ -56,7 +56,7 @@ herk(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
 
 // zherk
 void
-herk(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
+herk(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
      const CBLAS_TRANSPOSE trans, int n, int k,
      const double& alpha,
      const ComplexDouble* A, int ldA,
@@ -65,7 +65,7 @@ herk(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
 {
   BLAM_DEBUG_OUT("cblas_zherk");
 
-  cblas_zherk(order, upLo, trans,
+  cblas_zherk(order, uplo, trans,
               n, k,
               alpha,
               reinterpret_cast<const double*>(A), ldA,
@@ -79,20 +79,20 @@ template <typename DerivedPolicy,
           typename Beta, typename MC>
 auto
 herk(const execution_policy<DerivedPolicy>& /*exec*/,
-     StorageOrder order, StorageUpLo upLo, Transpose trans,
+     Layout order, Uplo uplo, Op trans,
      int n, int k,
      const Alpha& alpha,
      const MA* A, int ldA,
      const Beta& beta,
      MC* C, int ldC)
-    -> decltype(herk(cblas_type(order), cblas_type(upLo), cblas_type(trans),
+    -> decltype(herk(cblas_type(order), cblas_type(uplo), cblas_type(trans),
                      n, k,
                      alpha,
                      A, ldA,
                      beta,
                      C, ldC))
 {
-  return herk(cblas_type(order), cblas_type(upLo), cblas_type(trans),
+  return herk(cblas_type(order), cblas_type(uplo), cblas_type(trans),
               n, k,
               alpha,
               A, ldA,

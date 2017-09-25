@@ -37,7 +37,7 @@ namespace cublas
 
 // chpr2
 void
-hpr2(cublasHandle_t handle, cublasFillMode_t upLo,
+hpr2(cublasHandle_t handle, cublasFillMode_t uplo,
      int n,
      const float* alpha,
      const ComplexFloat* x, int incX,
@@ -46,7 +46,7 @@ hpr2(cublasHandle_t handle, cublasFillMode_t upLo,
 {
   BLAM_DEBUG_OUT("cublasChpr2");
 
-  cublasChpr2(handle, upLo,
+  cublasChpr2(handle, uplo,
               n,
               reinterpret_cast<const cuFloatComplex*>(alpha),
               reinterpret_cast<const cuFloatComplex*>(x), incX,
@@ -56,7 +56,7 @@ hpr2(cublasHandle_t handle, cublasFillMode_t upLo,
 
 // zhpr2
 void
-hpr2(cublasHandle_t handle, cublasFillMode_t upLo,
+hpr2(cublasHandle_t handle, cublasFillMode_t uplo,
      int n,
      const double* alpha,
      const ComplexDouble* x, int incX,
@@ -65,7 +65,7 @@ hpr2(cublasHandle_t handle, cublasFillMode_t upLo,
 {
   BLAM_DEBUG_OUT("cublasZhpr2");
 
-  cublasZhpr2(handle, upLo,
+  cublasZhpr2(handle, uplo,
               n,
               reinterpret_cast<const cuDoubleComplex*>(alpha),
               reinterpret_cast<const cuDoubleComplex*>(x), incX,
@@ -79,19 +79,19 @@ template <typename DerivedPolicy,
           typename VX, typename VY, typename MA>
 auto
 hpr2(const execution_policy<DerivedPolicy>& exec,
-     StorageUpLo upLo,
+     Uplo uplo,
      int n,
      const Alpha& alpha,
      const VX* x, int incX,
      const VY* y, int incY,
      MA* A)
-    -> decltype(hpr2(handle(derived_cast(exec)), cublas_type(upLo),
+    -> decltype(hpr2(handle(derived_cast(exec)), cublas_type(uplo),
                      n, &alpha,
                      x, incX,
                      y, incY,
                      A))
 {
-  return hpr2(handle(derived_cast(exec)), cublas_type(upLo),
+  return hpr2(handle(derived_cast(exec)), cublas_type(uplo),
               n, &alpha,
               x, incX,
               y, incY,

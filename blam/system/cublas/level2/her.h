@@ -37,7 +37,7 @@ namespace cublas
 
 // cher
 void
-her(cublasHandle_t handle, cublasFillMode_t upLo,
+her(cublasHandle_t handle, cublasFillMode_t uplo,
     int n,
     const float* alpha,
     const ComplexFloat* x, int incX,
@@ -45,7 +45,7 @@ her(cublasHandle_t handle, cublasFillMode_t upLo,
 {
   BLAM_DEBUG_OUT("cublasCher");
 
-  cublasCher(handle, upLo,
+  cublasCher(handle, uplo,
              n,
              alpha,
              reinterpret_cast<const cuFloatComplex*>(x), incX,
@@ -54,7 +54,7 @@ her(cublasHandle_t handle, cublasFillMode_t upLo,
 
 // zher
 void
-her(cublasHandle_t handle, cublasFillMode_t upLo,
+her(cublasHandle_t handle, cublasFillMode_t uplo,
     int n,
     const double* alpha,
     const ComplexDouble* x, int incX,
@@ -62,7 +62,7 @@ her(cublasHandle_t handle, cublasFillMode_t upLo,
 {
   BLAM_DEBUG_OUT("cublasZher");
 
-  cublasZher(handle, upLo,
+  cublasZher(handle, uplo,
              n,
              alpha,
              reinterpret_cast<const cuDoubleComplex*>(x), incX,
@@ -75,17 +75,17 @@ template <typename DerivedPolicy,
           typename VX, typename MA>
 auto
 her(const execution_policy<DerivedPolicy>& exec,
-    StorageUpLo upLo,
+    Uplo uplo,
     int n,
     const Alpha& alpha,
     const VX* x, int incX,
     MA* A, int ldA)
-    -> decltype(her(handle(derived_cast(exec)), cublas_type(upLo),
+    -> decltype(her(handle(derived_cast(exec)), cublas_type(uplo),
                     n, &alpha,
                     x, incX,
                     A, ldA))
 {
-  return her(handle(derived_cast(exec)), cublas_type(upLo),
+  return her(handle(derived_cast(exec)), cublas_type(uplo),
              n, &alpha,
              x, incX,
              A, ldA);

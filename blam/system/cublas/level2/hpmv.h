@@ -37,7 +37,7 @@ namespace cublas
 
 // chpmv
 void
-hpmv(cublasHandle_t handle, cublasFillMode_t upLo,
+hpmv(cublasHandle_t handle, cublasFillMode_t uplo,
      int n,
      const ComplexFloat* alpha,
      const ComplexFloat* A,
@@ -47,7 +47,7 @@ hpmv(cublasHandle_t handle, cublasFillMode_t upLo,
 {
   BLAM_DEBUG_OUT("cublasChpmv");
 
-  cublasChpmv(handle,  upLo,
+  cublasChpmv(handle,  uplo,
               n,
               reinterpret_cast<const cuFloatComplex*>(alpha),
               reinterpret_cast<const cuFloatComplex*>(A),
@@ -58,7 +58,7 @@ hpmv(cublasHandle_t handle, cublasFillMode_t upLo,
 
 // zhpmv
 void
-hpmv(cublasHandle_t handle, cublasFillMode_t upLo,
+hpmv(cublasHandle_t handle, cublasFillMode_t uplo,
      int n,
      const ComplexDouble* alpha,
      const ComplexDouble* A,
@@ -68,7 +68,7 @@ hpmv(cublasHandle_t handle, cublasFillMode_t upLo,
 {
   BLAM_DEBUG_OUT("cublasZhpmv");
 
-  cublasZhpmv(handle,  upLo,
+  cublasZhpmv(handle,  uplo,
               n,
               reinterpret_cast<const cuDoubleComplex*>(alpha),
               reinterpret_cast<const cuDoubleComplex*>(A),
@@ -83,21 +83,21 @@ template <typename DerivedPolicy,
           typename Beta, typename VY>
 auto
 hpmv(const execution_policy<DerivedPolicy>& exec,
-     StorageUpLo upLo,
+     Uplo uplo,
      int n,
      const Alpha& alpha,
      const MA* A,
      const VX* x, int incX,
      const Beta& beta,
      VY* y, int incY)
-    -> decltype(hpmv(handle(derived_cast(exec)), cublas_type(upLo),
+    -> decltype(hpmv(handle(derived_cast(exec)), cublas_type(uplo),
                      n, &alpha,
                      A,
                      x, incX,
                      &beta,
                      y, incY))
 {
-  return hpmv(handle(derived_cast(exec)), cublas_type(upLo),
+  return hpmv(handle(derived_cast(exec)), cublas_type(uplo),
               n, &alpha,
               A,
               x, incX,

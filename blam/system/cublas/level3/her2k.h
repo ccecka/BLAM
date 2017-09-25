@@ -38,7 +38,7 @@ namespace cublas
 // cher2k
 void
 her2k(cublasHandle_t handle,
-      cublasFillMode_t upLo, cublasOperation_t trans,
+      cublasFillMode_t uplo, cublasOperation_t trans,
       int n, int k,
       const ComplexFloat* alpha,
       const ComplexFloat* A, int ldA,
@@ -48,7 +48,7 @@ her2k(cublasHandle_t handle,
 {
   BLAM_DEBUG_OUT("cublasCher2k");
 
-  cublasCher2k(handle, upLo, trans,
+  cublasCher2k(handle, uplo, trans,
                n, k,
                reinterpret_cast<const cuFloatComplex*>(alpha),
                reinterpret_cast<const cuFloatComplex*>(A), ldA,
@@ -60,7 +60,7 @@ her2k(cublasHandle_t handle,
 // zher2k
 void
 her2k(cublasHandle_t handle,
-      cublasFillMode_t upLo, cublasOperation_t trans,
+      cublasFillMode_t uplo, cublasOperation_t trans,
       int n, int k,
       const ComplexDouble* alpha,
       const ComplexDouble* A, int ldA,
@@ -70,7 +70,7 @@ her2k(cublasHandle_t handle,
 {
   BLAM_DEBUG_OUT("cublasZher2k");
 
-  cublasZher2k(handle, upLo, trans,
+  cublasZher2k(handle, uplo, trans,
                n, k,
                reinterpret_cast<const cuDoubleComplex*>(alpha),
                reinterpret_cast<const cuDoubleComplex*>(A), ldA,
@@ -85,7 +85,7 @@ template <typename DerivedPolicy,
           typename Beta, typename MC>
 auto
 her2k(const execution_policy<DerivedPolicy>& exec,
-      StorageUpLo upLo, Transpose trans,
+      Uplo uplo, Op trans,
       int n, int k,
       const Alpha& alpha,
       const MA* A, int ldA,
@@ -93,7 +93,7 @@ her2k(const execution_policy<DerivedPolicy>& exec,
       const Beta& beta,
       MC* C, int ldC)
     -> decltype(her2k(handle(derived_cast(exec)),
-                      cublas_type(upLo), cublas_type(trans),
+                      cublas_type(uplo), cublas_type(trans),
                       n, k,
                       &alpha,
                       A, ldA,
@@ -102,7 +102,7 @@ her2k(const execution_policy<DerivedPolicy>& exec,
                       C, ldC))
 {
   return her2k(handle(derived_cast(exec)),
-               cublas_type(upLo), cublas_type(trans),
+               cublas_type(uplo), cublas_type(trans),
                n, k,
                &alpha,
                A, ldA,
@@ -117,14 +117,14 @@ template <typename DerivedPolicy,
           typename Beta, typename MC>
 auto
 her2k(const execution_policy<DerivedPolicy>& exec,
-      StorageOrder order, StorageUpLo upLo, Transpose trans,
+      Layout order, Uplo uplo, Op trans,
       int n, int k,
       const Alpha& alpha,
       const MA* A, int ldA,
       const MB* B, int ldB,
       const Beta& beta,
       MC* C, int ldC)
-    -> decltype(her2k(exec, upLo, trans,
+    -> decltype(her2k(exec, uplo, trans,
                       n, k,
                       alpha,
                       A, ldA,
@@ -133,7 +133,7 @@ her2k(const execution_policy<DerivedPolicy>& exec,
                       C, ldC))
 {
   if (order == ColMajor) {
-    her2k(exec, upLo, trans,
+    her2k(exec, uplo, trans,
           n, k,
           alpha,
           A, ldA,
@@ -141,7 +141,7 @@ her2k(const execution_policy<DerivedPolicy>& exec,
           beta,
           C, ldC);
   } else {
-    her2k(exec, (upLo==Upper) ? Lower : Upper, Transpose(trans ^ ConjTrans),
+    her2k(exec, (uplo==Upper) ? Lower : Upper, Op(trans ^ ConjTrans),
           n, k,
           conj(alpha),
           A, ldA,

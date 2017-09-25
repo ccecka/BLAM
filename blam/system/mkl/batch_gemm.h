@@ -138,7 +138,7 @@ template <typename DerivedPolicy,
           typename T>
 void
 batch_gemm(const execution_policy<DerivedPolicy>& /*exec*/,
-           StorageOrder order, Transpose transA, Transpose transB,
+           Layout order, Op transA, Op transB,
            int m, int n, int k,
            const T& alpha,
            const T* A, int ldA, int loA,

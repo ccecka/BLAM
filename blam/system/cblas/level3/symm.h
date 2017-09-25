@@ -37,7 +37,7 @@ namespace cblas
 
 // ssymm
 void
-symm(const CBLAS_LAYOUT order, const CBLAS_SIDE side, const CBLAS_UPLO upLo,
+symm(const CBLAS_LAYOUT order, const CBLAS_SIDE side, const CBLAS_UPLO uplo,
      int m, int n,
      const float& alpha,
      const float* A, int ldA,
@@ -47,7 +47,7 @@ symm(const CBLAS_LAYOUT order, const CBLAS_SIDE side, const CBLAS_UPLO upLo,
 {
   BLAM_DEBUG_OUT("cblas_ssymm");
 
-  cblas_ssymm(order, side, upLo,
+  cblas_ssymm(order, side, uplo,
               m, n,
               alpha,
               A, ldA,
@@ -58,7 +58,7 @@ symm(const CBLAS_LAYOUT order, const CBLAS_SIDE side, const CBLAS_UPLO upLo,
 
 // dsymm
 void
-symm(const CBLAS_LAYOUT order, const CBLAS_SIDE side, const CBLAS_UPLO upLo,
+symm(const CBLAS_LAYOUT order, const CBLAS_SIDE side, const CBLAS_UPLO uplo,
      int m, int n,
      const double& alpha,
      const double* A, int ldA,
@@ -68,7 +68,7 @@ symm(const CBLAS_LAYOUT order, const CBLAS_SIDE side, const CBLAS_UPLO upLo,
 {
   BLAM_DEBUG_OUT("cblas_dsymm");
 
-  cblas_dsymm(order, side, upLo,
+  cblas_dsymm(order, side, uplo,
               m, n,
               alpha,
               A, ldA,
@@ -79,7 +79,7 @@ symm(const CBLAS_LAYOUT order, const CBLAS_SIDE side, const CBLAS_UPLO upLo,
 
 // csymm
 void
-symm(const CBLAS_LAYOUT order, const CBLAS_SIDE side, const CBLAS_UPLO upLo,
+symm(const CBLAS_LAYOUT order, const CBLAS_SIDE side, const CBLAS_UPLO uplo,
      int m, int n,
      const ComplexFloat& alpha,
      const ComplexFloat* A, int ldA,
@@ -89,7 +89,7 @@ symm(const CBLAS_LAYOUT order, const CBLAS_SIDE side, const CBLAS_UPLO upLo,
 {
   BLAM_DEBUG_OUT("cblas_csymm");
 
-  cblas_csymm(order, side, upLo,
+  cblas_csymm(order, side, uplo,
               m, n,
               reinterpret_cast<const float*>(&alpha),
               reinterpret_cast<const float*>(A), ldA,
@@ -100,7 +100,7 @@ symm(const CBLAS_LAYOUT order, const CBLAS_SIDE side, const CBLAS_UPLO upLo,
 
 // zsymm
 void
-symm(const CBLAS_LAYOUT order, const CBLAS_SIDE side, const CBLAS_UPLO upLo,
+symm(const CBLAS_LAYOUT order, const CBLAS_SIDE side, const CBLAS_UPLO uplo,
      int m, int n,
      const ComplexDouble& alpha,
      const ComplexDouble* A, int ldA,
@@ -110,7 +110,7 @@ symm(const CBLAS_LAYOUT order, const CBLAS_SIDE side, const CBLAS_UPLO upLo,
 {
   BLAM_DEBUG_OUT("cblas_zsymm");
 
-  cblas_zsymm(order, side, upLo,
+  cblas_zsymm(order, side, uplo,
               m, n,
               reinterpret_cast<const double*>(&alpha),
               reinterpret_cast<const double*>(A), ldA,
@@ -125,14 +125,14 @@ template <typename DerivedPolicy,
           typename Beta, typename MC>
 auto
 symm(const execution_policy<DerivedPolicy>& /*exec*/,
-     StorageOrder order, Side side, StorageUpLo upLo,
+     Layout order, Side side, Uplo uplo,
      int m, int n,
      const Alpha& alpha,
      const MA* A, int ldA,
      const MB* B, int ldB,
      const Beta& beta,
      MC* C, int ldC)
-    -> decltype(symm(cblas_type(order), cblas_type(side), cblas_type(upLo),
+    -> decltype(symm(cblas_type(order), cblas_type(side), cblas_type(uplo),
                      m, n,
                      alpha,
                      A, ldA,
@@ -140,7 +140,7 @@ symm(const execution_policy<DerivedPolicy>& /*exec*/,
                      beta,
                      C, ldC))
 {
-  return symm(cblas_type(order), cblas_type(side), cblas_type(upLo),
+  return symm(cblas_type(order), cblas_type(side), cblas_type(uplo),
               m, n,
               alpha,
               A, ldA,

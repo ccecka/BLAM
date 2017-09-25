@@ -37,7 +37,7 @@ namespace cblas
 
 // ssyr
 void
-syr(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
+syr(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
     int n,
     const float& alpha,
     const float* x, int incX,
@@ -45,7 +45,7 @@ syr(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
 {
   BLAM_DEBUG_OUT("cblas_ssyr");
 
-  cblas_ssyr(order, upLo,
+  cblas_ssyr(order, uplo,
              n, alpha,
              x, incX,
              A, ldA);
@@ -53,7 +53,7 @@ syr(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
 
 // dsyr
 void
-syr(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
+syr(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
     int n,
     const double& alpha,
     const double* x, int incX,
@@ -61,7 +61,7 @@ syr(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
 {
   BLAM_DEBUG_OUT("cblas_dsyr");
 
-  cblas_dsyr(order, upLo,
+  cblas_dsyr(order, uplo,
              n, alpha,
              x, incX,
              A, ldA);
@@ -73,17 +73,17 @@ template <typename DerivedPolicy,
           typename VX, typename MA>
 auto
 syr(const execution_policy<DerivedPolicy>& /*exec*/,
-    StorageOrder order, StorageUpLo upLo,
+    Layout order, Uplo uplo,
     int n,
     const Alpha& alpha,
     const VX* x, int incX,
     MA* A, int ldA)
-    -> decltype(syr(cblas_type(order), cblas_type(upLo),
+    -> decltype(syr(cblas_type(order), cblas_type(uplo),
                     n, alpha,
                     x, incX,
                     A, ldA))
 {
-  return syr(cblas_type(order), cblas_type(upLo),
+  return syr(cblas_type(order), cblas_type(uplo),
              n, alpha,
              x, incX,
              A, ldA);

@@ -37,7 +37,7 @@ namespace cblas
 
 // cher2k
 void
-her2k(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
+her2k(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
       const CBLAS_TRANSPOSE trans,
       int n, int k,
       const ComplexFloat& alpha,
@@ -48,7 +48,7 @@ her2k(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
 {
   BLAM_DEBUG_OUT("cblas_cher2k");
 
-  cblas_cher2k(order, upLo, trans,
+  cblas_cher2k(order, uplo, trans,
                n, k,
                reinterpret_cast<const float*>(&alpha),
                reinterpret_cast<const float*>(A), ldA,
@@ -59,7 +59,7 @@ her2k(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
 
 // zher2k
 void
-her2k(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
+her2k(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
       const CBLAS_TRANSPOSE trans,
       int n, int k,
       const ComplexDouble& alpha,
@@ -70,7 +70,7 @@ her2k(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
 {
   BLAM_DEBUG_OUT("cblas_zher2k");
 
-  cblas_zher2k(order, upLo, trans,
+  cblas_zher2k(order, uplo, trans,
                n, k,
                reinterpret_cast<const double*>(&alpha),
                reinterpret_cast<const double*>(A), ldA,
@@ -85,14 +85,14 @@ template <typename DerivedPolicy,
           typename Beta, typename MC>
 auto
 her2k(const execution_policy<DerivedPolicy>& /*exec*/,
-      StorageOrder order, StorageUpLo upLo, Transpose trans,
+      Layout order, Uplo uplo, Op trans,
       int n, int k,
       const Alpha& alpha,
       const MA* A, int ldA,
       const MB* B, int ldB,
       const Beta& beta,
       MC* C, int ldC)
-    -> decltype(her2k(cblas_type(order), cblas_type(upLo), cblas_type(trans),
+    -> decltype(her2k(cblas_type(order), cblas_type(uplo), cblas_type(trans),
                       n, k,
                       alpha,
                       A, ldA,
@@ -100,7 +100,7 @@ her2k(const execution_policy<DerivedPolicy>& /*exec*/,
                       beta,
                       C, ldC))
 {
-  return her2k(cblas_type(order), cblas_type(upLo), cblas_type(trans),
+  return her2k(cblas_type(order), cblas_type(uplo), cblas_type(trans),
                n, k,
                alpha,
                A, ldA,

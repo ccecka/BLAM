@@ -42,7 +42,7 @@ template <typename ExecutionPolicy,
           typename Alpha, typename VX, typename VY, typename MA>
 void
 generic(blam::ger_t, const ExecutionPolicy& exec,
-        StorageOrder order, int m, int n,
+        Layout order, int m, int n,
         const Alpha& alpha,
         const VX* x, int incX,
         const VY* y, int incY,
@@ -53,7 +53,7 @@ template <typename ExecutionPolicy,
           typename Alpha, typename VX, typename VY, typename MA>
 void
 generic(blam::geru_t, const ExecutionPolicy& exec,
-        StorageOrder order, int m, int n,
+        Layout order, int m, int n,
         const Alpha& alpha,
         const VX* x, int incX,
         const VY* y, int incY,
@@ -64,7 +64,7 @@ template <typename ExecutionPolicy,
           typename Alpha, typename VX, typename VY, typename MA>
 void
 generic(blam::gerc_t, const ExecutionPolicy& exec,
-        StorageOrder order, int m, int n,
+        Layout order, int m, int n,
         const Alpha& alpha,
         const VX* x, int incX,
         const VY* y, int incY,
@@ -132,7 +132,7 @@ template <typename ExecutionPolicy,
           typename MA>
 void
 generic(blam::ger_t, const ExecutionPolicy& exec,
-        StorageOrder order, int m, int n,
+        Layout order, int m, int n,
         const float& alpha,
         const float* x, int incX,
         const float* y, int incY,
@@ -151,7 +151,7 @@ template <typename ExecutionPolicy,
           typename MA>
 void
 generic(blam::ger_t, const ExecutionPolicy& exec,
-        StorageOrder order, int m, int n,
+        Layout order, int m, int n,
         const double& alpha,
         const double* x, int incX,
         const double* y, int incY,
@@ -170,7 +170,7 @@ template <typename ExecutionPolicy,
           typename MA>
 void
 generic(blam::ger_t, const ExecutionPolicy& exec,
-        StorageOrder order, int m, int n,
+        Layout order, int m, int n,
         const ComplexFloat& alpha,
         const ComplexFloat* x, int incX,
         const ComplexFloat* y, int incY,
@@ -189,7 +189,7 @@ template <typename ExecutionPolicy,
           typename MA>
 void
 generic(blam::ger_t, const ExecutionPolicy& exec,
-        StorageOrder order, int m, int n,
+        Layout order, int m, int n,
         const ComplexDouble& alpha,
         const ComplexDouble* x, int incX,
         const ComplexDouble* y, int incY,

@@ -38,7 +38,7 @@ namespace cublas
 // chemm
 void
 hemm(cublasHandle_t handle,
-     cublasSideMode_t side, cublasFillMode_t upLo,
+     cublasSideMode_t side, cublasFillMode_t uplo,
      int m, int n,
      const ComplexFloat* alpha,
      const ComplexFloat* A, int ldA,
@@ -48,7 +48,7 @@ hemm(cublasHandle_t handle,
 {
   BLAM_DEBUG_OUT("cublasChemm");
 
-  cublasChemm(handle, side, upLo,
+  cublasChemm(handle, side, uplo,
               m, n,
               reinterpret_cast<const cuFloatComplex*>(alpha),
               reinterpret_cast<const cuFloatComplex*>(A), ldA,
@@ -60,7 +60,7 @@ hemm(cublasHandle_t handle,
 // zhemm
 void
 hemm(cublasHandle_t handle,
-     cublasSideMode_t side, cublasFillMode_t upLo,
+     cublasSideMode_t side, cublasFillMode_t uplo,
      int m, int n,
      const ComplexDouble* alpha,
      const ComplexDouble* A, int ldA,
@@ -70,7 +70,7 @@ hemm(cublasHandle_t handle,
 {
   BLAM_DEBUG_OUT("cublasZhemm");
 
-  cublasZhemm(handle, side, upLo,
+  cublasZhemm(handle, side, uplo,
               m, n,
               reinterpret_cast<const cuDoubleComplex*>(alpha),
               reinterpret_cast<const cuDoubleComplex*>(A), ldA,
@@ -85,7 +85,7 @@ template <typename DerivedPolicy,
           typename Beta, typename MC>
 auto
 hemm(const execution_policy<DerivedPolicy>& exec,
-     Side side, StorageUpLo upLo,
+     Side side, Uplo uplo,
      int m, int n,
      const Alpha& alpha,
      const MA* A, int ldA,
@@ -93,7 +93,7 @@ hemm(const execution_policy<DerivedPolicy>& exec,
      const Beta& beta,
      MC* C, int ldC)
     -> decltype(hemm(handle(derived_cast(exec)),
-                     cublas_type(side), cublas_type(upLo),
+                     cublas_type(side), cublas_type(uplo),
                      m, n,
                      &alpha,
                      A, ldA,
@@ -102,7 +102,7 @@ hemm(const execution_policy<DerivedPolicy>& exec,
                      C, ldC))
 {
   return hemm(handle(derived_cast(exec)),
-              cublas_type(side), cublas_type(upLo),
+              cublas_type(side), cublas_type(uplo),
               m, n,
               &alpha,
               A, ldA,
@@ -117,14 +117,14 @@ template <typename DerivedPolicy,
           typename Beta, typename MC>
 auto
 hemm(const execution_policy<DerivedPolicy>& exec,
-     StorageOrder order, Side side, StorageUpLo upLo,
+     Layout order, Side side, Uplo uplo,
      int m, int n,
      const Alpha& alpha,
      const MA* A, int ldA,
      const MB* B, int ldB,
      const Beta& beta,
      MC* C, int ldC)
-    -> decltype(hemm(exec, side, upLo,
+    -> decltype(hemm(exec, side, uplo,
                      m, n,
                      alpha,
                      A, ldA,
@@ -133,7 +133,7 @@ hemm(const execution_policy<DerivedPolicy>& exec,
                      C, ldC))
 {
   if (order == ColMajor) {
-    hemm(exec, side, upLo,
+    hemm(exec, side, uplo,
          m, n,
          alpha,
          A, ldA,
@@ -141,7 +141,7 @@ hemm(const execution_policy<DerivedPolicy>& exec,
          beta,
          C, ldC);
   } else {
-    hemm(exec, (side==Left) ? Right : Left, (upLo==Upper) ? Lower : Upper,
+    hemm(exec, (side==Left) ? Right : Left, (uplo==Upper) ? Lower : Upper,
          n, m,
          alpha,
          A, ldA,

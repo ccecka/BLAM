@@ -171,7 +171,7 @@ template <typename DerivedPolicy,
           typename Beta, typename VY>
 auto
 gemv(const execution_policy<DerivedPolicy>& exec,
-     Transpose trans,
+     Op trans,
      int m, int n,
      const Alpha& alpha,
      const MA* A, int ldA,
@@ -201,7 +201,7 @@ template <typename DerivedPolicy,
           typename Beta, typename VY>
 auto
 gemv(const execution_policy<DerivedPolicy>& exec,
-     StorageOrder order, Transpose trans,
+     Layout order, Op trans,
      int m, int n,
      const Alpha& alpha,
      const MA* A, int ldA,
@@ -225,7 +225,7 @@ gemv(const execution_policy<DerivedPolicy>& exec,
                 beta,
                 y, incY);
   } else { // RowMajor: transpose A
-    return gemv(exec, Transpose(trans ^ Trans),
+    return gemv(exec, Op(trans ^ Trans),
                 n, m,
                 alpha,
                 A, ldA,

@@ -37,7 +37,7 @@ namespace cblas
 
 // chpmv
 void
-hpmv(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
+hpmv(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
      int n,
      const ComplexFloat& alpha,
      const ComplexFloat* A,
@@ -47,7 +47,7 @@ hpmv(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
 {
     BLAM_DEBUG_OUT("cblas_chpmv");
 
-    cblas_chpmv(order, upLo,
+    cblas_chpmv(order, uplo,
                 n,
                 reinterpret_cast<const float*>(&alpha),
                 reinterpret_cast<const float*>(A),
@@ -58,7 +58,7 @@ hpmv(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
 
 // zhpmv
 void
-hpmv(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
+hpmv(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
      int n,
      const ComplexDouble& alpha,
      const ComplexDouble* A,
@@ -68,7 +68,7 @@ hpmv(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
 {
     BLAM_DEBUG_OUT("cblas_zhpmv");
 
-    cblas_zhpmv(order, upLo,
+    cblas_zhpmv(order, uplo,
                 n,
                 reinterpret_cast<const double*>(&alpha),
                 reinterpret_cast<const double*>(A),
@@ -83,21 +83,21 @@ template <typename DerivedPolicy,
           typename Beta, typename VY>
 auto
 hpmv(const execution_policy<DerivedPolicy>& /*exec*/,
-     StorageOrder order, StorageUpLo upLo,
+     Layout order, Uplo uplo,
      int n,
      const Alpha& alpha,
      const MA* A,
      const VX* x, int incX,
      const Beta& beta,
      VY* y, int incY)
-    -> decltype(hpmv(cblas_type(order), cblas_type(upLo),
+    -> decltype(hpmv(cblas_type(order), cblas_type(uplo),
                      n, alpha,
                      A,
                      x, incX,
                      beta,
                      y, incY))
 {
-  return hpmv(cblas_type(order), cblas_type(upLo),
+  return hpmv(cblas_type(order), cblas_type(uplo),
               n, alpha,
               A,
               x, incX,

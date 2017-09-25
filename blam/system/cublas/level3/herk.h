@@ -38,7 +38,7 @@ namespace cublas
 // cherk
 void
 herk(cublasHandle_t handle,
-     cublasFillMode_t upLo, cublasOperation_t trans,
+     cublasFillMode_t uplo, cublasOperation_t trans,
      int n, int k,
      const float* alpha,
      const ComplexFloat* A, int ldA,
@@ -47,7 +47,7 @@ herk(cublasHandle_t handle,
 {
   BLAM_DEBUG_OUT("cublasCherk");
 
-  cublasCherk(handle, upLo, trans,
+  cublasCherk(handle, uplo, trans,
               n, k,
               alpha,
               reinterpret_cast<const cuFloatComplex*>(A), ldA,
@@ -58,7 +58,7 @@ herk(cublasHandle_t handle,
 // zherk
 void
 herk(cublasHandle_t handle,
-     cublasFillMode_t upLo, cublasOperation_t trans,
+     cublasFillMode_t uplo, cublasOperation_t trans,
      int n, int k,
      const double* alpha,
      const ComplexDouble* A, int ldA,
@@ -67,7 +67,7 @@ herk(cublasHandle_t handle,
 {
   BLAM_DEBUG_OUT("cublasZherk");
 
-  cublasZherk(handle, upLo, trans,
+  cublasZherk(handle, uplo, trans,
               n, k,
               alpha,
               reinterpret_cast<const cuDoubleComplex*>(A), ldA,
@@ -81,14 +81,14 @@ template <typename DerivedPolicy,
           typename Beta, typename MC>
 auto
 herk(const execution_policy<DerivedPolicy>& exec,
-     StorageUpLo upLo, Transpose trans,
+     Uplo uplo, Op trans,
      int n, int k,
      const Alpha& alpha,
      const MA* A, int ldA,
      const Beta& beta,
      MC* C, int ldC)
     -> decltype(herk(handle(derived_cast(exec)),
-                     cublas_type(upLo), cublas_type(trans),
+                     cublas_type(uplo), cublas_type(trans),
                      n, k,
                      &alpha,
                      A, ldA,
@@ -96,7 +96,7 @@ herk(const execution_policy<DerivedPolicy>& exec,
                      C, ldC))
 {
   return herk(handle(derived_cast(exec)),
-              cublas_type(upLo), cublas_type(trans),
+              cublas_type(uplo), cublas_type(trans),
               n, k,
               &alpha,
               A, ldA,
@@ -110,13 +110,13 @@ template <typename DerivedPolicy,
           typename Beta, typename MC>
 auto
 herk(const execution_policy<DerivedPolicy>& exec,
-     StorageOrder order, StorageUpLo upLo, Transpose trans,
+     Layout order, Uplo uplo, Op trans,
      int n, int k,
      const Alpha& alpha,
      const MA* A, int ldA,
      const Beta& beta,
      MC* C, int ldC)
-    -> decltype(herk(exec, upLo, trans,
+    -> decltype(herk(exec, uplo, trans,
                      n, k,
                      alpha,
                      A, ldA,
@@ -124,14 +124,14 @@ herk(const execution_policy<DerivedPolicy>& exec,
                      C, ldC))
 {
   if (order == ColMajor) {
-    return herk(exec, upLo, trans,
+    return herk(exec, uplo, trans,
                 n, k,
                 alpha,
                 A, ldA,
                 beta,
                 C, ldC);
   } else {
-    return herk(exec, (upLo==Upper) ? Lower : Upper, Transpose(trans^ConjTrans),
+    return herk(exec, (uplo==Upper) ? Lower : Upper, Op(trans^ConjTrans),
                 n, k,
                 conj(alpha),
                 A, ldA,

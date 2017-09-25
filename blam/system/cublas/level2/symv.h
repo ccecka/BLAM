@@ -37,7 +37,7 @@ namespace cublas
 
 // ssymv
 void
-symv(cublasHandle_t handle, cublasFillMode_t upLo,
+symv(cublasHandle_t handle, cublasFillMode_t uplo,
      int n,
      const float* alpha,
      const float* A, int ldA,
@@ -47,7 +47,7 @@ symv(cublasHandle_t handle, cublasFillMode_t upLo,
 {
   BLAM_DEBUG_OUT("cublasSsymv");
 
-  cublasSsymv(handle, upLo,
+  cublasSsymv(handle, uplo,
               n,
               alpha,
               A, ldA,
@@ -58,7 +58,7 @@ symv(cublasHandle_t handle, cublasFillMode_t upLo,
 
 // dsymv
 void
-symv(cublasHandle_t handle, cublasFillMode_t upLo,
+symv(cublasHandle_t handle, cublasFillMode_t uplo,
      int n,
      const double* alpha,
      const double* A, int ldA,
@@ -68,7 +68,7 @@ symv(cublasHandle_t handle, cublasFillMode_t upLo,
 {
   BLAM_DEBUG_OUT("cublasDsymv");
 
-  cublasDsymv(handle, upLo,
+  cublasDsymv(handle, uplo,
               n,
               alpha,
               A, ldA,
@@ -79,7 +79,7 @@ symv(cublasHandle_t handle, cublasFillMode_t upLo,
 
 // csymv
 void
-symv(cublasHandle_t handle, cublasFillMode_t upLo,
+symv(cublasHandle_t handle, cublasFillMode_t uplo,
      int n,
      const ComplexFloat* alpha,
      const ComplexFloat* A, int ldA,
@@ -89,7 +89,7 @@ symv(cublasHandle_t handle, cublasFillMode_t upLo,
 {
   BLAM_DEBUG_OUT("cublasCsymv");
 
-  cublasCsymv(handle, upLo,
+  cublasCsymv(handle, uplo,
               n,
               reinterpret_cast<const cuFloatComplex*>(alpha),
               reinterpret_cast<const cuFloatComplex*>(A), ldA,
@@ -100,7 +100,7 @@ symv(cublasHandle_t handle, cublasFillMode_t upLo,
 
 // zsymv
 void
-symv(cublasHandle_t handle, cublasFillMode_t upLo,
+symv(cublasHandle_t handle, cublasFillMode_t uplo,
      int n,
      const ComplexDouble* alpha,
      const ComplexDouble* A, int ldA,
@@ -110,7 +110,7 @@ symv(cublasHandle_t handle, cublasFillMode_t upLo,
 {
   BLAM_DEBUG_OUT("cublasZsymv");
 
-  cublasZsymv(handle, upLo,
+  cublasZsymv(handle, uplo,
               n,
               reinterpret_cast<const cuDoubleComplex*>(alpha),
               reinterpret_cast<const cuDoubleComplex*>(A), ldA,
@@ -125,14 +125,14 @@ template <typename DerivedPolicy,
           typename Beta, typename VY>
 auto
 symv(const execution_policy<DerivedPolicy>& exec,
-     StorageUpLo upLo,
+     Uplo uplo,
      int n,
      const Alpha& alpha,
      const MA* A, int ldA,
      const VX* x, int incX,
      const Beta& beta,
      VY* y, int incY)
-    -> decltype(symv(handle(derived_cast(exec)), cublas_type(upLo),
+    -> decltype(symv(handle(derived_cast(exec)), cublas_type(uplo),
                      n,
                      &alpha,
                      A, ldA,
@@ -140,7 +140,7 @@ symv(const execution_policy<DerivedPolicy>& exec,
                      &beta,
                      y, incY))
 {
-  return symv(handle(derived_cast(exec)), cublas_type(upLo),
+  return symv(handle(derived_cast(exec)), cublas_type(uplo),
               n,
               &alpha,
               A, ldA,
@@ -155,14 +155,14 @@ template <typename DerivedPolicy,
           typename Beta, typename VY>
 auto
 symv(const execution_policy<DerivedPolicy>& exec,
-     StorageOrder order, StorageUpLo upLo,
+     Layout order, Uplo uplo,
      int n,
      const Alpha& alpha,
      const MA* A, int ldA,
      const VX* x, int incX,
      const Beta& beta,
      VY* y, int incY)
-    -> decltype(symv(exec, upLo,
+    -> decltype(symv(exec, uplo,
                      n, alpha,
                      A, ldA,
                      x, incX,
@@ -170,10 +170,10 @@ symv(const execution_policy<DerivedPolicy>& exec,
                      y, incY))
 {
   if (order == RowMajor) {
-    upLo = (upLo==Upper) ? Lower : Upper;
+    uplo = (uplo==Upper) ? Lower : Upper;
   }
 
-  return symv(exec, upLo,
+  return symv(exec, uplo,
               n, alpha,
               A, ldA,
               x, incX,

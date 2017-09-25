@@ -38,7 +38,7 @@ namespace cublas
 // strmm
 void
 trmm(cublasHandle_t handle,
-     cublasSideMode_t side, cublasFillMode_t upLo,
+     cublasSideMode_t side, cublasFillMode_t uplo,
      cublasOperation_t transA, cublasDiagType_t diag,
      int m, int n,
      const float* alpha,
@@ -48,7 +48,7 @@ trmm(cublasHandle_t handle,
 {
   BLAM_DEBUG_OUT("cublasStrmm");
 
-  cublasStrmm(handle, side, upLo, transA, diag,
+  cublasStrmm(handle, side, uplo, transA, diag,
               m, n,
               alpha,
               A, ldA,
@@ -59,7 +59,7 @@ trmm(cublasHandle_t handle,
 // dtrmm
 void
 trmm(cublasHandle_t handle,
-     cublasSideMode_t side, cublasFillMode_t upLo,
+     cublasSideMode_t side, cublasFillMode_t uplo,
      cublasOperation_t transA, cublasDiagType_t diag,
      int m, int n,
      const double* alpha,
@@ -69,7 +69,7 @@ trmm(cublasHandle_t handle,
 {
   BLAM_DEBUG_OUT("cublasDtrmm");
 
-  cublasDtrmm(handle, side, upLo, transA, diag,
+  cublasDtrmm(handle, side, uplo, transA, diag,
               m, n,
               alpha,
               A, ldA,
@@ -80,7 +80,7 @@ trmm(cublasHandle_t handle,
 // ctrmm
 void
 trmm(cublasHandle_t handle,
-     cublasSideMode_t side, cublasFillMode_t upLo,
+     cublasSideMode_t side, cublasFillMode_t uplo,
      cublasOperation_t transA, cublasDiagType_t diag,
      int m, int n,
      const ComplexFloat* alpha,
@@ -90,7 +90,7 @@ trmm(cublasHandle_t handle,
 {
   BLAM_DEBUG_OUT("cublasCtrmm");
 
-  cublasCtrmm(handle, side, upLo, transA, diag,
+  cublasCtrmm(handle, side, uplo, transA, diag,
               m, n,
               reinterpret_cast<const cuFloatComplex*>(alpha),
               reinterpret_cast<const cuFloatComplex*>(A), ldA,
@@ -101,7 +101,7 @@ trmm(cublasHandle_t handle,
 // ztrmm
 void
 trmm(cublasHandle_t handle,
-     cublasSideMode_t side, cublasFillMode_t upLo,
+     cublasSideMode_t side, cublasFillMode_t uplo,
      cublasOperation_t transA, cublasDiagType_t diag,
      int m, int n,
      const ComplexDouble* alpha,
@@ -111,7 +111,7 @@ trmm(cublasHandle_t handle,
 {
   BLAM_DEBUG_OUT("cublasZtrmm");
 
-  cublasZtrmm(handle, side, upLo, transA, diag,
+  cublasZtrmm(handle, side, uplo, transA, diag,
               m, n,
               reinterpret_cast<const cuDoubleComplex*>(alpha),
               reinterpret_cast<const cuDoubleComplex*>(A), ldA,
@@ -124,14 +124,14 @@ template <typename DerivedPolicy,
           typename Alpha, typename MA, typename MB, typename MC>
 auto
 trmm(const execution_policy<DerivedPolicy>& exec,
-     Side side, StorageUpLo upLo, Transpose transA, Diag diag,
+     Side side, Uplo uplo, Op transA, Diag diag,
      int m, int n,
      const Alpha& alpha,
      const MA* A, int ldA,
      const MB* B, int ldB,
      MC* C, int ldC)
     -> decltype(trmm(handle(derived_cast(exec)),
-                     cublas_type(side), cublas_type(upLo),
+                     cublas_type(side), cublas_type(uplo),
                      cublas_type(transA), cublas_type(diag),
                      m, n,
                      &alpha,
@@ -140,7 +140,7 @@ trmm(const execution_policy<DerivedPolicy>& exec,
                      C, ldC))
 {
   return trmm(handle(derived_cast(exec)),
-              cublas_type(side), cublas_type(upLo),
+              cublas_type(side), cublas_type(uplo),
               m, n,
               &alpha,
               A, ldA,
@@ -153,13 +153,13 @@ template <typename DerivedPolicy,
           typename Alpha, typename MA, typename MB, typename MC>
 auto
 trmm(const execution_policy<DerivedPolicy>& exec,
-     StorageOrder order, Side side, StorageUpLo upLo, Transpose transA, Diag diag,
+     Layout order, Side side, Uplo uplo, Op transA, Diag diag,
      int m, int n,
      const Alpha& alpha,
      const MA* A, int ldA,
      const MB* B, int ldB,
      MC* C, int ldC)
-    -> decltype(trmm(exec, side, upLo, transA, diag,
+    -> decltype(trmm(exec, side, uplo, transA, diag,
                      m, n,
                      alpha,
                      A, ldA,
@@ -167,7 +167,7 @@ trmm(const execution_policy<DerivedPolicy>& exec,
                      C, ldC))
 {
   if (order == ColMajor) {
-    trmm(exec, side, upLo,
+    trmm(exec, side, uplo,
          transA, diag,
          m, n,
          alpha,
@@ -175,7 +175,7 @@ trmm(const execution_policy<DerivedPolicy>& exec,
          B, ldB,
          C, ldC);
   } else {
-    trmm(exec, (side==Left) ? Right : Left, (upLo==Upper) ? Lower : Upper,
+    trmm(exec, (side==Left) ? Right : Left, (uplo==Upper) ? Lower : Upper,
          transA, diag,
          n, m,
          alpha,

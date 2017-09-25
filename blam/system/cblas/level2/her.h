@@ -37,7 +37,7 @@ namespace cblas
 
 // cgerc
 void
-her(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
+her(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
     int n,
     const float& alpha,
     const ComplexFloat* x, int incX,
@@ -45,7 +45,7 @@ her(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
 {
   BLAM_DEBUG_OUT("cblas_cher");
 
-  cblas_cher(order, upLo,
+  cblas_cher(order, uplo,
              n, alpha,
              reinterpret_cast<const float*>(x), incX,
              reinterpret_cast<float*>(A), ldA);
@@ -53,7 +53,7 @@ her(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
 
 // zgerc
 void
-her(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
+her(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
     int n,
     const double& alpha,
     const ComplexDouble* x, int incX,
@@ -61,7 +61,7 @@ her(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
 {
   BLAM_DEBUG_OUT("cblas_zher");
 
-  cblas_zher(order, upLo,
+  cblas_zher(order, uplo,
              n, alpha,
              reinterpret_cast<const double*>(x), incX,
              reinterpret_cast<double*>(A), ldA);
@@ -73,17 +73,17 @@ template <typename DerivedPolicy,
           typename VX, typename MA>
 auto
 her(const execution_policy<DerivedPolicy>& /*exec*/,
-    StorageOrder order, StorageUpLo upLo,
+    Layout order, Uplo uplo,
     int n,
     const Alpha& alpha,
     const VX* x, int incX,
     MA* A, int ldA)
-    -> decltype(her(cblas_type(order), cblas_type(upLo),
+    -> decltype(her(cblas_type(order), cblas_type(uplo),
                     n, alpha,
                     x, incX,
                     A, ldA))
 {
-  return her(cblas_type(order), cblas_type(upLo),
+  return her(cblas_type(order), cblas_type(uplo),
              n, alpha,
              x, incX,
              A, ldA);

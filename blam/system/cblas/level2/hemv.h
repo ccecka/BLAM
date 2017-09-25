@@ -37,7 +37,7 @@ namespace cblas
 
 // chemv
 void
-hemv(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
+hemv(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
      int n,
      const ComplexFloat& alpha,
      const ComplexFloat* A, int ldA,
@@ -47,7 +47,7 @@ hemv(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
 {
   BLAM_DEBUG_OUT("cblas_chemv");
 
-  cblas_chemv(order, upLo,
+  cblas_chemv(order, uplo,
               n,
               reinterpret_cast<const float*>(&alpha),
               reinterpret_cast<const float*>(A), ldA,
@@ -58,7 +58,7 @@ hemv(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
 
 // zhemv
 void
-hemv(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
+hemv(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
      int n,
      const ComplexDouble& alpha,
      const ComplexDouble* A, int ldA,
@@ -68,7 +68,7 @@ hemv(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
 {
   BLAM_DEBUG_OUT("cblas_zhemv");
 
-  cblas_zhemv(order, upLo,
+  cblas_zhemv(order, uplo,
               n,
               reinterpret_cast<const double*>(&alpha),
               reinterpret_cast<const double*>(A), ldA,
@@ -83,14 +83,14 @@ template <typename DerivedPolicy,
           typename Beta, typename VY>
 auto
 hemv(const execution_policy<DerivedPolicy>& /*exec*/,
-     StorageOrder order, StorageUpLo upLo,
+     Layout order, Uplo uplo,
      int n,
      const Alpha& alpha,
      const MA* A, int ldA,
      const VX* x, int incX,
      const Beta& beta,
      VY* y, int incY)
-    -> decltype(hemv(cblas_type(order), cblas_type(upLo),
+    -> decltype(hemv(cblas_type(order), cblas_type(uplo),
                      n,
                      alpha,
                      A, ldA,
@@ -98,7 +98,7 @@ hemv(const execution_policy<DerivedPolicy>& /*exec*/,
                      beta,
                      y, incY))
 {
-  return hemv(cblas_type(order), cblas_type(upLo),
+  return hemv(cblas_type(order), cblas_type(uplo),
               n,
               alpha,
               A, ldA,

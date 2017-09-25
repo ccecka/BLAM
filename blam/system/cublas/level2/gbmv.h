@@ -126,7 +126,7 @@ template <typename DerivedPolicy,
           typename Beta, typename VY>
 auto
 gbmv(const execution_policy<DerivedPolicy>& exec,
-     Transpose trans,
+     Op trans,
      int m, int n, int kl, int ku,
      const Alpha& alpha,
      const MA* A, int ldA,
@@ -156,7 +156,7 @@ template <typename DerivedPolicy,
           typename Beta, typename VY>
 auto
 gbmv(const execution_policy<DerivedPolicy>& exec,
-     StorageOrder order, Transpose trans,
+     Layout order, Op trans,
      int m, int n, int kl, int ku,
      const Alpha& alpha,
      const MA* A, int ldA,
@@ -180,7 +180,7 @@ gbmv(const execution_policy<DerivedPolicy>& exec,
                 beta,
                 y, incY);
   } else { // RowMajor: transpose A
-    return gbmv(exec, Transpose(trans ^ Trans),
+    return gbmv(exec, Op(trans ^ Trans),
                 n, m, ku, kl,
                 alpha,
                 A, ldA,

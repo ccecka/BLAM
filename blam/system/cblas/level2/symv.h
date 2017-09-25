@@ -37,7 +37,7 @@ namespace cblas
 
 // ssymv
 void
-symv(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
+symv(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
      int n, const float& alpha,
      const float* A, int ldA,
      const float* x, int incX,
@@ -46,7 +46,7 @@ symv(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
 {
   BLAM_DEBUG_OUT("cblas_ssymv");
 
-  cblas_ssymv(order, upLo,
+  cblas_ssymv(order, uplo,
               n, alpha,
               A, ldA,
               x, incX,
@@ -56,7 +56,7 @@ symv(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
 
 // dsymv
 void
-symv(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
+symv(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
      int n, const double& alpha,
      const double* A, int ldA,
      const double* x, int incX,
@@ -65,7 +65,7 @@ symv(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
 {
   BLAM_DEBUG_OUT("cblas_dsymv");
 
-  cblas_dsymv(order, upLo,
+  cblas_dsymv(order, uplo,
               n, alpha,
               A, ldA,
               x, incX,
@@ -79,21 +79,21 @@ template <typename DerivedPolicy,
           typename Beta, typename VY>
 auto
 symv(const execution_policy<DerivedPolicy>& /*exec*/,
-     StorageOrder order, StorageUpLo upLo,
+     Layout order, Uplo uplo,
      int n,
      const Alpha& alpha,
      const MA* A, int ldA,
      const VX* x, int incX,
      const Beta& beta,
      VY* y, int incY)
-    -> decltype(symv(cblas_type(order), cblas_type(upLo),
+    -> decltype(symv(cblas_type(order), cblas_type(uplo),
                      n, alpha,
                      A, ldA,
                      x, incX,
                      beta,
                      y, incY))
 {
-  return symv(cblas_type(order), cblas_type(upLo),
+  return symv(cblas_type(order), cblas_type(uplo),
               n, alpha,
               A, ldA,
               x, incX,

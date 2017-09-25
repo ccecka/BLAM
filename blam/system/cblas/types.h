@@ -33,35 +33,35 @@ namespace blam
 {
 
 CBLAS_LAYOUT
-cblas_type(StorageOrder order) {
+cblas_type(Layout order) {
   switch (order) {
-    case StorageOrder::ColMajor: return CblasColMajor;
-    case StorageOrder::RowMajor: return CblasRowMajor;
+    case Layout::ColMajor: return CblasColMajor;
+    case Layout::RowMajor: return CblasRowMajor;
     default:
-      assert(false && "Invalid StorageOrder Parameter");
+      assert(false && "Invalid Layout Parameter");
       return CblasColMajor;
   }
 }
 
 CBLAS_TRANSPOSE
-cblas_type(Transpose trans) {
+cblas_type(Op trans) {
   switch (trans) {
-    case Transpose::NoTrans:   return CblasNoTrans;
-    case Transpose::Trans:     return CblasTrans;
-    case Transpose::ConjTrans: return CblasConjTrans;
+    case Op::NoTrans:   return CblasNoTrans;
+    case Op::Trans:     return CblasTrans;
+    case Op::ConjTrans: return CblasConjTrans;
     default:
-      assert(false && "Invalid Transpose Parameter");
+      assert(false && "Invalid Op Parameter");
       return CblasNoTrans;
   }
 }
 
 CBLAS_UPLO
-cblas_type(StorageUpLo upLo) {
-  switch (upLo) {
-    case StorageUpLo::Upper: return CblasUpper;
-    case StorageUpLo::Lower: return CblasLower;
+cblas_type(Uplo uplo) {
+  switch (uplo) {
+    case Uplo::Upper: return CblasUpper;
+    case Uplo::Lower: return CblasLower;
     default:
-      assert(false && "Invalid StorageUpLo Parameter");
+      assert(false && "Invalid Uplo Parameter");
       return CblasUpper;
   }
 }

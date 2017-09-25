@@ -37,7 +37,7 @@ namespace cublas
 
 // sspr
 void
-spr(cublasHandle_t handle, cublasFillMode_t upLo,
+spr(cublasHandle_t handle, cublasFillMode_t uplo,
     int n,
     const float* alpha,
     const float* x, int incX,
@@ -45,7 +45,7 @@ spr(cublasHandle_t handle, cublasFillMode_t upLo,
 {
   BLAM_DEBUG_OUT("cublasSspr");
 
-  cublasSspr(handle, upLo,
+  cublasSspr(handle, uplo,
              n,
              alpha,
              x, incX,
@@ -54,7 +54,7 @@ spr(cublasHandle_t handle, cublasFillMode_t upLo,
 
 // dspr
 void
-spr(cublasHandle_t handle, cublasFillMode_t upLo,
+spr(cublasHandle_t handle, cublasFillMode_t uplo,
     int n,
     const double* alpha,
     const double* x, int incX,
@@ -62,7 +62,7 @@ spr(cublasHandle_t handle, cublasFillMode_t upLo,
 {
   BLAM_DEBUG_OUT("cublasDspr");
 
-  cublasDspr(handle, upLo,
+  cublasDspr(handle, uplo,
              n,
              alpha,
              x, incX,
@@ -75,17 +75,17 @@ template <typename DerivedPolicy,
           typename VX, typename MA>
 auto
 spr(const execution_policy<DerivedPolicy>& exec,
-    StorageUpLo upLo,
+    Uplo uplo,
     int n,
     const Alpha& alpha,
     const VX* x, int incX,
     MA* A)
-    -> decltype(spr(handle(derived_cast(exec)), cublas_type(upLo),
+    -> decltype(spr(handle(derived_cast(exec)), cublas_type(uplo),
                     n, &alpha,
                     x, incX,
                     A))
 {
-  return spr(handle(derived_cast(exec)), cublas_type(upLo),
+  return spr(handle(derived_cast(exec)), cublas_type(uplo),
              n, &alpha,
              x, incX,
              A);

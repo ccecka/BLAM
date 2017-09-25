@@ -37,7 +37,7 @@ namespace cublas
 
 // chemv
 void
-hemv(cublasHandle_t handle, cublasFillMode_t upLo,
+hemv(cublasHandle_t handle, cublasFillMode_t uplo,
      int n,
      const ComplexFloat* alpha,
      const ComplexFloat* A, int ldA,
@@ -47,7 +47,7 @@ hemv(cublasHandle_t handle, cublasFillMode_t upLo,
 {
   BLAM_DEBUG_OUT("cublasChemv");
 
-  cublasChemv(handle, upLo,
+  cublasChemv(handle, uplo,
               n,
               reinterpret_cast<const cuFloatComplex*>(alpha),
               reinterpret_cast<const cuFloatComplex*>(A), ldA,
@@ -58,7 +58,7 @@ hemv(cublasHandle_t handle, cublasFillMode_t upLo,
 
 // zhemv
 void
-hemv(cublasHandle_t handle, cublasFillMode_t upLo,
+hemv(cublasHandle_t handle, cublasFillMode_t uplo,
      int n,
      const ComplexDouble* alpha,
      const ComplexDouble* A, int ldA,
@@ -68,7 +68,7 @@ hemv(cublasHandle_t handle, cublasFillMode_t upLo,
 {
   BLAM_DEBUG_OUT("cublasZhemv");
 
-  cublasZhemv(handle, upLo,
+  cublasZhemv(handle, uplo,
               n,
               reinterpret_cast<const cuDoubleComplex*>(alpha),
               reinterpret_cast<const cuDoubleComplex*>(A), ldA,
@@ -83,14 +83,14 @@ template <typename DerivedPolicy,
           typename Beta, typename VY>
 auto
 hemv(const execution_policy<DerivedPolicy>& exec,
-     StorageUpLo upLo,
+     Uplo uplo,
      int n,
      const Alpha& alpha,
      const MA* A, int ldA,
      const VX* x, int incX,
      const Beta& beta,
      VY* y, int incY)
-    -> decltype(hemv(handle(derived_cast(exec)), cublas_type(upLo),
+    -> decltype(hemv(handle(derived_cast(exec)), cublas_type(uplo),
                      n,
                      &alpha,
                      A, ldA,
@@ -98,7 +98,7 @@ hemv(const execution_policy<DerivedPolicy>& exec,
                      &beta,
                      y, incY))
 {
-  return hemv(handle(derived_cast(exec)), cublas_type(upLo),
+  return hemv(handle(derived_cast(exec)), cublas_type(uplo),
               n,
               &alpha,
               A, ldA,
@@ -113,14 +113,14 @@ template <typename DerivedPolicy,
           typename Beta, typename VY>
 auto
 hemv(const execution_policy<DerivedPolicy>& exec,
-     StorageOrder order, StorageUpLo upLo,
+     Layout order, Uplo uplo,
      int n,
      const Alpha& alpha,
      const MA* A, int ldA,
      const VX* x, int incX,
      const Beta& beta,
      VY* y, int incY)
-    -> decltype(hemv(exec, upLo,
+    -> decltype(hemv(exec, uplo,
                      n,
                      alpha,
                      A, ldA,
@@ -129,10 +129,10 @@ hemv(const execution_policy<DerivedPolicy>& exec,
                      y, incY))
 {
   if (order == RowMajor) {
-    upLo = (upLo==Upper) ? Lower : Upper;
+    uplo = (uplo==Upper) ? Lower : Upper;
   }
 
-  return hemv(exec, upLo,
+  return hemv(exec, uplo,
               n,
               alpha,
               A, ldA,

@@ -37,7 +37,7 @@ namespace cublas
 
 // csyr
 void
-syr(cublasHandle_t handle, cublasFillMode_t upLo,
+syr(cublasHandle_t handle, cublasFillMode_t uplo,
     int n,
     const float* alpha,
     const float* x, int incX,
@@ -45,7 +45,7 @@ syr(cublasHandle_t handle, cublasFillMode_t upLo,
 {
   BLAM_DEBUG_OUT("cublasSsyr");
 
-  cublasSsyr(handle, upLo,
+  cublasSsyr(handle, uplo,
              n,
              alpha,
              x, incX,
@@ -54,7 +54,7 @@ syr(cublasHandle_t handle, cublasFillMode_t upLo,
 
 // zsyr
 void
-syr(cublasHandle_t handle, cublasFillMode_t upLo,
+syr(cublasHandle_t handle, cublasFillMode_t uplo,
     int n,
     const double* alpha,
     const double* x, int incX,
@@ -62,7 +62,7 @@ syr(cublasHandle_t handle, cublasFillMode_t upLo,
 {
   BLAM_DEBUG_OUT("cublasDsyr");
 
-  cublasDsyr(handle, upLo,
+  cublasDsyr(handle, uplo,
              n,
              alpha,
              x, incX,
@@ -71,7 +71,7 @@ syr(cublasHandle_t handle, cublasFillMode_t upLo,
 
 // csyr
 void
-syr(cublasHandle_t handle, cublasFillMode_t upLo,
+syr(cublasHandle_t handle, cublasFillMode_t uplo,
     int n,
     const ComplexFloat* alpha,
     const ComplexFloat* x, int incX,
@@ -79,7 +79,7 @@ syr(cublasHandle_t handle, cublasFillMode_t upLo,
 {
   BLAM_DEBUG_OUT("cublasCsyr");
 
-  cublasCsyr(handle, upLo,
+  cublasCsyr(handle, uplo,
              n,
              reinterpret_cast<const cuFloatComplex*>(alpha),
              reinterpret_cast<const cuFloatComplex*>(x), incX,
@@ -88,7 +88,7 @@ syr(cublasHandle_t handle, cublasFillMode_t upLo,
 
 // zsyr
 void
-syr(cublasHandle_t handle, cublasFillMode_t upLo,
+syr(cublasHandle_t handle, cublasFillMode_t uplo,
     int n,
     const ComplexDouble* alpha,
     const ComplexDouble* x, int incX,
@@ -96,7 +96,7 @@ syr(cublasHandle_t handle, cublasFillMode_t upLo,
 {
   BLAM_DEBUG_OUT("cublasZsyr");
 
-  cublasZsyr(handle, upLo,
+  cublasZsyr(handle, uplo,
              n,
              reinterpret_cast<const cuDoubleComplex*>(alpha),
              reinterpret_cast<const cuDoubleComplex*>(x), incX,
@@ -109,17 +109,17 @@ template <typename DerivedPolicy,
           typename VX, typename MA>
 auto
 syr(const execution_policy<DerivedPolicy>& exec,
-    StorageUpLo upLo,
+    Uplo uplo,
     int n,
     const Alpha& alpha,
     const VX* x, int incX,
     MA* A, int ldA)
-    -> decltype(syr(handle(derived_cast(exec)), cublas_type(upLo),
+    -> decltype(syr(handle(derived_cast(exec)), cublas_type(uplo),
                     n, &alpha,
                     x, incX,
                     A, ldA))
 {
-  return syr(handle(derived_cast(exec)), cublas_type(upLo),
+  return syr(handle(derived_cast(exec)), cublas_type(uplo),
              n, &alpha,
              x, incX,
              A, ldA);

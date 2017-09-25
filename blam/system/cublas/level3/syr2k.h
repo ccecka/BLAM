@@ -38,7 +38,7 @@ namespace cublas
 // ssyr2k
 void
 syr2k(cublasHandle_t handle,
-      cublasFillMode_t upLo, cublasOperation_t trans,
+      cublasFillMode_t uplo, cublasOperation_t trans,
       int n, int k,
       const float* alpha,
       const float* A, int ldA,
@@ -48,7 +48,7 @@ syr2k(cublasHandle_t handle,
 {
   BLAM_DEBUG_OUT("cublasSsyr2k");
 
-  cublasSsyr2k(handle, upLo,
+  cublasSsyr2k(handle, uplo,
                trans, n, k,
                alpha,
                A, ldA,
@@ -60,7 +60,7 @@ syr2k(cublasHandle_t handle,
 // dsyr2k
 void
 syr2k(cublasHandle_t handle,
-      cublasFillMode_t upLo, cublasOperation_t trans,
+      cublasFillMode_t uplo, cublasOperation_t trans,
       int n, int k,
       const double* alpha,
       const double* A, int ldA,
@@ -70,7 +70,7 @@ syr2k(cublasHandle_t handle,
 {
   BLAM_DEBUG_OUT("cublasDsyr2k");
 
-  cublasDsyr2k(handle, upLo,
+  cublasDsyr2k(handle, uplo,
                trans, n, k,
                alpha,
                A, ldA,
@@ -82,7 +82,7 @@ syr2k(cublasHandle_t handle,
 // csyrk
 void
 syr2k(cublasHandle_t handle,
-      cublasFillMode_t upLo, cublasOperation_t trans,
+      cublasFillMode_t uplo, cublasOperation_t trans,
       int n, int k,
       const ComplexFloat* alpha,
       const ComplexFloat* A, int ldA,
@@ -92,7 +92,7 @@ syr2k(cublasHandle_t handle,
 {
   BLAM_DEBUG_OUT("cublasCsyrk");
 
-  cublasCsyr2k(handle, upLo, trans,
+  cublasCsyr2k(handle, uplo, trans,
                n, k,
                reinterpret_cast<const cuFloatComplex*>(alpha),
                reinterpret_cast<const cuFloatComplex*>(A), ldA,
@@ -104,7 +104,7 @@ syr2k(cublasHandle_t handle,
 // zsyrk
 void
 syr2k(cublasHandle_t handle,
-      cublasFillMode_t upLo, cublasOperation_t trans,
+      cublasFillMode_t uplo, cublasOperation_t trans,
       int n, int k,
       const ComplexDouble* alpha,
       const ComplexDouble* A, int ldA,
@@ -114,7 +114,7 @@ syr2k(cublasHandle_t handle,
 {
   BLAM_DEBUG_OUT("cublasZsyr2k");
 
-  cublasZsyr2k(handle, upLo, trans,
+  cublasZsyr2k(handle, uplo, trans,
                n, k,
                reinterpret_cast<const cuDoubleComplex*>(alpha),
                reinterpret_cast<const cuDoubleComplex*>(A), ldA,
@@ -129,7 +129,7 @@ template <typename DerivedPolicy,
           typename Beta, typename MC>
 auto
 syr2k(const execution_policy<DerivedPolicy>& exec,
-      Side side, StorageUpLo upLo,
+      Side side, Uplo uplo,
       int n, int k,
       const Alpha& alpha,
       const MA* A, int ldA,
@@ -137,7 +137,7 @@ syr2k(const execution_policy<DerivedPolicy>& exec,
       const Beta& beta,
       MC* C, int ldC)
     -> decltype(syr2k(handle(derived_cast(exec)),
-                      cublas_type(side), cublas_type(upLo),
+                      cublas_type(side), cublas_type(uplo),
                       n, k,
                       &alpha,
                       A, ldA,
@@ -146,7 +146,7 @@ syr2k(const execution_policy<DerivedPolicy>& exec,
                       C, ldC))
 {
   return syr2k(handle(derived_cast(exec)),
-               cublas_type(side), cublas_type(upLo),
+               cublas_type(side), cublas_type(uplo),
                n, k,
                &alpha,
                A, ldA,
@@ -161,14 +161,14 @@ template <typename DerivedPolicy,
           typename Beta, typename MC>
 auto
 syr2k(const execution_policy<DerivedPolicy>& exec,
-      StorageOrder order, Side side, StorageUpLo upLo,
+      Layout order, Side side, Uplo uplo,
       int n, int k,
       const Alpha& alpha,
       const MA* A, int ldA,
       const MB* B, int ldB,
       const Beta& beta,
       MC* C, int ldC)
-    -> decltype(syr2k(exec, side, upLo,
+    -> decltype(syr2k(exec, side, uplo,
                       n, k,
                       alpha,
                       A, ldA,
@@ -177,7 +177,7 @@ syr2k(const execution_policy<DerivedPolicy>& exec,
                       C, ldC))
 {
   if (order == ColMajor) {
-    return syr2k(exec, side, upLo,
+    return syr2k(exec, side, uplo,
                  n, k,
                  alpha,
                  A, ldA,
@@ -185,7 +185,7 @@ syr2k(const execution_policy<DerivedPolicy>& exec,
                  beta,
                  C, ldC);
   } else {
-    return syr2k(exec, (side==Left) ? Right : Left, (upLo==Upper) ? Lower : Upper,
+    return syr2k(exec, (side==Left) ? Right : Left, (uplo==Upper) ? Lower : Upper,
                  n, k,
                  conj(alpha),
                  A, ldA,

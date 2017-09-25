@@ -37,7 +37,7 @@ namespace cblas
 
 // cgerc
 void
-her2(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
+her2(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
      int n,
      const ComplexFloat& alpha,
      const ComplexFloat* x, int incX,
@@ -46,7 +46,7 @@ her2(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
 {
   BLAM_DEBUG_OUT("cblas_cher2");
 
-  cblas_cher2(order, upLo,
+  cblas_cher2(order, uplo,
               n,
               reinterpret_cast<const float*>(&alpha),
               reinterpret_cast<const float*>(x), incX,
@@ -56,7 +56,7 @@ her2(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
 
 // zgerc
 void
-her2(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
+her2(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
      int n,
      const ComplexDouble& alpha,
      const ComplexDouble* x, int incX,
@@ -65,7 +65,7 @@ her2(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
 {
   BLAM_DEBUG_OUT("cblas_zher2");
 
-  cblas_zher2(order, upLo,
+  cblas_zher2(order, uplo,
               n,
               reinterpret_cast<const double*>(&alpha),
               reinterpret_cast<const double*>(x), incX,
@@ -79,19 +79,19 @@ template <typename DerivedPolicy,
           typename VX, typename VY, typename MA>
 auto
 her2(const execution_policy<DerivedPolicy>& /*exec*/,
-     StorageOrder order, StorageUpLo upLo,
+     Layout order, Uplo uplo,
      int n,
      const Alpha& alpha,
      const VX* x, int incX,
      const VY* y, int incY,
      MA* A, int ldA)
-    -> decltype(her2(cblas_type(order), cblas_type(upLo),
+    -> decltype(her2(cblas_type(order), cblas_type(uplo),
                      n, alpha,
                      x, incX,
                      y, incY,
                      A, ldA))
 {
-  return her2(cblas_type(order), cblas_type(upLo),
+  return her2(cblas_type(order), cblas_type(uplo),
               n, alpha,
               x, incX,
               y, incY,

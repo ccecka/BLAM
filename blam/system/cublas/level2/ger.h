@@ -179,7 +179,7 @@ template <typename DerivedPolicy,
           typename VX, typename VY, typename MA>
 auto
 geru(const execution_policy<DerivedPolicy>& exec,
-     StorageOrder order, int m, int n,
+     Layout order, int m, int n,
      const Alpha& alpha,
      const VX* x, int incX,
      const VY* y, int incY,
@@ -240,7 +240,7 @@ template <typename DerivedPolicy,
           typename VX, typename VY, typename MA>
 auto
 gerc(const execution_policy<DerivedPolicy>& exec,
-     StorageOrder order, int m, int n,
+     Layout order, int m, int n,
      const Alpha& alpha,
      const VX* x, int incX,
      const VY* y, int incY,

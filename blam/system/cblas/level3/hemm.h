@@ -38,7 +38,7 @@ namespace cblas
 // chemm
 void
 hemm(const CBLAS_LAYOUT order,
-     const CBLAS_SIDE side, const CBLAS_UPLO upLo,
+     const CBLAS_SIDE side, const CBLAS_UPLO uplo,
      int m, int n,
      const ComplexFloat& alpha,
      const ComplexFloat* A, int ldA,
@@ -48,7 +48,7 @@ hemm(const CBLAS_LAYOUT order,
 {
   BLAM_DEBUG_OUT("cblas_chemm");
 
-  cblas_chemm(order, side, upLo,
+  cblas_chemm(order, side, uplo,
               m, n,
               reinterpret_cast<const float*>(&alpha),
               reinterpret_cast<const float*>(A), ldA,
@@ -60,7 +60,7 @@ hemm(const CBLAS_LAYOUT order,
 // zhemm
 void
 hemm(const CBLAS_LAYOUT order,
-     const CBLAS_SIDE side, const CBLAS_UPLO upLo,
+     const CBLAS_SIDE side, const CBLAS_UPLO uplo,
      int m, int n,
      const ComplexDouble& alpha,
      const ComplexDouble* A, int ldA,
@@ -70,7 +70,7 @@ hemm(const CBLAS_LAYOUT order,
 {
   BLAM_DEBUG_OUT("cblas_zhemm");
 
-  cblas_zhemm(order, side, upLo,
+  cblas_zhemm(order, side, uplo,
               m, n,
               reinterpret_cast<const double*>(&alpha),
               reinterpret_cast<const double*>(A), ldA,
@@ -85,14 +85,14 @@ template <typename DerivedPolicy,
           typename Beta, typename MC>
 auto
 hemm(const execution_policy<DerivedPolicy>& /*exec*/,
-     StorageOrder order, Side side, StorageUpLo upLo,
+     Layout order, Side side, Uplo uplo,
      int m, int n,
      const Alpha& alpha,
      const MA* A, int ldA,
      const MB* B, int ldB,
      const Beta& beta,
      MC* C, int ldC)
-    -> decltype(hemm(cblas_type(order), cblas_type(side), cblas_type(upLo),
+    -> decltype(hemm(cblas_type(order), cblas_type(side), cblas_type(uplo),
                      m, n,
                      alpha,
                      A, ldA,
@@ -100,7 +100,7 @@ hemm(const execution_policy<DerivedPolicy>& /*exec*/,
                      beta,
                      C, ldC))
 {
-  return hemm(cblas_type(order), cblas_type(side), cblas_type(upLo),
+  return hemm(cblas_type(order), cblas_type(side), cblas_type(uplo),
               m, n,
               alpha,
               A, ldA,

@@ -43,7 +43,7 @@ template <typename ExecutionPolicy,
           typename Beta, typename MC>
 void
 generic(blam::gemm_t, const ExecutionPolicy& exec,
-        StorageOrder order, Transpose transA, Transpose transB,
+        Layout order, Op transA, Op transB,
         int m, int n, int k,
         const Alpha& alpha,
         const MA* A, int ldA,
@@ -57,7 +57,7 @@ template <typename ExecutionPolicy,
           typename Beta, typename MC>
 void
 generic(blam::gemm_t, const ExecutionPolicy& exec,
-        Transpose transA, Transpose transB,
+        Op transA, Op transB,
         int m, int n, int k,
         const Alpha& alpha,
         const MA* A, int ldA,

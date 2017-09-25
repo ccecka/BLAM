@@ -68,29 +68,29 @@ T abs1(const complex<T>& v) {
 namespace blam
 {
 
-enum StorageOrder {
+enum Layout : char {
   ColMajor = 0,
   RowMajor = 1
 };
 
-enum Transpose {
+enum Op : char {
   NoTrans   = 0,
   Conj      = 1,
   Trans     = 2,
   ConjTrans = 3
 };
 
-enum StorageUpLo {
+enum Uplo : char {
   Upper = 'U',
   Lower = 'L'
 };
 
-enum Diag {
+enum Diag : char {
   Unit    = 'U',
   NonUnit = 'N'
 };
 
-enum Side {
+enum Side : char {
   Left  = 'L',
   Right = 'R'
 };

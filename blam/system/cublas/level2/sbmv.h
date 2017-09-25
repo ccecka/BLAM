@@ -37,7 +37,7 @@ namespace cublas
 
 // csbmv
 void
-sbmv(cublasHandle_t handle, cublasFillMode_t upLo,
+sbmv(cublasHandle_t handle, cublasFillMode_t uplo,
      int n, int k,
      const float* alpha,
      const float* A, int ldA,
@@ -47,7 +47,7 @@ sbmv(cublasHandle_t handle, cublasFillMode_t upLo,
 {
   BLAM_DEBUG_OUT("cublasSsbmv");
 
-  cublasSsbmv(handle, upLo,
+  cublasSsbmv(handle, uplo,
               n, k,
               alpha,
               A, ldA,
@@ -58,7 +58,7 @@ sbmv(cublasHandle_t handle, cublasFillMode_t upLo,
 
 // zsbmv
 void
-sbmv(cublasHandle_t handle, cublasFillMode_t upLo,
+sbmv(cublasHandle_t handle, cublasFillMode_t uplo,
      int n, int k,
      const double* alpha,
      const double* A, int ldA,
@@ -68,7 +68,7 @@ sbmv(cublasHandle_t handle, cublasFillMode_t upLo,
 {
   BLAM_DEBUG_OUT("cublasDsbmv");
 
-  cublasDsbmv(handle, upLo,
+  cublasDsbmv(handle, uplo,
               n, k,
               alpha,
               A, ldA,
@@ -83,14 +83,14 @@ template <typename DerivedPolicy,
           typename Beta, typename VY>
 auto
 sbmv(const execution_policy<DerivedPolicy>& exec,
-     StorageUpLo upLo,
+     Uplo uplo,
      int n, int k,
      const Alpha& alpha,
      const MA* A, int ldA,
      const VX* x, int incX,
      const Beta& beta,
      VY* y, int incY)
-    -> decltype(sbmv(handle(derived_cast(exec)), cublas_type(upLo),
+    -> decltype(sbmv(handle(derived_cast(exec)), cublas_type(uplo),
                      n, k,
                      &alpha,
                      A, ldA,
@@ -98,7 +98,7 @@ sbmv(const execution_policy<DerivedPolicy>& exec,
                      &beta,
                      y, incY))
 {
-  return sbmv(handle(derived_cast(exec)), cublas_type(upLo),
+  return sbmv(handle(derived_cast(exec)), cublas_type(uplo),
               n, k,
               &alpha,
               A, ldA,
@@ -113,14 +113,14 @@ template <typename DerivedPolicy,
           typename Beta, typename VY>
 auto
 sbmv(const execution_policy<DerivedPolicy>& exec,
-     StorageOrder order, StorageUpLo upLo,
+     Layout order, Uplo uplo,
      int n, int k,
      const Alpha& alpha,
      const MA* A, int ldA,
      const VX* x, int incX,
      const Beta& beta,
      VY* y, int incY)
-    -> decltype(sbmv(exec, upLo,
+    -> decltype(sbmv(exec, uplo,
                      n, k,
                      alpha,
                      A, ldA,
@@ -129,10 +129,10 @@ sbmv(const execution_policy<DerivedPolicy>& exec,
                      y, incY))
 {
   if (order == RowMajor) {
-    upLo = (upLo==Upper) ? Lower : Upper;
+    uplo = (uplo==Upper) ? Lower : Upper;
   }
 
-  return sbmv(exec, upLo,
+  return sbmv(exec, uplo,
               n, k,
               alpha,
               A, ldA,

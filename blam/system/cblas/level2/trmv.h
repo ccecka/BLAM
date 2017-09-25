@@ -37,7 +37,7 @@ namespace cblas
 
 // strmv
 void
-trmv(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
+trmv(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
      const CBLAS_TRANSPOSE transA, const CBLAS_DIAG diag,
      int n,
      const float* A, int ldA,
@@ -45,7 +45,7 @@ trmv(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
 {
   BLAM_DEBUG_OUT("cblas_strmv");
 
-  cblas_strmv(order, upLo, transA, diag,
+  cblas_strmv(order, uplo, transA, diag,
               n,
               A, ldA,
               x, incX);
@@ -53,7 +53,7 @@ trmv(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
 
 // dtrmv
 void
-trmv(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
+trmv(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
      const CBLAS_TRANSPOSE transA, const CBLAS_DIAG diag,
      int n,
      const double* A, int ldA,
@@ -61,7 +61,7 @@ trmv(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
 {
   BLAM_DEBUG_OUT("cblas_dtrmv");
 
-  cblas_dtrmv(order, upLo, transA, diag,
+  cblas_dtrmv(order, uplo, transA, diag,
               n,
               A, ldA,
               x, incX);
@@ -69,7 +69,7 @@ trmv(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
 
 // ctrmv
 void
-trmv(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
+trmv(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
      const CBLAS_TRANSPOSE transA, const CBLAS_DIAG diag,
      int n,
      const ComplexFloat* A, int ldA,
@@ -77,7 +77,7 @@ trmv(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
 {
   BLAM_DEBUG_OUT("cblas_ctrmv");
 
-  cblas_ctrmv(order, upLo, transA, diag,
+  cblas_ctrmv(order, uplo, transA, diag,
               n,
               reinterpret_cast<const float*>(A), ldA,
               reinterpret_cast<float*>(x), incX);
@@ -85,7 +85,7 @@ trmv(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
 
 // ztrmv
 void
-trmv(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
+trmv(const CBLAS_LAYOUT order, const CBLAS_UPLO uplo,
      const CBLAS_TRANSPOSE transA, const CBLAS_DIAG diag,
      int n,
      const ComplexDouble* A, int ldA,
@@ -93,7 +93,7 @@ trmv(const CBLAS_LAYOUT order, const CBLAS_UPLO upLo,
 {
   BLAM_DEBUG_OUT("cblas_ztrmv");
 
-  cblas_ztrmv(order, upLo, transA, diag,
+  cblas_ztrmv(order, uplo, transA, diag,
               n,
               reinterpret_cast<const double*>(A), ldA,
               reinterpret_cast<double*>(x), incX);
@@ -104,17 +104,17 @@ template <typename DerivedPolicy,
           typename MA, typename VX>
 auto
 trmv(const execution_policy<DerivedPolicy>& /*exec*/,
-     StorageOrder order, StorageUpLo upLo, Transpose transA, Diag diag,
+     Layout order, Uplo uplo, Op transA, Diag diag,
      int n,
      const MA* A, int ldA,
      VX* x, int incX)
-    -> decltype(trmv(cblas_type(order), cblas_type(upLo),
+    -> decltype(trmv(cblas_type(order), cblas_type(uplo),
                      cblas_type(transA), cblas_type(diag),
                      n,
                      A, ldA,
                      x, incX))
 {
-  return trmv(cblas_type(order), cblas_type(upLo),
+  return trmv(cblas_type(order), cblas_type(uplo),
               cblas_type(transA), cblas_type(diag),
               n,
               A, ldA,

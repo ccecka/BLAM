@@ -33,24 +33,24 @@ namespace blam
 {
 
 cublasOperation_t
-cublas_type(Transpose trans) {
+cublas_type(Op trans) {
   switch (trans) {
-    case Transpose::NoTrans:   return CUBLAS_OP_N;
-    case Transpose::Trans:     return CUBLAS_OP_T;
-    case Transpose::ConjTrans: return CUBLAS_OP_C;
+    case Op::NoTrans:   return CUBLAS_OP_N;
+    case Op::Trans:     return CUBLAS_OP_T;
+    case Op::ConjTrans: return CUBLAS_OP_C;
     default:
-      assert(false && "Invalid Transpose Parameter");
+      assert(false && "Invalid Op Parameter");
       return CUBLAS_OP_N;
   }
 }
 
 cublasFillMode_t
-cublas_type(StorageUpLo uplo) {
+cublas_type(Uplo uplo) {
   switch (uplo) {
-    case StorageUpLo::Upper: return CUBLAS_FILL_MODE_UPPER;
-    case StorageUpLo::Lower: return CUBLAS_FILL_MODE_LOWER;
+    case Uplo::Upper: return CUBLAS_FILL_MODE_UPPER;
+    case Uplo::Lower: return CUBLAS_FILL_MODE_LOWER;
     default:
-      assert(false && "Invalid StorageUpLo Parameter");
+      assert(false && "Invalid Uplo Parameter");
       return CUBLAS_FILL_MODE_UPPER;
   }
 }

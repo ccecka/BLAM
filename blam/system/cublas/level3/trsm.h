@@ -38,7 +38,7 @@ namespace cublas
 // strsm
 void
 trsm(cublasHandle_t handle,
-     cublasSideMode_t side, cublasFillMode_t upLo,
+     cublasSideMode_t side, cublasFillMode_t uplo,
      cublasOperation_t trans, cublasDiagType_t diag,
      int m, int n,
      const float* alpha,
@@ -47,7 +47,7 @@ trsm(cublasHandle_t handle,
 {
   BLAM_DEBUG_OUT("cublasStrsm");
 
-  cublasStrsm(handle, side, upLo, trans, diag,
+  cublasStrsm(handle, side, uplo, trans, diag,
               m, n,
               alpha,
               A, ldA,
@@ -57,7 +57,7 @@ trsm(cublasHandle_t handle,
 // dtrsm
 void
 trsm(cublasHandle_t handle,
-     cublasSideMode_t side, cublasFillMode_t upLo,
+     cublasSideMode_t side, cublasFillMode_t uplo,
      cublasOperation_t trans, cublasDiagType_t diag,
      int m, int n,
      const double* alpha,
@@ -66,7 +66,7 @@ trsm(cublasHandle_t handle,
 {
   BLAM_DEBUG_OUT("cublasDtrsm");
 
-  cublasDtrsm(handle, side, upLo, trans, diag,
+  cublasDtrsm(handle, side, uplo, trans, diag,
               m, n,
               alpha,
               A, ldA,
@@ -76,7 +76,7 @@ trsm(cublasHandle_t handle,
 // ctrsm
 void
 trsm(cublasHandle_t handle,
-     cublasSideMode_t side, cublasFillMode_t upLo,
+     cublasSideMode_t side, cublasFillMode_t uplo,
      cublasOperation_t trans, cublasDiagType_t diag,
      int m, int n,
      const ComplexFloat* alpha,
@@ -85,7 +85,7 @@ trsm(cublasHandle_t handle,
 {
   BLAM_DEBUG_OUT("cublasCtrsm");
 
-  cublasCtrsm(handle, side, upLo, trans, diag,
+  cublasCtrsm(handle, side, uplo, trans, diag,
               m, n,
               reinterpret_cast<const cuFloatComplex*>(alpha),
               reinterpret_cast<const cuFloatComplex*>(A), ldA,
@@ -95,7 +95,7 @@ trsm(cublasHandle_t handle,
 // ztrsm
 void
 trsm(cublasHandle_t handle,
-     cublasSideMode_t side, cublasFillMode_t upLo,
+     cublasSideMode_t side, cublasFillMode_t uplo,
      cublasOperation_t trans, cublasDiagType_t diag,
      int m, int n,
      const ComplexDouble* alpha,
@@ -104,7 +104,7 @@ trsm(cublasHandle_t handle,
 {
   BLAM_DEBUG_OUT("cublasZtrsm");
 
-  cublasZtrsm(handle, side, upLo, trans, diag,
+  cublasZtrsm(handle, side, uplo, trans, diag,
               m, n,
               reinterpret_cast<const cuDoubleComplex*>(alpha),
               reinterpret_cast<const cuDoubleComplex*>(A), ldA,
@@ -116,13 +116,13 @@ template <typename DerivedPolicy,
           typename Alpha, typename MA, typename MB, typename MC>
 auto
 trsm(const execution_policy<DerivedPolicy>& exec,
-     Side side, StorageUpLo upLo, Transpose trans, Diag diag,
+     Side side, Uplo uplo, Op trans, Diag diag,
      int m, int n,
      const Alpha& alpha,
      const MA* A, int ldA,
      MB* B, int ldB)
     -> decltype(trsm(handle(derived_cast(exec)),
-                     cublas_type(side), cublas_type(upLo),
+                     cublas_type(side), cublas_type(uplo),
                      cublas_type(trans), cublas_type(diag),
                      m, n,
                      &alpha,
@@ -130,7 +130,7 @@ trsm(const execution_policy<DerivedPolicy>& exec,
                      B, ldB))
 {
   return trsm(handle(derived_cast(exec)),
-              cublas_type(side), cublas_type(upLo),
+              cublas_type(side), cublas_type(uplo),
               m, n,
               &alpha,
               A, ldA,
@@ -142,26 +142,26 @@ template <typename DerivedPolicy,
           typename Alpha, typename MA, typename MB, typename MC>
 auto
 trsm(const execution_policy<DerivedPolicy>& exec,
-     StorageOrder order, Side side, StorageUpLo upLo, Transpose trans, Diag diag,
+     Layout order, Side side, Uplo uplo, Op trans, Diag diag,
      int m, int n,
      const Alpha& alpha,
      const MA* A, int ldA,
      MB* B, int ldB)
-    -> decltype(trsm(exec, side, upLo, trans, diag,
+    -> decltype(trsm(exec, side, uplo, trans, diag,
                      m, n,
                      alpha,
                      A, ldA,
                      B, ldB))
 {
   if (order == ColMajor) {
-    trsm(exec, side, upLo,
+    trsm(exec, side, uplo,
          trans, diag,
          m, n,
          alpha,
          A, ldA,
          B, ldB);
   } else {
-    trsm(exec, (side==Left) ? Right : Left, (upLo==Upper) ? Lower : Upper,
+    trsm(exec, (side==Left) ? Right : Left, (uplo==Upper) ? Lower : Upper,
          trans, diag,
          n, m,
          alpha,

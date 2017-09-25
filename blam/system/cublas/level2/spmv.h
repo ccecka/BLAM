@@ -37,7 +37,7 @@ namespace cublas
 
 // sspmv
 void
-spmv(cublasHandle_t handle, cublasFillMode_t upLo,
+spmv(cublasHandle_t handle, cublasFillMode_t uplo,
      int n,
      const float* alpha,
      const float* A,
@@ -47,7 +47,7 @@ spmv(cublasHandle_t handle, cublasFillMode_t upLo,
 {
   BLAM_DEBUG_OUT("cublasSspmv");
 
-  cublasSspmv(handle, upLo,
+  cublasSspmv(handle, uplo,
               n,
               alpha,
               A,
@@ -58,7 +58,7 @@ spmv(cublasHandle_t handle, cublasFillMode_t upLo,
 
 // dspmv
 void
-spmv(cublasHandle_t handle, cublasFillMode_t upLo,
+spmv(cublasHandle_t handle, cublasFillMode_t uplo,
      int n,
      const double* alpha,
      const double* A,
@@ -68,7 +68,7 @@ spmv(cublasHandle_t handle, cublasFillMode_t upLo,
 {
   BLAM_DEBUG_OUT("cublasDspmv");
 
-  cublasDspmv(handle, upLo,
+  cublasDspmv(handle, uplo,
               n,
               alpha,
               A,
@@ -83,14 +83,14 @@ template <typename DerivedPolicy,
           typename Beta, typename VY>
 auto
 spmv(const execution_policy<DerivedPolicy>& exec,
-     StorageUpLo upLo,
+     Uplo uplo,
      int n,
      const Alpha& alpha,
      const MA* A,
      const VX* x, int incX,
      const Beta& beta,
      VY* y, int incY)
-    -> decltype(spmv(handle(derived_cast(exec)), cublas_type(upLo),
+    -> decltype(spmv(handle(derived_cast(exec)), cublas_type(uplo),
                      n,
                      &alpha,
                      A,
@@ -98,7 +98,7 @@ spmv(const execution_policy<DerivedPolicy>& exec,
                      &beta,
                      y, incY))
 {
-  return spmv(handle(derived_cast(exec)), cublas_type(upLo),
+  return spmv(handle(derived_cast(exec)), cublas_type(uplo),
               n,
               &alpha,
               A,
@@ -113,14 +113,14 @@ template <typename DerivedPolicy,
           typename Beta, typename VY>
 auto
 spmv(const execution_policy<DerivedPolicy>& exec,
-     StorageOrder order, StorageUpLo upLo,
+     Layout order, Uplo uplo,
      int n,
      const Alpha& alpha,
      const MA* A,
      const VX* x, int incX,
      const Beta& beta,
      VY* y, int incY)
-    -> decltype(spmv(exec, upLo,
+    -> decltype(spmv(exec, uplo,
                      n,
                      alpha,
                      A,
@@ -129,10 +129,10 @@ spmv(const execution_policy<DerivedPolicy>& exec,
                      y, incY))
 {
   if (order == RowMajor) {
-    upLo = (upLo==Upper) ? Lower : Upper;
+    uplo = (uplo==Upper) ? Lower : Upper;
   }
 
-  return spmv(exec, upLo,
+  return spmv(exec, uplo,
               n,
               alpha,
               A,

@@ -129,7 +129,7 @@ template <typename DerivedPolicy,
           typename Beta, typename MC>
 auto
 gemm(const execution_policy<DerivedPolicy>& /*exec*/,
-     StorageOrder order, Transpose transA, Transpose transB,
+     Layout order, Op transA, Op transB,
      int m, int n, int k,
      const Alpha& alpha,
      const MA* A, int ldA,

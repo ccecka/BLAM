@@ -37,7 +37,7 @@ namespace cblas
 
 // strmm
 void
-trmm(const CBLAS_LAYOUT order, const CBLAS_SIDE side, const CBLAS_UPLO upLo,
+trmm(const CBLAS_LAYOUT order, const CBLAS_SIDE side, const CBLAS_UPLO uplo,
      const CBLAS_TRANSPOSE transA, const CBLAS_DIAG diag,
      int m, int n,
      const float& alpha,
@@ -46,7 +46,7 @@ trmm(const CBLAS_LAYOUT order, const CBLAS_SIDE side, const CBLAS_UPLO upLo,
 {
   BLAM_DEBUG_OUT("cblas_strmm");
 
-  cblas_strmm(order, side, upLo, transA, diag,
+  cblas_strmm(order, side, uplo, transA, diag,
               m, n,
               alpha,
               A, ldA,
@@ -55,7 +55,7 @@ trmm(const CBLAS_LAYOUT order, const CBLAS_SIDE side, const CBLAS_UPLO upLo,
 
 // dtrmm
 void
-trmm(const CBLAS_LAYOUT order, const CBLAS_SIDE side, const CBLAS_UPLO upLo,
+trmm(const CBLAS_LAYOUT order, const CBLAS_SIDE side, const CBLAS_UPLO uplo,
      const CBLAS_TRANSPOSE transA, const CBLAS_DIAG diag,
      int m, int n,
      const double& alpha,
@@ -64,7 +64,7 @@ trmm(const CBLAS_LAYOUT order, const CBLAS_SIDE side, const CBLAS_UPLO upLo,
 {
   BLAM_DEBUG_OUT("cblas_dtrmm");
 
-  cblas_dtrmm(order, side, upLo, transA, diag,
+  cblas_dtrmm(order, side, uplo, transA, diag,
               m, n,
               alpha,
               A, ldA,
@@ -73,7 +73,7 @@ trmm(const CBLAS_LAYOUT order, const CBLAS_SIDE side, const CBLAS_UPLO upLo,
 
 // ctrmm
 void
-trmm(const CBLAS_LAYOUT order, const CBLAS_SIDE side, const CBLAS_UPLO upLo,
+trmm(const CBLAS_LAYOUT order, const CBLAS_SIDE side, const CBLAS_UPLO uplo,
      const CBLAS_TRANSPOSE transA, const CBLAS_DIAG diag,
      int m, int n,
      const ComplexFloat& alpha,
@@ -82,7 +82,7 @@ trmm(const CBLAS_LAYOUT order, const CBLAS_SIDE side, const CBLAS_UPLO upLo,
 {
   BLAM_DEBUG_OUT("cblas_ctrmm");
 
-  cblas_ctrmm(order, side, upLo, transA, diag,
+  cblas_ctrmm(order, side, uplo, transA, diag,
               m, n,
               reinterpret_cast<const float*>(&alpha),
               reinterpret_cast<const float*>(A), ldA,
@@ -91,7 +91,7 @@ trmm(const CBLAS_LAYOUT order, const CBLAS_SIDE side, const CBLAS_UPLO upLo,
 
 // ztrmm
 void
-trmm(const CBLAS_LAYOUT order, const CBLAS_SIDE side, const CBLAS_UPLO upLo,
+trmm(const CBLAS_LAYOUT order, const CBLAS_SIDE side, const CBLAS_UPLO uplo,
      const CBLAS_TRANSPOSE transA, const CBLAS_DIAG diag,
      int m, int n,
      const ComplexDouble& alpha,
@@ -100,7 +100,7 @@ trmm(const CBLAS_LAYOUT order, const CBLAS_SIDE side, const CBLAS_UPLO upLo,
 {
   BLAM_DEBUG_OUT("cblas_ztrmm");
 
-  cblas_ztrmm(order, side, upLo, transA, diag,
+  cblas_ztrmm(order, side, uplo, transA, diag,
               m, n,
               reinterpret_cast<const double*>(&alpha),
               reinterpret_cast<const double*>(A), ldA,
@@ -112,19 +112,19 @@ template <typename DerivedPolicy,
           typename Alpha, typename MA, typename MB>
 auto
 trmm(const execution_policy<DerivedPolicy>& /*exec*/,
-     StorageOrder order, Side side, StorageUpLo upLo, Transpose transA, Diag diag,
+     Layout order, Side side, Uplo uplo, Op transA, Diag diag,
      int m, int n,
      const Alpha& alpha,
      const MA* A, int ldA,
      MB* B, int ldB)
-    -> decltype(trmm(cblas_type(order), cblas_type(side), cblas_type(upLo),
+    -> decltype(trmm(cblas_type(order), cblas_type(side), cblas_type(uplo),
                      cblas_type(transA), cblas_type(diag),
                      m, n,
                      alpha,
                      A, ldA,
                      B, ldB))
 {
-  return trmm(cblas_type(order), cblas_type(side), cblas_type(upLo),
+  return trmm(cblas_type(order), cblas_type(side), cblas_type(uplo),
               cblas_type(transA), cblas_type(diag),
               m, n,
               alpha,
