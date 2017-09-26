@@ -35,6 +35,21 @@
 #include <blam/system/mkl/mkl.h>
 #include <blam/system/decay/decay.h>
 
+namespace other
+{
+
+struct execution_policy {};
+
+template <class Function, class... T>
+void
+invoke(const execution_policy& exec, Function f, T&&... t)
+{
+  std::cout << "DEAD END!" << std::endl;
+}
+
+} // end namespace other
+
+
 namespace mine {
 
 template <class DerivedPolicy>
@@ -59,6 +74,7 @@ invoke(const execution_policy<DerivedPolicy>& exec, Function f, T&&... t)
 }
 
 } // end namespace mine
+
 
 
 template <typename T, typename ExecutionPolicy>
@@ -91,6 +107,8 @@ int main()
   mine::execution_policy<blam::mkl::tag> exec;
   test<float>(exec, 4);
   }
+
+  std::cout << "\n################################################\n" << std::endl;
 
   {
   mine::execution_policy<blam::cblas::tag> exec;

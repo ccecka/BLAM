@@ -91,6 +91,8 @@ int main()
   test<float>(exec, 4);
   }
 
+  std::cout << "\n################################################\n" << std::endl;
+
   {
   mine::execution_policy<blam::cblas::tag> exec;
   test<float>(exec, 4);

@@ -35,57 +35,72 @@
 namespace experimental
 {
 
-template <class... T>
-struct type_list {};
+template <class... Conds>
+struct and_ : std::true_type {};
 
+template <class Cond, class... Conds>
+struct and_<Cond, Conds...> : std::conditional<Cond::value, and_<Conds...>, std::false_type>::type {};
 
-template <class T, class Set>
-struct is_member;
+template <class T, class... Us>
+struct is_any : and_<std::is_same<T,Us>...> {};
 
-template <class T>
-struct is_member<T, type_list<>> : std::false_type {};
-
-template <class T, class... Ss>
-struct is_member<T, type_list<T,Ss...>> : std::true_type {};
-
-template <class T, class S, class... Ss>
-struct is_member<T, type_list<S,Ss...>> : is_member<T,type_list<Ss...>> {};
-
-
-template <class ExecutionPolicy, class Disabled>
-struct disabled_execution_policy : public ExecutionPolicy
+// Inherit from ExecutionPolicy's ParentPolicy to make the ParentPolicy's customization points available
+template <class ExecutionPolicy, class ParentPolicy, class... Disabled>
+class disabled_execution_policy : public ParentPolicy
 {
+ public:
+  ParentPolicy& base() { return *this; }
+  const ParentPolicy& base() const { return *this; }
+
+ private:
+  // this member ensures sizeof(disabled_execution_policy) >= sizeof(ExecutionPolicy)
+  char padding_[sizeof(ExecutionPolicy) - sizeof(ParentPolicy)];
+};
+
+// There is no declared ParentPolicy, so just inherit from ExecutionPolicy
+template <class ExecutionPolicy, class... Disabled>
+class disabled_execution_policy<ExecutionPolicy, void, Disabled...> : public ExecutionPolicy
+{
+ public:
   ExecutionPolicy& base() { return *this; }
   const ExecutionPolicy& base() const { return *this; }
 };
 
 template <class... CP, class ExecutionPolicy>
-const disabled_execution_policy<ExecutionPolicy, type_list<CP...> >&
+const disabled_execution_policy<ExecutionPolicy, void, CP...>&
 remove_customization_point(const ExecutionPolicy& policy)
 {
-  return *reinterpret_cast<const disabled_execution_policy<ExecutionPolicy, type_list<CP...>>*>(&policy);
+  return *reinterpret_cast<const disabled_execution_policy<ExecutionPolicy, void, CP...>*>(&policy);
 }
 
-
-template <class Function,
-          class DerivedPolicy,
-          class Disabled,
-          class... Args,
-          __REQUIRES(!is_member<Function,Disabled>::value)>
-auto
-invoke(const disabled_execution_policy<DerivedPolicy,Disabled>& exec, Function f, Args&&... args) ->
-    decltype(f(exec.base(), std::forward<Args>(args)...))
+template <class ParentPolicy, class... CP, class ExecutionPolicy>
+const disabled_execution_policy<ExecutionPolicy, ParentPolicy, CP...>&
+prefer_customization_point(const ExecutionPolicy& policy)
 {
-  return f(exec.base(), std::forward<Args>(args)...);
+  return *reinterpret_cast<const disabled_execution_policy<ExecutionPolicy, ParentPolicy, CP...>*>(&policy);
 }
 
-template <class Function,
-          class DerivedPolicy,
-          class Disabled,
+
+template <class Function, class... Disabled,
+          class ExecutionPolicy, class ParentPolicy,
           class... Args,
-          __REQUIRES(is_member<Function,Disabled>::value)>
-void
-invoke(const disabled_execution_policy<DerivedPolicy,Disabled>& exec, Function f, Args&&... args) = delete;
+          __REQUIRES(!is_any<Function,Disabled...>::value)>
+auto
+invoke(const disabled_execution_policy<ExecutionPolicy, ParentPolicy, Disabled...>& policy,
+       Function f, Args&&... args) ->
+    decltype(f(policy.base(), std::forward<Args>(args)...))
+{
+  return f(policy.base(), std::forward<Args>(args)...);
+}
+
+template <class Function, class... Disabled,
+          class ExecutionPolicy,
+          class... Args,
+          __REQUIRES(is_any<Function,Disabled...>::value)>
+auto
+invoke(const disabled_execution_policy<ExecutionPolicy, void, Disabled...>& policy,
+       Function f, Args&&... args) ->
+    decltype(f(policy.base(), std::forward<Args>(args)...)) = delete;
 
 } // end namespace experimental
 
