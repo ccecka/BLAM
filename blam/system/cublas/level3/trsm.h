@@ -131,6 +131,7 @@ trsm(const execution_policy<DerivedPolicy>& exec,
 {
   return trsm(handle(derived_cast(exec)),
               cublas_type(side), cublas_type(uplo),
+              cublas_type(trans), cublas_type(diag),
               m, n,
               &alpha,
               A, ldA,
