@@ -112,7 +112,7 @@ gemm(cublasHandle_t handle,
      const ComplexDouble* beta,
      ComplexDouble* C, int ldC)
 {
-  BLAM_DEBUG_OUT("cublasDgemm");
+  BLAM_DEBUG_OUT("cublasZgemm");
 
   cublasZgemm(handle, transA, transB,
               m, n, k,
