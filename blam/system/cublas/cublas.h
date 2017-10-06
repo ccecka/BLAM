@@ -78,3 +78,6 @@
 #include <blam/system/cublas/level3/trsm.h>
 #include <blam/system/cublas/level3/syrk.h>
 #include <blam/system/cublas/level3/symm.h>
+
+// Extended
+#include <blam/system/cublas/ex/geam.h>
