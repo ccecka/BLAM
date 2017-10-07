@@ -45,7 +45,7 @@ class multi_function<> {};
 template <class Implementation1, class... Implementations>
 class multi_function<Implementation1,Implementations...> : multi_function<Implementations...>
 {
- protected:
+ private:
   using super_t = multi_function<Implementations...>;
 
   Implementation1 impl_;
