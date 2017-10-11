@@ -40,13 +40,13 @@ template <class F, class... Args>
 struct signature;
 
 template <class... Conds>
-struct and_ : std::true_type {};
+struct or_ : std::false_type {};
 
 template <class Cond, class... Conds>
-struct and_<Cond, Conds...> : std::conditional<Cond::value, and_<Conds...>, std::false_type>::type {};
+struct or_<Cond, Conds...> : std::conditional<Cond::value, std::true_type, or_<Conds...>>::type {};
 
 template <class T, class... Us>
-struct is_any : and_<std::is_same<T,Us>...> {};
+struct is_any : or_<std::is_same<T,Us>...> {};
 
 // Inherit from ExecutionPolicy's ParentPolicy to make the ParentPolicy's customization points available
 template <class ExecutionPolicy, class ParentPolicy, class... Disabled>
