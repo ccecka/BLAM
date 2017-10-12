@@ -33,7 +33,8 @@ namespace blam
 {
 
 CBLAS_LAYOUT
-cblas_type(Layout order) {
+cblas_type(Layout order)
+{
   switch (order) {
     case Layout::ColMajor: return CblasColMajor;
     case Layout::RowMajor: return CblasRowMajor;
@@ -44,7 +45,8 @@ cblas_type(Layout order) {
 }
 
 CBLAS_TRANSPOSE
-cblas_type(Op trans) {
+cblas_type(Op trans)
+{
   switch (trans) {
     case Op::NoTrans:   return CblasNoTrans;
     case Op::Trans:     return CblasTrans;
@@ -56,7 +58,8 @@ cblas_type(Op trans) {
 }
 
 CBLAS_UPLO
-cblas_type(Uplo uplo) {
+cblas_type(Uplo uplo)
+{
   switch (uplo) {
     case Uplo::Upper: return CblasUpper;
     case Uplo::Lower: return CblasLower;
@@ -67,7 +70,8 @@ cblas_type(Uplo uplo) {
 }
 
 CBLAS_SIDE
-cblas_type(Side side) {
+cblas_type(Side side)
+{
   switch (side) {
     case Side::Left:  return CblasLeft;
     case Side::Right: return CblasRight;
@@ -78,7 +82,8 @@ cblas_type(Side side) {
 }
 
 CBLAS_DIAG
-cblas_type(Diag diag) {
+cblas_type(Diag diag)
+{
   switch (diag) {
     case Diag::Unit:    return CblasUnit;
     case Diag::NonUnit: return CblasNonUnit;

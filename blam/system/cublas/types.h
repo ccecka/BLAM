@@ -33,7 +33,8 @@ namespace blam
 {
 
 cublasOperation_t
-cublas_type(Op trans) {
+cublas_type(Op trans)
+{
   switch (trans) {
     case Op::NoTrans:   return CUBLAS_OP_N;
     case Op::Trans:     return CUBLAS_OP_T;
@@ -45,7 +46,8 @@ cublas_type(Op trans) {
 }
 
 cublasFillMode_t
-cublas_type(Uplo uplo) {
+cublas_type(Uplo uplo)
+{
   switch (uplo) {
     case Uplo::Upper: return CUBLAS_FILL_MODE_UPPER;
     case Uplo::Lower: return CUBLAS_FILL_MODE_LOWER;
@@ -56,7 +58,8 @@ cublas_type(Uplo uplo) {
 }
 
 cublasSideMode_t
-cublas_type(Side side) {
+cublas_type(Side side)
+{
   switch (side) {
     case Side::Left:  return CUBLAS_SIDE_LEFT;
     case Side::Right: return CUBLAS_SIDE_RIGHT;
@@ -67,7 +70,8 @@ cublas_type(Side side) {
 }
 
 cublasDiagType_t
-cublas_type(Diag diag) {
+cublas_type(Diag diag)
+{
   switch (diag) {
     case Diag::Unit:    return CUBLAS_DIAG_UNIT;
     case Diag::NonUnit: return CUBLAS_DIAG_NON_UNIT;
@@ -77,32 +81,33 @@ cublas_type(Diag diag) {
   }
 }
 
-void
-check_status(cublasStatus_t status)
+const char*
+cublas_get_error(cublasStatus_t status)
 {
-  if (status==CUBLAS_STATUS_SUCCESS) {
-    return;
+  switch (status) {
+    case CUBLAS_STATUS_SUCCESS:
+      return "CUBLAS_STATUS_SUCCESS";
+    case CUBLAS_STATUS_NOT_INITIALIZED:
+      return "CUBLAS_STATUS_NOT_INITIALIZED -- The cuBLAS library was not initialized.";
+    case CUBLAS_STATUS_ALLOC_FAILED:
+      return "CUBLAS_STATUS_ALLOC_FAILED -- Resource allocation failed inside the cuBLAS library.";
+    case CUBLAS_STATUS_INVALID_VALUE:
+      return "CUBLAS_STATUS_INVALID_VALUE -- An unsupported value or parameter was passed to the function.";
+    case CUBLAS_STATUS_ARCH_MISMATCH:
+      return "CUBLAS_STATUS_ARCH_MISMATCH -- The function requires a feature absent from the device architecture.";
+    case CUBLAS_STATUS_MAPPING_ERROR:
+      return "CUBLAS_STATUS_MAPPING_ERROR -- An access to GPU memory space failed.";
+    case CUBLAS_STATUS_EXECUTION_FAILED:
+      return "CUBLAS_STATUS_EXECUTION_FAILED -- The GPU program failed to execute.";
+    case CUBLAS_STATUS_INTERNAL_ERROR:
+      return "CUBLAS_STATUS_INTERNAL_ERROR -- An internal cuBLAS operation failed.";
+    case CUBLAS_STATUS_NOT_SUPPORTED:
+      return "CUBLAS_STATUS_NOT_SUPPORTED -- The functionnality requested is not supported.";
+    case CUBLAS_STATUS_LICENSE_ERROR:
+      return "CUBLAS_STATUS_LICENSE_ERROR -- An error was detected when checking the current licensing.";
+    default:
+      return "<unknown>";
   }
-
-  if (status==CUBLAS_STATUS_NOT_INITIALIZED) {
-    std::cerr << "CUBLAS: Library was not initialized!" << std::endl;
-  } else if  (status==CUBLAS_STATUS_INVALID_VALUE) {
-    std::cerr << "CUBLAS: Parameter had illegal value!" << std::endl;
-  } else if  (status==CUBLAS_STATUS_MAPPING_ERROR) {
-    std::cerr << "CUBLAS: Error accessing GPU memory!" << std::endl;
-  } else if  (status==CUBLAS_STATUS_ALLOC_FAILED) {
-    std::cerr << "CUBLAS: allocation failed!" << std::endl;
-  } else if  (status==CUBLAS_STATUS_ARCH_MISMATCH) {
-    std::cerr << "CUBLAS: Device does not support double precision!" << std::endl;
-  } else if  (status==CUBLAS_STATUS_EXECUTION_FAILED) {
-    std::cerr << "CUBLAS: Failed to launch function on the GPU" << std::endl;
-  } else if  (status==CUBLAS_STATUS_INTERNAL_ERROR) {
-    std::cerr << "CUBLAS: An internal operation failed" << std::endl;
-  } else {
-    std::cerr << "CUBLAS: Unkown error" << std::endl;
-  }
-
-  assert(status==CUBLAS_STATUS_SUCCESS); // false
 }
 
 } // end namespace blam
