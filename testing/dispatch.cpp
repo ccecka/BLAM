@@ -26,7 +26,7 @@
  ******************************************************************************/
 
 #define BLAM_DEBUG 1
-#include <blam/dot.h>
+#include <blam/blas/level1/dot.h>
 
 #include <blam/system/mkl/mkl.h>
 #include <blam/system/cublas/cublas.h>

@@ -30,4 +30,31 @@
 #include <blam/detail/config.h>
 #include <blam/adl/detail/customization_point.h>
 
-BLAM_CUSTOMIZATION_POINT(copy);
+BLAM_CUSTOMIZATION_POINT(axpy);
+
+namespace blam
+{
+
+// Backend entry point
+template <typename ExecutionPolicy,
+          typename Alpha, typename VX, typename VY>
+void
+generic(blam::axpy_t, const ExecutionPolicy& exec,
+        int n, const Alpha& alpha,
+        const VX* x, int incX,
+        VY* y, int incY) = delete;
+
+// incX,incY -> 1,1
+template <typename ExecutionPolicy,
+          typename Alpha, typename VX, typename VY>
+auto
+generic(blam::axpy_t, const ExecutionPolicy& exec,
+        int n, const Alpha& alpha,
+        const VX* x,
+        VY* y)
+BLAM_DECLTYPE_AUTO_RETURN
+(
+  blam::axpy(exec, n, alpha, x, 1, y, 1)
+)
+
+} // end namespace blam

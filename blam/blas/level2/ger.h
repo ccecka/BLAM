@@ -28,11 +28,11 @@
 #pragma once
 
 #include <blam/detail/config.h>
-#include <blam/ger.h>
+#include <blam/adl/detail/customization_point.h>
 
-#if defined(BLAM_USE_DECAY)
-//# include <blam/axpy.h>
-#endif
+BLAM_CUSTOMIZATION_POINT(ger);
+BLAM_CUSTOMIZATION_POINT(geru);
+BLAM_CUSTOMIZATION_POINT(gerc);
 
 namespace blam
 {
@@ -73,134 +73,141 @@ generic(blam::gerc_t, const ExecutionPolicy& exec,
 // Default to ColMajor
 template <typename ExecutionPolicy,
           typename Alpha, typename VX, typename VY, typename MA>
-void
+auto
 generic(blam::ger_t, const ExecutionPolicy& exec,
         int m, int n,
         const Alpha& alpha,
         const VX* x, int incX,
         const VY* y, int incY,
         MA* A, int ldA)
-{
+BLAM_DECLTYPE_AUTO_RETURN
+(
   blam::ger(exec,
             ColMajor, m, n,
             alpha,
             x, incX,
             y, incY,
-            A, ldA);
-}
+            A, ldA)
+)
 
 // Default to ColMajor
 template <typename ExecutionPolicy,
           typename Alpha, typename VX, typename VY, typename MA>
-void
+auto
 generic(blam::gerc_t, const ExecutionPolicy& exec,
         int m, int n,
         const Alpha& alpha,
         const VX* x, int incX,
         const VY* y, int incY,
         MA* A, int ldA)
-{
+BLAM_DECLTYPE_AUTO_RETURN
+(
   blam::gerc(exec,
              ColMajor, m, n,
              alpha,
              x, incX,
              y, incY,
-             A, ldA);
-}
+             A, ldA)
+)
 
 // Default to ColMajor
 template <typename ExecutionPolicy,
           typename Alpha, typename VX, typename VY, typename MA>
-void
+auto
 generic(blam::geru_t, const ExecutionPolicy& exec,
         int m, int n,
         const Alpha& alpha,
         const VX* x, int incX,
         const VY* y, int incY,
         MA* A, int ldA)
-{
+BLAM_DECLTYPE_AUTO_RETURN
+(
   blam::geru(exec,
              ColMajor, m, n,
              alpha,
              x, incX,
              y, incY,
-             A, ldA);
-}
+             A, ldA)
+)
 
 // sger -> sgeru
 template <typename ExecutionPolicy,
           typename MA>
-void
+auto
 generic(blam::ger_t, const ExecutionPolicy& exec,
         Layout order, int m, int n,
         const float& alpha,
         const float* x, int incX,
         const float* y, int incY,
         MA* A, int ldA)
-{
+BLAM_DECLTYPE_AUTO_RETURN
+(
   blam::geru(exec,
              order, m, n,
              alpha,
              x, incX,
              y, incY,
-             A, ldA);
-}
+             A, ldA)
+)
 
 // dger -> dgeru
 template <typename ExecutionPolicy,
           typename MA>
-void
+auto
 generic(blam::ger_t, const ExecutionPolicy& exec,
         Layout order, int m, int n,
         const double& alpha,
         const double* x, int incX,
         const double* y, int incY,
         MA* A, int ldA)
-{
+BLAM_DECLTYPE_AUTO_RETURN
+(
   blam::geru(exec,
              order, m, n,
              alpha,
              x, incX,
              y, incY,
-             A, ldA);
-}
+             A, ldA)
+)
 
 // cger -> cgerc
 template <typename ExecutionPolicy,
           typename MA>
-void
+auto
 generic(blam::ger_t, const ExecutionPolicy& exec,
         Layout order, int m, int n,
         const ComplexFloat& alpha,
         const ComplexFloat* x, int incX,
         const ComplexFloat* y, int incY,
         MA* A, int ldA)
-{
+BLAM_DECLTYPE_AUTO_RETURN
+(
   blam::gerc(exec,
              order, m, n,
              alpha,
              x, incX,
              y, incY,
-             A, ldA);
-}
+             A, ldA)
+)
 
 // zger -> zgerc
 template <typename ExecutionPolicy,
           typename MA>
-void
+auto
 generic(blam::ger_t, const ExecutionPolicy& exec,
         Layout order, int m, int n,
         const ComplexDouble& alpha,
         const ComplexDouble* x, int incX,
         const ComplexDouble* y, int incY,
         MA* A, int ldA)
-{
+BLAM_DECLTYPE_AUTO_RETURN
+(
   blam::gerc(exec,
              order, m, n,
              alpha,
              x, incX,
              y, incY,
-             A, ldA);
-}
+             A, ldA)
+)
 
 } // end namespace blam

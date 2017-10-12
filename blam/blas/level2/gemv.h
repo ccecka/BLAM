@@ -28,11 +28,72 @@
 #pragma once
 
 #include <blam/detail/config.h>
-#include <blam/adl/level2/ger.h>
+#include <blam/adl/detail/customization_point.h>
 
-#if 0
-// See <blam/system/generic/ger.h> for interfaces
-// XXX TODO: Import for Doxygen
-#endif
+BLAM_CUSTOMIZATION_POINT(gemv);
 
-#include <blam/system/generic/ger.h>
+namespace blam
+{
+
+// Backend entry point
+template <typename ExecutionPolicy,
+          typename Alpha, typename MA, typename VX,
+          typename Beta, typename VY>
+void
+generic(blam::gemv_t, const ExecutionPolicy& exec,
+        Layout order, Op trans,
+        int m, int n,
+        const Alpha& alpha,
+        const MA* A, int ldA,
+        const VX* x, int incX,
+        const Beta& beta,
+        VY* y, int incY) = delete;
+
+// Default ColMajor
+template <typename ExecutionPolicy,
+          typename Alpha, typename MA, typename VX,
+          typename Beta, typename VY>
+auto
+generic(blam::gemv_t, const ExecutionPolicy& exec,
+        Op trans,
+        int m, int n,
+        const Alpha& alpha,
+        const MA* A, int ldA,
+        const VX* x, int incX,
+        const Beta& beta,
+        VY* y, int incY)
+BLAM_DECLTYPE_AUTO_RETURN
+(
+  blam::gemv(exec, ColMajor, trans,
+             m, n,
+             alpha,
+             A, ldA,
+             x, incX,
+             beta,
+             y, incY)
+)
+
+// Default NoTrans
+template <typename ExecutionPolicy,
+          typename Alpha, typename MA, typename VX,
+          typename Beta, typename VY>
+auto
+generic(blam::gemv_t, const ExecutionPolicy& exec,
+        int m, int n,
+        const Alpha& alpha,
+        const MA* A, int ldA,
+        const VX* x, int incX,
+        const Beta& beta,
+        VY* y, int incY)
+BLAM_DECLTYPE_AUTO_RETURN
+(
+  blam::gemv(exec, NoTrans,
+             m, n,
+             alpha,
+             A, ldA,
+             x, incX,
+             beta,
+             y, incY)
+)
+
+} // end namespace blam

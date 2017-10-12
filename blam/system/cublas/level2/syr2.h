@@ -35,7 +35,7 @@ namespace blam
 namespace cublas
 {
 
-// csyr2
+// ssyr2
 cublasStatus_t
 syr2(cublasHandle_t handle, cublasFillMode_t uplo,
      int n,
@@ -54,7 +54,7 @@ syr2(cublasHandle_t handle, cublasFillMode_t uplo,
                      A, ldA);
 }
 
-// zsyr2
+// dsyr2
 cublasStatus_t
 syr2(cublasHandle_t handle, cublasFillMode_t uplo,
      int n,

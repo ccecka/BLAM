@@ -30,4 +30,31 @@
 #include <blam/detail/config.h>
 #include <blam/adl/detail/customization_point.h>
 
-BLAM_CUSTOMIZATION_POINT(batch_gemm);
+BLAM_CUSTOMIZATION_POINT(copy);
+
+namespace blam
+{
+
+// Backend entry point
+template <typename ExecutionPolicy,
+          typename VX, typename VY>
+void
+generic(blam::copy_t, const ExecutionPolicy& exec,
+        int n,
+        const VX* x, int incX,
+        VY* y, int incY) = delete;
+
+// incX,incY -> 1,1
+template <typename ExecutionPolicy,
+          typename VX, typename VY>
+auto
+generic(blam::copy_t, const ExecutionPolicy& exec,
+        int n,
+        const VX* x,
+        VY* y)
+BLAM_DECLTYPE_AUTO_RETURN
+(
+  blam::copy(exec, n, x, 1, y, 1)
+)
+
+} // end namespace blam

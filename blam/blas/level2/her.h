@@ -28,11 +28,84 @@
 #pragma once
 
 #include <blam/detail/config.h>
-#include <blam/adl/level1/copy.h>
+#include <blam/adl/detail/customization_point.h>
 
-#if 0
-// See <blam/system/generic/copy.h> for interfaces
-// XXX TODO: Import for Doxygen
-#endif
+BLAM_CUSTOMIZATION_POINT(her);
 
-#include <blam/system/generic/copy.h>
+#include <blam/blas/level2/syr.h>
+
+namespace blam
+{
+
+// Backend entry point
+template <typename ExecutionPolicy,
+          typename Alpha,
+          typename VX, typename MA>
+void
+generic(blam::her_t, const ExecutionPolicy& exec,
+        Layout order, Uplo uplo,
+        int n,
+        const Alpha& alpha,
+        const VX* x, int incX,
+        MA* A, int ldA) = delete;
+
+// Default ColMajor
+template <typename ExecutionPolicy,
+          typename Alpha,
+          typename VX, typename MA>
+auto
+generic(blam::her_t, const ExecutionPolicy& exec,
+        Uplo uplo,
+        int n,
+        const Alpha& alpha,
+        const VX* x, int incX,
+        MA* A, int ldA)
+BLAM_DECLTYPE_AUTO_RETURN
+(
+  blam::her(exec,
+            ColMajor, uplo,
+            n,
+            alpha,
+            x, incX,
+            A, ldA)
+)
+
+// sher -> syr
+template <typename ExecutionPolicy>
+auto
+generic(blam::her_t, const ExecutionPolicy& exec,
+        Layout order, Uplo uplo,
+        int n,
+        const float& alpha,
+        const float* x, int incX,
+        float* A, int ldA)
+BLAM_DECLTYPE_AUTO_RETURN
+(
+  blam::syr(exec,
+            order, uplo,
+            n,
+            alpha,
+            x, incX,
+            A, ldA)
+)
+
+// dher -> syr
+template <typename ExecutionPolicy>
+auto
+generic(blam::her_t, const ExecutionPolicy& exec,
+        Layout order, Uplo uplo,
+        int n,
+        const double& alpha,
+        const double* x, int incX,
+        double* A, int ldA)
+BLAM_DECLTYPE_AUTO_RETURN
+(
+  blam::syr(exec,
+            order, uplo,
+            n,
+            alpha,
+            x, incX,
+            A, ldA)
+)
+
+} // end namespace blam

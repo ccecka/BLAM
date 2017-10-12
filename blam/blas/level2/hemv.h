@@ -28,11 +28,11 @@
 #pragma once
 
 #include <blam/detail/config.h>
-#include <blam/gemv.h>
+#include <blam/adl/detail/customization_point.h>
 
-#if defined(BLAM_USE_DECAY)
-//# include <blam/dot.h>
-#endif
+BLAM_CUSTOMIZATION_POINT(hemv);
+
+#include <blam/blas/level2/symv.h>
 
 namespace blam
 {
@@ -42,9 +42,9 @@ template <typename ExecutionPolicy,
           typename Alpha, typename MA, typename VX,
           typename Beta, typename VY>
 void
-generic(blam::gemv_t, const ExecutionPolicy& exec,
-        Layout order, Op trans,
-        int m, int n,
+generic(blam::hemv_t, const ExecutionPolicy& exec,
+        Layout order, Uplo uplo,
+        int n,
         const Alpha& alpha,
         const MA* A, int ldA,
         const VX* x, int incX,
@@ -55,8 +55,8 @@ generic(blam::gemv_t, const ExecutionPolicy& exec,
 template <typename ExecutionPolicy,
           typename Alpha, typename MA, typename VX,
           typename Beta, typename VY>
-void
-generic(blam::gemv_t, const ExecutionPolicy& exec,
+auto
+generic(blam::hemv_t, const ExecutionPolicy& exec,
         Op trans,
         int m, int n,
         const Alpha& alpha,
@@ -64,36 +64,80 @@ generic(blam::gemv_t, const ExecutionPolicy& exec,
         const VX* x, int incX,
         const Beta& beta,
         VY* y, int incY)
-{
-  blam::gemv(exec, ColMajor, trans,
+BLAM_DECLTYPE_AUTO_RETURN
+(
+  blam::hemv(exec, ColMajor, trans,
              m, n,
              alpha,
              A, ldA,
              x, incX,
              beta,
-             y, incY);
-}
+             y, incY)
+)
 
 // Default NoTrans
 template <typename ExecutionPolicy,
           typename Alpha, typename MA, typename VX,
           typename Beta, typename VY>
-void
-generic(blam::gemv_t, const ExecutionPolicy& exec,
+auto
+generic(blam::hemv_t, const ExecutionPolicy& exec,
         int m, int n,
         const Alpha& alpha,
         const MA* A, int ldA,
         const VX* x, int incX,
         const Beta& beta,
         VY* y, int incY)
-{
-  blam::gemv(exec, NoTrans,
+BLAM_DECLTYPE_AUTO_RETURN
+(
+  blam::hemv(exec, NoTrans,
              m, n,
              alpha,
              A, ldA,
              x, incX,
              beta,
-             y, incY);
-}
+             y, incY)
+)
+
+// shemv -> symv
+template <typename ExecutionPolicy>
+auto
+generic(blam::hemv_t, const ExecutionPolicy& exec,
+        int m, int n,
+        const float& alpha,
+        const float* A, int ldA,
+        const float* x, int incX,
+        const float& beta,
+        float* y, int incY)
+BLAM_DECLTYPE_AUTO_RETURN
+(
+  blam::symv(exec, NoTrans,
+             m, n,
+             alpha,
+             A, ldA,
+             x, incX,
+             beta,
+             y, incY)
+)
+
+// dhemv -> symv
+template <typename ExecutionPolicy>
+auto
+generic(blam::hemv_t, const ExecutionPolicy& exec,
+        int m, int n,
+        const double& alpha,
+        const double* A, int ldA,
+        const double* x, int incX,
+        const double& beta,
+        double* y, int incY)
+BLAM_DECLTYPE_AUTO_RETURN
+(
+  blam::symv(exec, NoTrans,
+             m, n,
+             alpha,
+             A, ldA,
+             x, incX,
+             beta,
+             y, incY)
+)
 
 } // end namespace blam

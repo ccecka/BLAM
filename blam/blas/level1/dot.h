@@ -28,7 +28,11 @@
 #pragma once
 
 #include <blam/detail/config.h>
-#include <blam/dot.h>
+#include <blam/adl/detail/customization_point.h>
+
+BLAM_CUSTOMIZATION_POINT(dot);
+BLAM_CUSTOMIZATION_POINT(dotu);
+BLAM_CUSTOMIZATION_POINT(dotc);
 
 namespace blam
 {
@@ -66,92 +70,99 @@ generic(blam::dotu_t, const ExecutionPolicy& exec,
 // incX,incY -> 1,1
 template <typename ExecutionPolicy,
           typename VX, typename VY, typename R>
-void
+auto
 generic(blam::dot_t, const ExecutionPolicy& exec,
         int n,
         const VX* x,
         const VY* y,
         R& result)
-{
-  blam::dot(exec, n, x, 1, y, 1, result);
-}
+BLAM_DECLTYPE_AUTO_RETURN
+(
+  blam::dot(exec, n, x, 1, y, 1, result)
+)
 
 // incX,incY -> 1,1
 template <typename ExecutionPolicy,
           typename VX, typename VY, typename R>
-void
+auto
 generic(blam::dotc_t, const ExecutionPolicy& exec,
         int n,
         const VX* x,
         const VY* y,
         R& result)
-{
-  blam::dotc(exec, n, x, 1, y, 1, result);
-}
+BLAM_DECLTYPE_AUTO_RETURN
+(
+  blam::dotc(exec, n, x, 1, y, 1, result)
+)
 
 // incX,incY -> 1,1
 template <typename ExecutionPolicy,
           typename VX, typename VY, typename R>
-void
+auto
 generic(blam::dotu_t, const ExecutionPolicy& exec,
         int n,
         const VX* x,
         const VY* y,
         R& result)
-{
-  blam::dotu(exec, n, x, 1, y, 1, result);
-}
+BLAM_DECLTYPE_AUTO_RETURN
+(
+  blam::dotu(exec, n, x, 1, y, 1, result)
+)
 
 // sdot -> sdotu
 template <typename ExecutionPolicy,
           typename R>
-void
+auto
 generic(blam::dot_t, const ExecutionPolicy& exec,
         int n,
         const float* x, int incX,
         const float* y, int incY,
         R& result)
-{
-  blam::dotu(exec, n, x, incX, y, incY, result);
-}
+BLAM_DECLTYPE_AUTO_RETURN
+(
+  blam::dotu(exec, n, x, incX, y, incY, result)
+)
 
 // ddot -> ddotu
 template <typename ExecutionPolicy,
           typename R>
-void
+auto
 generic(blam::dot_t, const ExecutionPolicy& exec,
         int n,
         const double* x, int incX,
         const double* y, int incY,
         R& result)
-{
-  blam::dotu(exec, n, x, incX, y, incY, result);
-}
+BLAM_DECLTYPE_AUTO_RETURN
+(
+  blam::dotu(exec, n, x, incX, y, incY, result)
+)
 
 // cdot -> cdotc
 template <typename ExecutionPolicy,
           typename R>
-void
+auto
 generic(blam::dot_t, const ExecutionPolicy& exec,
         int n,
         const ComplexFloat* x, int incX,
         const ComplexFloat* y, int incY,
         R& result)
-{
-  blam::dotc(exec, n, x, incX, y, incY, result);
-}
+BLAM_DECLTYPE_AUTO_RETURN
+(
+  blam::dotc(exec, n, x, incX, y, incY, result)
+)
 
 // zdot -> zdotc
 template <typename ExecutionPolicy,
           typename R>
-void
+auto
 generic(blam::dot_t, const ExecutionPolicy& exec,
         int n,
         const ComplexDouble* x, int incX,
         const ComplexDouble* y, int incY,
         R& result)
-{
-  blam::dotc(exec, n, x, incX, y, incY, result);
-}
+BLAM_DECLTYPE_AUTO_RETURN
+(
+  blam::dotc(exec, n, x, incX, y, incY, result)
+)
 
 } // end namespace blam

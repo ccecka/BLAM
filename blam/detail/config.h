@@ -44,3 +44,10 @@
 #  define BLAM_DEBUG_OUT_2(msg)
 # endif // BLAM_DEBUG_OUT
 #endif // BLAM_DEBUG
+
+
+#define BLAM_DECLTYPE_AUTO_RETURN(...)                          \
+    -> decltype(__VA_ARGS__)                                    \
+    { return (__VA_ARGS__); }                                   \
+    /**/
+    

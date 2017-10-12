@@ -31,23 +31,9 @@
 #include "print_type.h"
 
 #define BLAM_USE_DECAY
-#include <blam/batch_gemm.h>
+#include <blam/blas/level3/batch_gemm.h>
+
 #include <blam/system/mkl/mkl.h>
-#include <blam/system/decay/decay.h>
-
-namespace other
-{
-
-struct execution_policy {};
-
-template <class Function, class... T>
-void
-invoke(const execution_policy& exec, Function f, T&&... t)
-{
-  std::cout << "DEAD END!" << std::endl;
-}
-
-} // end namespace other
 
 
 namespace mine {

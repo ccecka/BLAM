@@ -28,30 +28,91 @@
 #pragma once
 
 #include <blam/detail/config.h>
-#include <blam/axpy.h>
+#include <blam/adl/detail/customization_point.h>
+
+BLAM_CUSTOMIZATION_POINT(her2);
+
+#include <blam/blas/level2/syr2.h>
 
 namespace blam
 {
 
 // Backend entry point
 template <typename ExecutionPolicy,
-          typename Alpha, typename VX, typename VY>
+          typename Alpha,
+          typename VX, typename VY, typename MA>
 void
-generic(blam::axpy_t, const ExecutionPolicy& exec,
-        int n, const Alpha& alpha,
+generic(blam::her2_t, const ExecutionPolicy& exec,
+        Layout order, Uplo uplo,
+        int n,
+        const Alpha& alpha,
         const VX* x, int incX,
-        VY* y, int incY) = delete;
+        const VY* y, int incY,
+        MA* A, int ldA) = delete;
 
-// incX,incY -> 1,1
+// Default ColMajor
 template <typename ExecutionPolicy,
-          typename Alpha, typename VX, typename VY>
-void
-generic(blam::axpy_t, const ExecutionPolicy& exec,
-        int n, const Alpha& alpha,
-        const VX* x,
-        VY* y)
-{
-  blam::axpy(exec, n, alpha, x, 1, y, 1);
-}
+          typename Alpha,
+          typename VX, typename VY, typename MA>
+auto
+generic(blam::her2_t, const ExecutionPolicy& exec,
+        Uplo uplo,
+        int n,
+        const Alpha& alpha,
+        const VX* x, int incX,
+        const VY* y, int incY,
+        MA* A, int ldA)
+BLAM_DECLTYPE_AUTO_RETURN
+(
+  blam::her2(exec,
+             ColMajor, uplo,
+             n,
+             alpha,
+             x, incX,
+             y, incY,
+             A, ldA)
+)
+
+// sher2 -> syr2
+template <typename ExecutionPolicy>
+auto
+generic(blam::her2_t, const ExecutionPolicy& exec,
+        Layout order, Uplo uplo,
+        int n,
+        const float& alpha,
+        const float* x, int incX,
+        const float* y, int incY,
+        float* A, int ldA)
+BLAM_DECLTYPE_AUTO_RETURN
+(
+  blam::syr2(exec,
+             order, uplo,
+             n,
+             alpha,
+             x, incX,
+             y, incY,
+             A, ldA)
+)
+
+// dher2 -> syr2
+template <typename ExecutionPolicy>
+auto
+generic(blam::her2_t, const ExecutionPolicy& exec,
+        Layout order, Uplo uplo,
+        int n,
+        const double& alpha,
+        const double* x, int incX,
+        const double* y, int incY,
+        double* A, int ldA)
+BLAM_DECLTYPE_AUTO_RETURN
+(
+  blam::syr2(exec,
+             order, uplo,
+             n,
+             alpha,
+             x, incX,
+             y, incY,
+             A, ldA)
+)
 
 } // end namespace blam

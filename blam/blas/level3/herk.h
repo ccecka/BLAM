@@ -28,95 +28,91 @@
 #pragma once
 
 #include <blam/detail/config.h>
-#include <blam/batch_gemm.h>
+#include <blam/adl/detail/customization_point.h>
 
-#if defined(BLAM_USE_DECAY)
-# include <blam/gemm.h>
-#endif
+BLAM_CUSTOMIZATION_POINT(herk);
+
+#include <blam/blas/level3/syrk.h>
 
 namespace blam
 {
 
 // Backend entry point
 template <typename ExecutionPolicy,
-          typename Alpha, typename MA, typename MB,
+          typename Alpha, typename MA,
           typename Beta, typename MC>
 void
-generic(blam::batch_gemm_t, const ExecutionPolicy& exec,
-        Layout order, Op transA, Op transB,
-        int m, int n, int k,
+generic(blam::herk_t, const ExecutionPolicy& exec,
+        Layout order, Uplo uplo, Op trans,
+        int n, int k,
         const Alpha& alpha,
-        const MA* A, int ldA, int loA,
-        const MB* B, int ldB, int loB,
+        const MA* A, int ldA,
         const Beta& beta,
-        MC* C, int ldC, int loC,
-        int batch_size)
-#if defined(BLAM_USE_DECAY)
-{
-  for (int i = 0; i < batch_size; ++i) {
-    blam::gemm(exec,
-               order, transA, transB,
-               m, n, k,
-               alpha,
-               A + i*loA, ldA,
-               B + i*loB, ldB,
-               beta,
-               C + i*loC, ldC);
-  }
-}
-#else
-= delete;
-#endif
+        MC* C, int ldC) = delete;
 
-// Default to ColMajor
+// Default ColMajor
 template <typename ExecutionPolicy,
-          typename Alpha, typename MA, typename MB,
+          typename Alpha, typename MA,
           typename Beta, typename MC>
-void
-generic(blam::batch_gemm_t, const ExecutionPolicy& exec,
-        Op transA, Op transB,
-        int m, int n, int k,
+auto
+generic(blam::herk_t, const ExecutionPolicy& exec,
+        Uplo uplo, Op trans,
+        int n, int k,
         const Alpha& alpha,
-        const MA* A, int ldA, int loA,
-        const MB* B, int ldB, int loB,
+        const MA* A, int ldA,
         const Beta& beta,
-        MC* C, int ldC, int loC,
-        int batch_size)
-{
-  blam::batch_gemm(exec,
-                   ColMajor, transA, transB,
-                   m, n, k,
-                   alpha,
-                   A, ldA, loA,
-                   B, ldB, loB,
-                   beta,
-                   C, ldC, loC,
-                   batch_size);
-}
+        MC* C, int ldC)
+BLAM_DECLTYPE_AUTO_RETURN
+(
+  blam::herk(exec,
+             ColMajor, uplo, trans,
+             n, k,
+             alpha,
+             A, ldA,
+             beta,
+             C, ldC)
+)
 
-// Default to NoTrans
-template <typename ExecutionPolicy,
-          typename Alpha, typename MA, typename MB,
-          typename Beta, typename MC>
-void
-generic(blam::batch_gemm_t, const ExecutionPolicy& exec,
-        int m, int n, int k,
-        const Alpha& alpha,
-        const MA* A, int ldA, int loA,
-        const MB* B, int ldB, int loB,
-        const Beta& beta,
-        MC* C, int ldC, int loC,
-        int batch_size)
-{
-  blam::batch_gemm(exec,
-                   NoTrans, NoTrans,
-                   m, n, k,
-                   alpha,
-                   A, ldA, loA,
-                   B, ldB, loB,
-                   beta,
-                   C, ldC, loC,
-                   batch_size);
-}
+// sherk -> syrk
+template <typename ExecutionPolicy>
+auto
+generic(blam::herk_t, const ExecutionPolicy& exec,
+        Layout order, Uplo uplo, Op trans,
+        int n, int k,
+        const float& alpha,
+        const float* A, int ldA,
+        const float& beta,
+        float* C, int ldC)
+BLAM_DECLTYPE_AUTO_RETURN
+(
+  blam::syrk(exec,
+             order, uplo, trans,
+             n, k,
+             alpha,
+             A, ldA,
+             beta,
+             C, ldC)
+)
+
+// sherk -> syrk
+template <typename ExecutionPolicy>
+auto
+generic(blam::herk_t, const ExecutionPolicy& exec,
+        Layout order, Uplo uplo, Op trans,
+        int n, int k,
+        const double& alpha,
+        const double* A, int ldA,
+        const double& beta,
+        double* C, int ldC)
+BLAM_DECLTYPE_AUTO_RETURN
+(
+  blam::syrk(exec,
+             order, uplo, trans,
+             n, k,
+             alpha,
+             A, ldA,
+             beta,
+             C, ldC)
+)
 
 } // end namespace blam

@@ -28,30 +28,74 @@
 #pragma once
 
 #include <blam/detail/config.h>
-#include <blam/copy.h>
+#include <blam/adl/detail/customization_point.h>
+
+BLAM_CUSTOMIZATION_POINT(gemm);
 
 namespace blam
 {
 
 // Backend entry point
 template <typename ExecutionPolicy,
-          typename VX, typename VY>
+          typename Alpha, typename MA, typename MB,
+          typename Beta, typename MC>
 void
-generic(blam::copy_t, const ExecutionPolicy& exec,
-        int n,
-        const VX* x, int incX,
-        VY* y, int incY) = delete;
+generic(blam::gemm_t, const ExecutionPolicy& exec,
+        Layout order, Op transA, Op transB,
+        int m, int n, int k,
+        const Alpha& alpha,
+        const MA* A, int ldA,
+        const MB* B, int ldB,
+        const Beta& beta,
+        MC* C, int ldC) = delete;
 
-// incX,incY -> 1,1
+// Default to ColMajor
 template <typename ExecutionPolicy,
-          typename VX, typename VY>
-void
-generic(blam::copy_t, const ExecutionPolicy& exec,
-        int n,
-        const VX* x,
-        VY* y)
-{
-  blam::copy(exec, n, x, 1, y, 1);
-}
+          typename Alpha, typename MA, typename MB,
+          typename Beta, typename MC>
+auto
+generic(blam::gemm_t, const ExecutionPolicy& exec,
+        Op transA, Op transB,
+        int m, int n, int k,
+        const Alpha& alpha,
+        const MA* A, int ldA,
+        const MB* B, int ldB,
+        const Beta& beta,
+        MC* C, int ldC)
+BLAM_DECLTYPE_AUTO_RETURN
+(
+  blam::gemm(exec,
+             ColMajor, transA, transB,
+             m, n, k,
+             alpha,
+             A, ldA,
+             B, ldB,
+             beta,
+             C, ldC)
+)
+
+// Default to NoTrans
+template <typename ExecutionPolicy,
+          typename Alpha, typename MA, typename MB,
+          typename Beta, typename MC>
+auto
+generic(blam::gemm_t, const ExecutionPolicy& exec,
+        int m, int n, int k,
+        const Alpha& alpha,
+        const MA* A, int ldA,
+        const MB* B, int ldB,
+        const Beta& beta,
+        MC* C, int ldC)
+BLAM_DECLTYPE_AUTO_RETURN
+(
+  blam::gemm(exec,
+             NoTrans, NoTrans,
+             m, n, k,
+             alpha,
+             A, ldA,
+             B, ldB,
+             beta,
+             C, ldC)
+)
 
 } // end namespace blam

@@ -28,11 +28,6 @@
 #pragma once
 
 #include <blam/detail/config.h>
-#include <blam/adl/level3/gemm.h>
+#include <blam/adl/detail/customization_point.h>
 
-#if 0
-// See <blam/system/generic/gemm.h> for interfaces
-// XXX TODO: Import for Doxygen
-#endif
-
-#include <blam/system/generic/gemm.h>
+BLAM_CUSTOMIZATION_POINT(geam);

@@ -31,7 +31,8 @@
 #include "print_type.h"
 
 #define BLAM_USE_DECAY
-#include <blam/batch_gemm.h>
+#include <blam/blas/level3/batch_gemm.h>
+
 #include <blam/system/mkl/mkl.h>
 
 namespace mine {
