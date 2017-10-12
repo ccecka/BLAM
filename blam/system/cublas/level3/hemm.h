@@ -36,7 +36,7 @@ namespace cublas
 {
 
 // chemm
-void
+cublasStatus_t
 hemm(cublasHandle_t handle,
      cublasSideMode_t side, cublasFillMode_t uplo,
      int m, int n,
@@ -48,17 +48,17 @@ hemm(cublasHandle_t handle,
 {
   BLAM_DEBUG_OUT("cublasChemm");
 
-  cublasChemm(handle, side, uplo,
-              m, n,
-              reinterpret_cast<const cuFloatComplex*>(alpha),
-              reinterpret_cast<const cuFloatComplex*>(A), ldA,
-              reinterpret_cast<const cuFloatComplex*>(B), ldB,
-              reinterpret_cast<const cuFloatComplex*>(beta),
-              reinterpret_cast<cuFloatComplex*>(C), ldC);
+  return cublasChemm(handle, side, uplo,
+                     m, n,
+                     reinterpret_cast<const cuFloatComplex*>(alpha),
+                     reinterpret_cast<const cuFloatComplex*>(A), ldA,
+                     reinterpret_cast<const cuFloatComplex*>(B), ldB,
+                     reinterpret_cast<const cuFloatComplex*>(beta),
+                     reinterpret_cast<cuFloatComplex*>(C), ldC);
 }
 
 // zhemm
-void
+cublasStatus_t
 hemm(cublasHandle_t handle,
      cublasSideMode_t side, cublasFillMode_t uplo,
      int m, int n,
@@ -70,13 +70,13 @@ hemm(cublasHandle_t handle,
 {
   BLAM_DEBUG_OUT("cublasZhemm");
 
-  cublasZhemm(handle, side, uplo,
-              m, n,
-              reinterpret_cast<const cuDoubleComplex*>(alpha),
-              reinterpret_cast<const cuDoubleComplex*>(A), ldA,
-              reinterpret_cast<const cuDoubleComplex*>(B), ldB,
-              reinterpret_cast<const cuDoubleComplex*>(beta),
-              reinterpret_cast<cuDoubleComplex*>(C), ldC);
+  return cublasZhemm(handle, side, uplo,
+                     m, n,
+                     reinterpret_cast<const cuDoubleComplex*>(alpha),
+                     reinterpret_cast<const cuDoubleComplex*>(A), ldA,
+                     reinterpret_cast<const cuDoubleComplex*>(B), ldB,
+                     reinterpret_cast<const cuDoubleComplex*>(beta),
+                     reinterpret_cast<cuDoubleComplex*>(C), ldC);
 }
 
 // blam -> cublas

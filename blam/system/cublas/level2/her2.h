@@ -36,7 +36,7 @@ namespace cublas
 {
 
 // cher2
-void
+cublasStatus_t
 her2(cublasHandle_t handle, cublasFillMode_t uplo,
      int n,
      const ComplexFloat* alpha,
@@ -46,16 +46,16 @@ her2(cublasHandle_t handle, cublasFillMode_t uplo,
 {
   BLAM_DEBUG_OUT("cublasCher2");
 
-  cublasCher2(handle, uplo,
-              n,
-              reinterpret_cast<const cuFloatComplex*>(alpha),
-              reinterpret_cast<const cuFloatComplex*>(x), incX,
-              reinterpret_cast<const cuFloatComplex*>(y), incY,
-              reinterpret_cast<cuFloatComplex*>(A), ldA);
+  return cublasCher2(handle, uplo,
+                     n,
+                     reinterpret_cast<const cuFloatComplex*>(alpha),
+                     reinterpret_cast<const cuFloatComplex*>(x), incX,
+                     reinterpret_cast<const cuFloatComplex*>(y), incY,
+                     reinterpret_cast<cuFloatComplex*>(A), ldA);
 }
 
 // zher2
-void
+cublasStatus_t
 her2(cublasHandle_t handle, cublasFillMode_t uplo,
      int n,
      const ComplexDouble* alpha,
@@ -65,12 +65,12 @@ her2(cublasHandle_t handle, cublasFillMode_t uplo,
 {
   BLAM_DEBUG_OUT("cublasZher2");
 
-  cublasZher2(handle, uplo,
-              n,
-              reinterpret_cast<const cuDoubleComplex*>(alpha),
-              reinterpret_cast<const cuDoubleComplex*>(x), incX,
-              reinterpret_cast<const cuDoubleComplex*>(y), incY,
-              reinterpret_cast<cuDoubleComplex*>(A), ldA);
+  return cublasZher2(handle, uplo,
+                     n,
+                     reinterpret_cast<const cuDoubleComplex*>(alpha),
+                     reinterpret_cast<const cuDoubleComplex*>(x), incX,
+                     reinterpret_cast<const cuDoubleComplex*>(y), incY,
+                     reinterpret_cast<cuDoubleComplex*>(A), ldA);
 }
 
 // blam -> cublas

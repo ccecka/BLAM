@@ -36,55 +36,55 @@ namespace cublas
 {
 
 // sswap
-void
+cublasStatus_t
 swap(cublasHandle_t handle, int n,
      float* x, int incX,
      float* y, int incY)
 {
   BLAM_DEBUG_OUT("cublasSswap");
 
-  cublasSswap(handle, n,
-              x, incX,
-              y, incY);
+  return cublasSswap(handle, n,
+                     x, incX,
+                     y, incY);
 }
 
 // dcopy
-void
+cublasStatus_t
 swap(cublasHandle_t handle, int n,
      double* x, int incX,
      double* y, int incY)
 {
   BLAM_DEBUG_OUT("cublasDswap");
 
-  cublasDswap(handle, n,
-              x, incX,
-              y, incY);
+  return cublasDswap(handle, n,
+                     x, incX,
+                     y, incY);
 }
 
 // ccopy
-void
+cublasStatus_t
 swap(cublasHandle_t handle, int n,
      ComplexFloat* x, int incX,
      ComplexFloat* y, int incY)
 {
   BLAM_DEBUG_OUT("cublasCswap");
 
-  cublasCswap(handle, n,
-              reinterpret_cast<cuFloatComplex*>(x), incX,
-              reinterpret_cast<cuFloatComplex*>(y), incY);
+  return cublasCswap(handle, n,
+                     reinterpret_cast<cuFloatComplex*>(x), incX,
+                     reinterpret_cast<cuFloatComplex*>(y), incY);
 }
 
 // zcopy
-void
+cublasStatus_t
 swap(cublasHandle_t handle, int n,
      ComplexDouble* x, int incX,
      ComplexDouble* y, int incY)
 {
   BLAM_DEBUG_OUT("cublasZswap");
 
-  cublasZswap(handle, n,
-              reinterpret_cast<cuDoubleComplex*>(x), incX,
-              reinterpret_cast<cuDoubleComplex*>(y), incY);
+  return cublasZswap(handle, n,
+                     reinterpret_cast<cuDoubleComplex*>(x), incX,
+                     reinterpret_cast<cuDoubleComplex*>(y), incY);
 }
 
 // blam -> cublas

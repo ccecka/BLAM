@@ -36,7 +36,7 @@ namespace cublas
 {
 
 // strmm
-void
+cublasStatus_t
 trmm(cublasHandle_t handle,
      cublasSideMode_t side, cublasFillMode_t uplo,
      cublasOperation_t transA, cublasDiagType_t diag,
@@ -48,16 +48,16 @@ trmm(cublasHandle_t handle,
 {
   BLAM_DEBUG_OUT("cublasStrmm");
 
-  cublasStrmm(handle, side, uplo, transA, diag,
-              m, n,
-              alpha,
-              A, ldA,
-              B, ldB,
-              C, ldC);
+  return cublasStrmm(handle, side, uplo, transA, diag,
+                     m, n,
+                     alpha,
+                     A, ldA,
+                     B, ldB,
+                     C, ldC);
 }
 
 // dtrmm
-void
+cublasStatus_t
 trmm(cublasHandle_t handle,
      cublasSideMode_t side, cublasFillMode_t uplo,
      cublasOperation_t transA, cublasDiagType_t diag,
@@ -69,16 +69,16 @@ trmm(cublasHandle_t handle,
 {
   BLAM_DEBUG_OUT("cublasDtrmm");
 
-  cublasDtrmm(handle, side, uplo, transA, diag,
-              m, n,
-              alpha,
-              A, ldA,
-              B, ldB,
-              C, ldC);
+  return cublasDtrmm(handle, side, uplo, transA, diag,
+                     m, n,
+                     alpha,
+                     A, ldA,
+                     B, ldB,
+                     C, ldC);
 }
 
 // ctrmm
-void
+cublasStatus_t
 trmm(cublasHandle_t handle,
      cublasSideMode_t side, cublasFillMode_t uplo,
      cublasOperation_t transA, cublasDiagType_t diag,
@@ -90,16 +90,16 @@ trmm(cublasHandle_t handle,
 {
   BLAM_DEBUG_OUT("cublasCtrmm");
 
-  cublasCtrmm(handle, side, uplo, transA, diag,
-              m, n,
-              reinterpret_cast<const cuFloatComplex*>(alpha),
-              reinterpret_cast<const cuFloatComplex*>(A), ldA,
-              reinterpret_cast<const cuFloatComplex*>(B), ldB,
-              reinterpret_cast<cuFloatComplex*>(C), ldC);
+  return cublasCtrmm(handle, side, uplo, transA, diag,
+                     m, n,
+                     reinterpret_cast<const cuFloatComplex*>(alpha),
+                     reinterpret_cast<const cuFloatComplex*>(A), ldA,
+                     reinterpret_cast<const cuFloatComplex*>(B), ldB,
+                     reinterpret_cast<cuFloatComplex*>(C), ldC);
 }
 
 // ztrmm
-void
+cublasStatus_t
 trmm(cublasHandle_t handle,
      cublasSideMode_t side, cublasFillMode_t uplo,
      cublasOperation_t transA, cublasDiagType_t diag,
@@ -111,12 +111,12 @@ trmm(cublasHandle_t handle,
 {
   BLAM_DEBUG_OUT("cublasZtrmm");
 
-  cublasZtrmm(handle, side, uplo, transA, diag,
-              m, n,
-              reinterpret_cast<const cuDoubleComplex*>(alpha),
-              reinterpret_cast<const cuDoubleComplex*>(A), ldA,
-              reinterpret_cast<const cuDoubleComplex*>(B), ldB,
-              reinterpret_cast<cuDoubleComplex*>(C), ldC);
+  return cublasZtrmm(handle, side, uplo, transA, diag,
+                     m, n,
+                     reinterpret_cast<const cuDoubleComplex*>(alpha),
+                     reinterpret_cast<const cuDoubleComplex*>(A), ldA,
+                     reinterpret_cast<const cuDoubleComplex*>(B), ldB,
+                     reinterpret_cast<cuDoubleComplex*>(C), ldC);
 }
 
 // blam -> cublas

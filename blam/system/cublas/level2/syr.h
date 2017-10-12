@@ -36,7 +36,7 @@ namespace cublas
 {
 
 // csyr
-void
+cublasStatus_t
 syr(cublasHandle_t handle, cublasFillMode_t uplo,
     int n,
     const float* alpha,
@@ -45,15 +45,15 @@ syr(cublasHandle_t handle, cublasFillMode_t uplo,
 {
   BLAM_DEBUG_OUT("cublasSsyr");
 
-  cublasSsyr(handle, uplo,
-             n,
-             alpha,
-             x, incX,
-             A, ldA);
+  return cublasSsyr(handle, uplo,
+                    n,
+                    alpha,
+                    x, incX,
+                    A, ldA);
 }
 
 // zsyr
-void
+cublasStatus_t
 syr(cublasHandle_t handle, cublasFillMode_t uplo,
     int n,
     const double* alpha,
@@ -62,15 +62,15 @@ syr(cublasHandle_t handle, cublasFillMode_t uplo,
 {
   BLAM_DEBUG_OUT("cublasDsyr");
 
-  cublasDsyr(handle, uplo,
-             n,
-             alpha,
-             x, incX,
-             A, ldA);
+  return cublasDsyr(handle, uplo,
+                    n,
+                    alpha,
+                    x, incX,
+                    A, ldA);
 }
 
 // csyr
-void
+cublasStatus_t
 syr(cublasHandle_t handle, cublasFillMode_t uplo,
     int n,
     const ComplexFloat* alpha,
@@ -79,15 +79,15 @@ syr(cublasHandle_t handle, cublasFillMode_t uplo,
 {
   BLAM_DEBUG_OUT("cublasCsyr");
 
-  cublasCsyr(handle, uplo,
-             n,
-             reinterpret_cast<const cuFloatComplex*>(alpha),
-             reinterpret_cast<const cuFloatComplex*>(x), incX,
-             reinterpret_cast<cuFloatComplex*>(A), ldA);
+  return cublasCsyr(handle, uplo,
+                    n,
+                    reinterpret_cast<const cuFloatComplex*>(alpha),
+                    reinterpret_cast<const cuFloatComplex*>(x), incX,
+                    reinterpret_cast<cuFloatComplex*>(A), ldA);
 }
 
 // zsyr
-void
+cublasStatus_t
 syr(cublasHandle_t handle, cublasFillMode_t uplo,
     int n,
     const ComplexDouble* alpha,
@@ -96,11 +96,11 @@ syr(cublasHandle_t handle, cublasFillMode_t uplo,
 {
   BLAM_DEBUG_OUT("cublasZsyr");
 
-  cublasZsyr(handle, uplo,
-             n,
-             reinterpret_cast<const cuDoubleComplex*>(alpha),
-             reinterpret_cast<const cuDoubleComplex*>(x), incX,
-             reinterpret_cast<cuDoubleComplex*>(A), ldA);
+  return cublasZsyr(handle, uplo,
+                    n,
+                    reinterpret_cast<const cuDoubleComplex*>(alpha),
+                    reinterpret_cast<const cuDoubleComplex*>(x), incX,
+                    reinterpret_cast<cuDoubleComplex*>(A), ldA);
 }
 
 // blam -> cublas

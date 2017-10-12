@@ -36,7 +36,7 @@ namespace cublas
 {
 
 // cher
-void
+cublasStatus_t
 her(cublasHandle_t handle, cublasFillMode_t uplo,
     int n,
     const float* alpha,
@@ -45,15 +45,15 @@ her(cublasHandle_t handle, cublasFillMode_t uplo,
 {
   BLAM_DEBUG_OUT("cublasCher");
 
-  cublasCher(handle, uplo,
-             n,
-             alpha,
-             reinterpret_cast<const cuFloatComplex*>(x), incX,
-             reinterpret_cast<cuFloatComplex*>(A), ldA);
+  return cublasCher(handle, uplo,
+                    n,
+                    alpha,
+                    reinterpret_cast<const cuFloatComplex*>(x), incX,
+                    reinterpret_cast<cuFloatComplex*>(A), ldA);
 }
 
 // zher
-void
+cublasStatus_t
 her(cublasHandle_t handle, cublasFillMode_t uplo,
     int n,
     const double* alpha,
@@ -62,11 +62,11 @@ her(cublasHandle_t handle, cublasFillMode_t uplo,
 {
   BLAM_DEBUG_OUT("cublasZher");
 
-  cublasZher(handle, uplo,
-             n,
-             alpha,
-             reinterpret_cast<const cuDoubleComplex*>(x), incX,
-             reinterpret_cast<cuDoubleComplex*>(A), ldA);
+  return cublasZher(handle, uplo,
+                    n,
+                    alpha,
+                    reinterpret_cast<const cuDoubleComplex*>(x), incX,
+                    reinterpret_cast<cuDoubleComplex*>(A), ldA);
 }
 
 // blam -> cublas

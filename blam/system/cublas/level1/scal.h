@@ -36,69 +36,69 @@ namespace cublas
 {
 
 // sscal
-void
+cublasStatus_t
 scal(cublasHandle_t handle, int n, const float* alpha,
      float* x, int incX)
 {
   BLAM_DEBUG_OUT("cublasSscal");
 
-  cublasSscal(handle, n, alpha, x, incX);
+  return cublasSscal(handle, n, alpha, x, incX);
 }
 
 // dscal
-void
+cublasStatus_t
 scal(cublasHandle_t handle, int n, const double* alpha,
      double* x, int incX)
 {
   BLAM_DEBUG_OUT("cublasDscal");
 
-  cublasDscal(handle, n, alpha, x, incX);
+  return cublasDscal(handle, n, alpha, x, incX);
 }
 
 // csscal
-void
+cublasStatus_t
 scal(cublasHandle_t handle, int n, const float* alpha,
      ComplexFloat* x, int incX)
 {
   BLAM_DEBUG_OUT("cublasCsscal");
 
-  cublasCsscal(handle, n, alpha, reinterpret_cast<cuFloatComplex*>(x), incX);
+  return cublasCsscal(handle, n, alpha, reinterpret_cast<cuFloatComplex*>(x), incX);
 }
 
 // csscal
-void
+cublasStatus_t
 scal(cublasHandle_t handle, int n, const ComplexFloat* alpha,
      ComplexFloat* x, int incX)
 {
   BLAM_DEBUG_OUT("cublasCscal");
 
-  cublasCscal(handle, n,
-              reinterpret_cast<const cuFloatComplex*>(alpha),
-              reinterpret_cast<cuFloatComplex*>(x), incX);
+  return cublasCscal(handle, n,
+                     reinterpret_cast<const cuFloatComplex*>(alpha),
+                     reinterpret_cast<cuFloatComplex*>(x), incX);
 }
 
 // zdscal
-void
+cublasStatus_t
 scal(cublasHandle_t handle, int n, const double* alpha,
      ComplexDouble* x, int incX)
 {
   BLAM_DEBUG_OUT("cublasZdscal");
 
-  cublasZdscal(handle, n,
-               alpha,
-               reinterpret_cast<cuDoubleComplex*>(x), incX);
+  return cublasZdscal(handle, n,
+                      alpha,
+                      reinterpret_cast<cuDoubleComplex*>(x), incX);
 }
 
 // zscal
-void
+cublasStatus_t
 scal(cublasHandle_t handle, int n, const ComplexDouble* alpha,
      ComplexDouble* x, int incX)
 {
   BLAM_DEBUG_OUT("cublasZdscal");
 
-  cublasZscal(handle, n,
-              reinterpret_cast<const cuDoubleComplex*>(alpha),
-              reinterpret_cast<cuDoubleComplex*>(x), incX);
+  return cublasZscal(handle, n,
+                     reinterpret_cast<const cuDoubleComplex*>(alpha),
+                     reinterpret_cast<cuDoubleComplex*>(x), incX);
 }
 
 // blam -> cublas

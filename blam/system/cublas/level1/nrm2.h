@@ -36,57 +36,57 @@ namespace cublas
 {
 
 // scopy
-void
+cublasStatus_t
 nrm2(cublasHandle_t handle, int n,
      const float* x, int incX,
      float* result)
 {
   BLAM_DEBUG_OUT(" cublasSnrm2");
 
-  cublasSnrm2(handle, n,
-              x, incX,
-              result);
+  return cublasSnrm2(handle, n,
+                     x, incX,
+                     result);
 }
 
 
 // dnrm2
-void
+cublasStatus_t
 nrm2(cublasHandle_t handle, int n,
      const double* x, int incX,
      double* result)
 {
   BLAM_DEBUG_OUT("cublasDnrm2");
 
-  cublasDnrm2(handle, n,
-              x, incX,
-              result);
+  return cublasDnrm2(handle, n,
+                     x, incX,
+                     result);
 }
 
 
 // cnrm2
-void
+cublasStatus_t
 nrm2(cublasHandle_t handle, int n,
      const ComplexFloat* x, int incX,
      float* result)
 {
   BLAM_DEBUG_OUT("cublasCnrm2");
 
-  cublasScnrm2(handle, n,
-               reinterpret_cast<const cuFloatComplex*>(x), incX,
-               result);
+  return cublasScnrm2(handle, n,
+                      reinterpret_cast<const cuFloatComplex*>(x), incX,
+                      result);
 }
 
 // znrm2
-void
+cublasStatus_t
 nrm2(cublasHandle_t handle, int n,
      const ComplexDouble* x, int incX,
      double* result)
 {
   BLAM_DEBUG_OUT("cublasDznrm2");
 
-  cublasDznrm2(handle, n,
-               reinterpret_cast<const cuDoubleComplex*>(x), incX,
-               result);
+  return cublasDznrm2(handle, n,
+                      reinterpret_cast<const cuDoubleComplex*>(x), incX,
+                      result);
 }
 
 // blam -> cublas

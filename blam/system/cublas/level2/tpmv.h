@@ -36,7 +36,7 @@ namespace cublas
 {
 
 // stpmv
-void
+cublasStatus_t
 tpmv(cublasHandle_t handle,
      cublasFillMode_t uplo, cublasOperation_t transA, cublasDiagType_t diag,
      int n,
@@ -45,13 +45,13 @@ tpmv(cublasHandle_t handle,
 {
   BLAM_DEBUG_OUT("cublasStpmv");
 
-  cublasStpmv(handle, uplo, transA, diag,
-              n, A,
-              x, incX);
+  return cublasStpmv(handle, uplo, transA, diag,
+                     n, A,
+                     x, incX);
 }
 
 // dtpmv
-void
+cublasStatus_t
 tpmv(cublasHandle_t handle,
      cublasFillMode_t uplo, cublasOperation_t transA, cublasDiagType_t diag,
      int n,
@@ -60,13 +60,13 @@ tpmv(cublasHandle_t handle,
 {
   BLAM_DEBUG_OUT("cublasDtpmv");
 
-  cublasDtpmv(handle, uplo, transA, diag,
-              n, A,
-              x, incX);
+  return cublasDtpmv(handle, uplo, transA, diag,
+                     n, A,
+                     x, incX);
 }
 
 // ctpmv
-void
+cublasStatus_t
 tpmv(cublasHandle_t handle,
      cublasFillMode_t uplo, cublasOperation_t transA, cublasDiagType_t diag,
      int n,
@@ -75,13 +75,13 @@ tpmv(cublasHandle_t handle,
 {
   BLAM_DEBUG_OUT("cublasCtpmv");
 
-  cublasCtpmv(handle, uplo, transA, diag,
-              n, reinterpret_cast<const cuFloatComplex*>(A),
-              reinterpret_cast<cuFloatComplex*>(x), incX);
+  return cublasCtpmv(handle, uplo, transA, diag,
+                     n, reinterpret_cast<const cuFloatComplex*>(A),
+                     reinterpret_cast<cuFloatComplex*>(x), incX);
 }
 
 // ztpmv
-void
+cublasStatus_t
 tpmv(cublasHandle_t handle,
      cublasFillMode_t uplo, cublasOperation_t transA, cublasDiagType_t diag,
      int n,
@@ -90,9 +90,9 @@ tpmv(cublasHandle_t handle,
 {
   BLAM_DEBUG_OUT("cublasZtpmv");
 
-  cublasZtpmv(handle, uplo, transA, diag,
-              n, reinterpret_cast<const cuDoubleComplex*>(A),
-              reinterpret_cast<cuDoubleComplex*>(x), incX);
+  return cublasZtpmv(handle, uplo, transA, diag,
+                     n, reinterpret_cast<const cuDoubleComplex*>(A),
+                     reinterpret_cast<cuDoubleComplex*>(x), incX);
 }
 
 // blam -> cublas

@@ -36,7 +36,7 @@ namespace cublas
 {
 
 // saxpy
-void
+cublasStatus_t
 axpy(cublasHandle_t handle,
      int n,
      const float* alpha,
@@ -45,11 +45,11 @@ axpy(cublasHandle_t handle,
 {
   BLAM_DEBUG_OUT("cublasSaxpy");
 
-  cublasSaxpy(handle, n, alpha, x, incX, y, incY);
+  return cublasSaxpy(handle, n, alpha, x, incX, y, incY);
 }
 
 // daxpy
-void
+cublasStatus_t
 axpy(cublasHandle_t handle,
      int n,
      const double* alpha,
@@ -58,11 +58,11 @@ axpy(cublasHandle_t handle,
 {
   BLAM_DEBUG_OUT("cublasDaxpy");
 
-  cublasDaxpy(handle, n, alpha, x, incX, y, incY);
+  return cublasDaxpy(handle, n, alpha, x, incX, y, incY);
 }
 
 // caxpy
-void
+cublasStatus_t
 axpy(cublasHandle_t handle,
      int n,
      const ComplexFloat* alpha,
@@ -71,13 +71,13 @@ axpy(cublasHandle_t handle,
 {
   BLAM_DEBUG_OUT("cublasCaxpy");
 
-  cublasCaxpy(handle, n, reinterpret_cast<const cuFloatComplex*>(alpha),
-              reinterpret_cast<const cuFloatComplex*>(x), incX,
-              reinterpret_cast<cuFloatComplex*>(y), incY);
+  return cublasCaxpy(handle, n, reinterpret_cast<const cuFloatComplex*>(alpha),
+                     reinterpret_cast<const cuFloatComplex*>(x), incX,
+                     reinterpret_cast<cuFloatComplex*>(y), incY);
 }
 
 // zaxpy
-void
+cublasStatus_t
 axpy(cublasHandle_t handle,
      int n,
      const ComplexDouble* alpha,
@@ -86,9 +86,9 @@ axpy(cublasHandle_t handle,
 {
   BLAM_DEBUG_OUT("cublasZaxpy");
 
-  cublasZaxpy(handle, n, reinterpret_cast<const cuDoubleComplex*>(alpha),
-              reinterpret_cast<const cuDoubleComplex*>(x), incX,
-              reinterpret_cast<cuDoubleComplex*>(y), incY);
+  return cublasZaxpy(handle, n, reinterpret_cast<const cuDoubleComplex*>(alpha),
+                     reinterpret_cast<const cuDoubleComplex*>(x), incX,
+                     reinterpret_cast<cuDoubleComplex*>(y), incY);
 }
 
 // blam -> cublas

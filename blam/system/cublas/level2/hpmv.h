@@ -36,7 +36,7 @@ namespace cublas
 {
 
 // chpmv
-void
+cublasStatus_t
 hpmv(cublasHandle_t handle, cublasFillMode_t uplo,
      int n,
      const ComplexFloat* alpha,
@@ -47,17 +47,17 @@ hpmv(cublasHandle_t handle, cublasFillMode_t uplo,
 {
   BLAM_DEBUG_OUT("cublasChpmv");
 
-  cublasChpmv(handle,  uplo,
-              n,
-              reinterpret_cast<const cuFloatComplex*>(alpha),
-              reinterpret_cast<const cuFloatComplex*>(A),
-              reinterpret_cast<const cuFloatComplex*>(x), incX,
-              reinterpret_cast<const cuFloatComplex*>(beta),
-              reinterpret_cast<cuFloatComplex*>(y), incY);
+  return cublasChpmv(handle,  uplo,
+                     n,
+                     reinterpret_cast<const cuFloatComplex*>(alpha),
+                     reinterpret_cast<const cuFloatComplex*>(A),
+                     reinterpret_cast<const cuFloatComplex*>(x), incX,
+                     reinterpret_cast<const cuFloatComplex*>(beta),
+                     reinterpret_cast<cuFloatComplex*>(y), incY);
 }
 
 // zhpmv
-void
+cublasStatus_t
 hpmv(cublasHandle_t handle, cublasFillMode_t uplo,
      int n,
      const ComplexDouble* alpha,
@@ -68,13 +68,13 @@ hpmv(cublasHandle_t handle, cublasFillMode_t uplo,
 {
   BLAM_DEBUG_OUT("cublasZhpmv");
 
-  cublasZhpmv(handle,  uplo,
-              n,
-              reinterpret_cast<const cuDoubleComplex*>(alpha),
-              reinterpret_cast<const cuDoubleComplex*>(A),
-              reinterpret_cast<const cuDoubleComplex*>(x), incX,
-              reinterpret_cast<const cuDoubleComplex*>(beta),
-              reinterpret_cast<cuDoubleComplex*>(y), incY);
+  return cublasZhpmv(handle,  uplo,
+                     n,
+                     reinterpret_cast<const cuDoubleComplex*>(alpha),
+                     reinterpret_cast<const cuDoubleComplex*>(A),
+                     reinterpret_cast<const cuDoubleComplex*>(x), incX,
+                     reinterpret_cast<const cuDoubleComplex*>(beta),
+                     reinterpret_cast<cuDoubleComplex*>(y), incY);
 }
 
 // blam -> cublas

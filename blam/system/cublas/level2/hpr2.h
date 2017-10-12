@@ -36,7 +36,7 @@ namespace cublas
 {
 
 // chpr2
-void
+cublasStatus_t
 hpr2(cublasHandle_t handle, cublasFillMode_t uplo,
      int n,
      const float* alpha,
@@ -46,16 +46,16 @@ hpr2(cublasHandle_t handle, cublasFillMode_t uplo,
 {
   BLAM_DEBUG_OUT("cublasChpr2");
 
-  cublasChpr2(handle, uplo,
-              n,
-              reinterpret_cast<const cuFloatComplex*>(alpha),
-              reinterpret_cast<const cuFloatComplex*>(x), incX,
-              reinterpret_cast<const cuFloatComplex*>(y), incY,
-              reinterpret_cast<cuFloatComplex*>(A));
+  return cublasChpr2(handle, uplo,
+                     n,
+                     reinterpret_cast<const cuFloatComplex*>(alpha),
+                     reinterpret_cast<const cuFloatComplex*>(x), incX,
+                     reinterpret_cast<const cuFloatComplex*>(y), incY,
+                     reinterpret_cast<cuFloatComplex*>(A));
 }
 
 // zhpr2
-void
+cublasStatus_t
 hpr2(cublasHandle_t handle, cublasFillMode_t uplo,
      int n,
      const double* alpha,
@@ -65,12 +65,12 @@ hpr2(cublasHandle_t handle, cublasFillMode_t uplo,
 {
   BLAM_DEBUG_OUT("cublasZhpr2");
 
-  cublasZhpr2(handle, uplo,
-              n,
-              reinterpret_cast<const cuDoubleComplex*>(alpha),
-              reinterpret_cast<const cuDoubleComplex*>(x), incX,
-              reinterpret_cast<const cuDoubleComplex*>(y), incY,
-              reinterpret_cast<cuDoubleComplex*>(A));
+  return cublasZhpr2(handle, uplo,
+                     n,
+                     reinterpret_cast<const cuDoubleComplex*>(alpha),
+                     reinterpret_cast<const cuDoubleComplex*>(x), incX,
+                     reinterpret_cast<const cuDoubleComplex*>(y), incY,
+                     reinterpret_cast<cuDoubleComplex*>(A));
 }
 
 // blam -> cublas

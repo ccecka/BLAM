@@ -38,7 +38,7 @@ namespace cublas
 {
 
 // sgemm
-void
+cublasStatus_t
 batch_gemm(cublasHandle_t handle,
            cublasOperation_t transA, cublasOperation_t transB,
            int m, int n, int k,
@@ -51,18 +51,18 @@ batch_gemm(cublasHandle_t handle,
 {
   BLAM_DEBUG_OUT("cublasSgemmStridedBatched");
 
-  cublasSgemmStridedBatched(handle, transA, transB,
-                            m, n, k,
-                            alpha,
-                            A, ldA, loA,
-                            B, ldB, loB,
-                            beta,
-                            C, ldC, loC,
-                            batch_size);
+  return cublasSgemmStridedBatched(handle, transA, transB,
+                                   m, n, k,
+                                   alpha,
+                                   A, ldA, loA,
+                                   B, ldB, loB,
+                                   beta,
+                                   C, ldC, loC,
+                                   batch_size);
 }
 
 // dgemm
-void
+cublasStatus_t
 batch_gemm(cublasHandle_t handle,
            cublasOperation_t transA, cublasOperation_t transB,
            int m, int n, int k,
@@ -75,18 +75,18 @@ batch_gemm(cublasHandle_t handle,
 {
   BLAM_DEBUG_OUT("cublasDgemmStridedBatched");
 
-  cublasDgemmStridedBatched(handle, transA, transB,
-                            m, n, k,
-                            alpha,
-                            A, ldA, loA,
-                            B, ldB, loB,
-                            beta,
-                            C, ldC, loC,
-                            batch_size);
+  return cublasDgemmStridedBatched(handle, transA, transB,
+                                   m, n, k,
+                                   alpha,
+                                   A, ldA, loA,
+                                   B, ldB, loB,
+                                   beta,
+                                   C, ldC, loC,
+                                   batch_size);
 }
 
 // cgemm
-void
+cublasStatus_t
 batch_gemm(cublasHandle_t handle,
            cublasOperation_t transA, cublasOperation_t transB,
            int m, int n, int k,
@@ -99,18 +99,18 @@ batch_gemm(cublasHandle_t handle,
 {
   BLAM_DEBUG_OUT("cublasCgemmStridedBatched");
 
-  cublasCgemmStridedBatched(handle, transA, transB,
-                            m, n, k,
-                            reinterpret_cast<const cuFloatComplex*>(alpha),
-                            reinterpret_cast<const cuFloatComplex*>(A), ldA, loA,
-                            reinterpret_cast<const cuFloatComplex*>(B), ldB, loB,
-                            reinterpret_cast<const cuFloatComplex*>(beta),
-                            reinterpret_cast<cuFloatComplex*>(C), ldC, loC,
-                            batch_size);
+  return cublasCgemmStridedBatched(handle, transA, transB,
+                                   m, n, k,
+                                   reinterpret_cast<const cuFloatComplex*>(alpha),
+                                   reinterpret_cast<const cuFloatComplex*>(A), ldA, loA,
+                                   reinterpret_cast<const cuFloatComplex*>(B), ldB, loB,
+                                   reinterpret_cast<const cuFloatComplex*>(beta),
+                                   reinterpret_cast<cuFloatComplex*>(C), ldC, loC,
+                                   batch_size);
 }
 
 // zgemm
-void
+cublasStatus_t
 batch_gemm(cublasHandle_t handle,
            cublasOperation_t transA, cublasOperation_t transB,
            int m, int n, int k,
@@ -123,18 +123,18 @@ batch_gemm(cublasHandle_t handle,
 {
   BLAM_DEBUG_OUT("cublasZgemmStridedBatched");
 
-  cublasZgemmStridedBatched(handle, transA, transB,
-                            m, n, k,
-                            reinterpret_cast<const cuDoubleComplex*>(alpha),
-                            reinterpret_cast<const cuDoubleComplex*>(A), ldA, loA,
-                            reinterpret_cast<const cuDoubleComplex*>(B), ldB, loB,
-                            reinterpret_cast<const cuDoubleComplex*>(beta),
-                            reinterpret_cast<cuDoubleComplex*>(C), ldC, loC,
-                            batch_size);
+  return cublasZgemmStridedBatched(handle, transA, transB,
+                                   m, n, k,
+                                   reinterpret_cast<const cuDoubleComplex*>(alpha),
+                                   reinterpret_cast<const cuDoubleComplex*>(A), ldA, loA,
+                                   reinterpret_cast<const cuDoubleComplex*>(B), ldB, loB,
+                                   reinterpret_cast<const cuDoubleComplex*>(beta),
+                                   reinterpret_cast<cuDoubleComplex*>(C), ldC, loC,
+                                   batch_size);
 }
 
 // scgemm    XXX: Move to general?
-void
+cublasStatus_t
 batch_gemm(cublasHandle_t handle,
            cublasOperation_t transA, cublasOperation_t transB,
            int m, int n, int k,
@@ -149,18 +149,18 @@ batch_gemm(cublasHandle_t handle,
 
   assert(transA == CUBLAS_OP_N);
 
-  cublasSgemmStridedBatched(handle, transA, transB,
-                            2*m, n, k,
-                            reinterpret_cast<const float*>(alpha),
-                            reinterpret_cast<const float*>(A), 2*ldA, 2*loA,
-                            reinterpret_cast<const float*>(B), ldB, loB,
-                            reinterpret_cast<const float*>(beta),
-                            reinterpret_cast<float*>(C), 2*ldC, 2*loC,
-                            batch_size);
+  return cublasSgemmStridedBatched(handle, transA, transB,
+                                   2*m, n, k,
+                                   reinterpret_cast<const float*>(alpha),
+                                   reinterpret_cast<const float*>(A), 2*ldA, 2*loA,
+                                   reinterpret_cast<const float*>(B), ldB, loB,
+                                   reinterpret_cast<const float*>(beta),
+                                   reinterpret_cast<float*>(C), 2*ldC, 2*loC,
+                                   batch_size);
 }
 
 // csgemm    XXX: Move to general?
-void
+cublasStatus_t
 batch_gemm(cublasHandle_t handle,
            cublasOperation_t transA, cublasOperation_t transB,
            int m, int n, int k,
@@ -175,18 +175,18 @@ batch_gemm(cublasHandle_t handle,
 
   assert(transB == CUBLAS_OP_T);
 
-  cublasSgemmStridedBatched(handle, transA, transB,
-                            m, 2*n, k,
-                            reinterpret_cast<const float*>(alpha),
-                            reinterpret_cast<const float*>(A), ldA, loA,
-                            reinterpret_cast<const float*>(B), 2*ldB, 2*loB,
-                            reinterpret_cast<const float*>(beta),
-                            reinterpret_cast<float*>(C), 2*ldC, 2*loC,
-                            batch_size);
+  return cublasSgemmStridedBatched(handle, transA, transB,
+                                   m, 2*n, k,
+                                   reinterpret_cast<const float*>(alpha),
+                                   reinterpret_cast<const float*>(A), ldA, loA,
+                                   reinterpret_cast<const float*>(B), 2*ldB, 2*loB,
+                                   reinterpret_cast<const float*>(beta),
+                                   reinterpret_cast<float*>(C), 2*ldC, 2*loC,
+                                   batch_size);
 }
 
 // zdgemm    XXX: Move to general?
-void
+cublasStatus_t
 batch_gemm(cublasHandle_t handle,
            cublasOperation_t transA, cublasOperation_t transB,
            int m, int n, int k,
@@ -201,18 +201,18 @@ batch_gemm(cublasHandle_t handle,
 
   assert(transA == CUBLAS_OP_N);
 
-  cublasDgemmStridedBatched(handle, transA, transB,
-                            2*m, n, k,
-                            reinterpret_cast<const double*>(alpha),
-                            reinterpret_cast<const double*>(A), 2*ldA, 2*loA,
-                            reinterpret_cast<const double*>(B), ldB, loB,
-                            reinterpret_cast<const double*>(beta),
-                            reinterpret_cast<double*>(C), 2*ldC, 2*loC,
-                            batch_size);
+  return cublasDgemmStridedBatched(handle, transA, transB,
+                                   2*m, n, k,
+                                   reinterpret_cast<const double*>(alpha),
+                                   reinterpret_cast<const double*>(A), 2*ldA, 2*loA,
+                                   reinterpret_cast<const double*>(B), ldB, loB,
+                                   reinterpret_cast<const double*>(beta),
+                                   reinterpret_cast<double*>(C), 2*ldC, 2*loC,
+                                   batch_size);
 }
 
 // dzgemm    XXX: Move to general?
-void
+cublasStatus_t
 batch_gemm(cublasHandle_t handle,
            cublasOperation_t transA, cublasOperation_t transB,
            int m, int n, int k,
@@ -227,21 +227,21 @@ batch_gemm(cublasHandle_t handle,
 
   assert(transB == CUBLAS_OP_T);
 
-  cublasDgemmStridedBatched(handle, transA, transB,
-                            m, 2*n, k,
-                            reinterpret_cast<const double*>(alpha),
-                            reinterpret_cast<const double*>(A), ldA, loA,
-                            reinterpret_cast<const double*>(B), 2*ldB, 2*loB,
-                            reinterpret_cast<const double*>(beta),
-                            reinterpret_cast<double*>(C), 2*ldC, 2*loC,
-                            batch_size);
+  return cublasDgemmStridedBatched(handle, transA, transB,
+                                   m, 2*n, k,
+                                   reinterpret_cast<const double*>(alpha),
+                                   reinterpret_cast<const double*>(A), ldA, loA,
+                                   reinterpret_cast<const double*>(B), 2*ldB, 2*loB,
+                                   reinterpret_cast<const double*>(beta),
+                                   reinterpret_cast<double*>(C), 2*ldC, 2*loC,
+                                   batch_size);
 }
 
 // blam -> cublas
 template <typename DerivedPolicy,
           typename Alpha, typename MA, typename MB,
           typename Beta, typename MC>
-void
+auto
 batch_gemm(const execution_policy<DerivedPolicy>& exec,
            Op transA, Op transB,
            int m, int n, int k,
@@ -251,6 +251,15 @@ batch_gemm(const execution_policy<DerivedPolicy>& exec,
            const Beta& beta,
            MC* C, int ldC, int loC,
            int batch_size)
+    -> decltype(batch_gemm(handle(derived_cast(exec)),
+                           cublas_type(transA), cublas_type(transB),
+                           m, n, k,
+                           &alpha,
+                           A, ldA, loA,
+                           B, ldB, loB,
+                           &beta,
+                           C, ldC, loC,
+                           batch_size))
 {
   return batch_gemm(handle(derived_cast(exec)),
                     cublas_type(transA), cublas_type(transB),
@@ -267,7 +276,7 @@ batch_gemm(const execution_policy<DerivedPolicy>& exec,
 template <typename DerivedPolicy,
           typename Alpha, typename MA, typename MB,
           typename Beta, typename MC>
-void
+auto
 batch_gemm(const execution_policy<DerivedPolicy>& exec,
            Layout order, Op transA, Op transB,
            int m, int n, int k,
@@ -277,6 +286,14 @@ batch_gemm(const execution_policy<DerivedPolicy>& exec,
            const Beta& beta,
            MC* C, int ldC, int loC,
            int batch_size)
+    -> decltype(batch_gemm(exec, transA, transB,
+                           m, n, k,
+                           alpha,
+                           A, ldA, loA,
+                           B, ldB, loB,
+                           beta,
+                           C, ldC, loC,
+                           batch_size))
 {
   if (order == ColMajor) {
     return batch_gemm(exec, transA, transB,

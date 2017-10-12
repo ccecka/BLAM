@@ -36,7 +36,7 @@ namespace cublas
 {
 
 // ssyr2k
-void
+cublasStatus_t
 syr2k(cublasHandle_t handle,
       cublasFillMode_t uplo, cublasOperation_t trans,
       int n, int k,
@@ -48,17 +48,17 @@ syr2k(cublasHandle_t handle,
 {
   BLAM_DEBUG_OUT("cublasSsyr2k");
 
-  cublasSsyr2k(handle, uplo,
-               trans, n, k,
-               alpha,
-               A, ldA,
-               B, ldB,
-               beta,
-               C, ldC);
+  return cublasSsyr2k(handle, uplo,
+                      trans, n, k,
+                      alpha,
+                      A, ldA,
+                      B, ldB,
+                      beta,
+                      C, ldC);
 }
 
 // dsyr2k
-void
+cublasStatus_t
 syr2k(cublasHandle_t handle,
       cublasFillMode_t uplo, cublasOperation_t trans,
       int n, int k,
@@ -70,17 +70,17 @@ syr2k(cublasHandle_t handle,
 {
   BLAM_DEBUG_OUT("cublasDsyr2k");
 
-  cublasDsyr2k(handle, uplo,
-               trans, n, k,
-               alpha,
-               A, ldA,
-               B, ldB,
-               beta,
-               C, ldC);
+  return cublasDsyr2k(handle, uplo,
+                      trans, n, k,
+                      alpha,
+                      A, ldA,
+                      B, ldB,
+                      beta,
+                      C, ldC);
 }
 
 // csyrk
-void
+cublasStatus_t
 syr2k(cublasHandle_t handle,
       cublasFillMode_t uplo, cublasOperation_t trans,
       int n, int k,
@@ -92,17 +92,17 @@ syr2k(cublasHandle_t handle,
 {
   BLAM_DEBUG_OUT("cublasCsyrk");
 
-  cublasCsyr2k(handle, uplo, trans,
-               n, k,
-               reinterpret_cast<const cuFloatComplex*>(alpha),
-               reinterpret_cast<const cuFloatComplex*>(A), ldA,
-               reinterpret_cast<const cuFloatComplex*>(B), ldB,
-               reinterpret_cast<const cuFloatComplex*>(beta),
-               reinterpret_cast<cuFloatComplex*>(C), ldC);
+  return cublasCsyr2k(handle, uplo, trans,
+                      n, k,
+                      reinterpret_cast<const cuFloatComplex*>(alpha),
+                      reinterpret_cast<const cuFloatComplex*>(A), ldA,
+                      reinterpret_cast<const cuFloatComplex*>(B), ldB,
+                      reinterpret_cast<const cuFloatComplex*>(beta),
+                      reinterpret_cast<cuFloatComplex*>(C), ldC);
 }
 
 // zsyrk
-void
+cublasStatus_t
 syr2k(cublasHandle_t handle,
       cublasFillMode_t uplo, cublasOperation_t trans,
       int n, int k,
@@ -114,13 +114,13 @@ syr2k(cublasHandle_t handle,
 {
   BLAM_DEBUG_OUT("cublasZsyr2k");
 
-  cublasZsyr2k(handle, uplo, trans,
-               n, k,
-               reinterpret_cast<const cuDoubleComplex*>(alpha),
-               reinterpret_cast<const cuDoubleComplex*>(A), ldA,
-               reinterpret_cast<const cuDoubleComplex*>(B), ldB,
-               reinterpret_cast<const cuDoubleComplex*>(beta),
-               reinterpret_cast<cuDoubleComplex*>(C), ldC);
+  return cublasZsyr2k(handle, uplo, trans,
+                      n, k,
+                      reinterpret_cast<const cuDoubleComplex*>(alpha),
+                      reinterpret_cast<const cuDoubleComplex*>(A), ldA,
+                      reinterpret_cast<const cuDoubleComplex*>(B), ldB,
+                      reinterpret_cast<const cuDoubleComplex*>(beta),
+                      reinterpret_cast<cuDoubleComplex*>(C), ldC);
 }
 
 // blam -> cublas

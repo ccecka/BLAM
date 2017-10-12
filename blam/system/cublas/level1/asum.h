@@ -36,57 +36,57 @@ namespace cublas
 {
 
 // scopy
-void
+cublasStatus_t
 asum(cublasHandle_t handle, int n,
      const float* x, int incX,
      float& result)
 {
   BLAM_DEBUG_OUT("cublasSasum");
 
-  cublasSasum(handle, n,
-              x, incX,
-              &result);
+  return cublasSasum(handle, n,
+                     x, incX,
+                     &result);
 }
 
 
 // dasum
-void
+cublasStatus_t
 asum(cublasHandle_t handle, int n,
      const double* x, int incX,
      double& result)
 {
   BLAM_DEBUG_OUT("cublasDasum");
 
-  cublasDasum(handle, n,
-              x, incX,
-              &result);
+  return cublasDasum(handle, n,
+                     x, incX,
+                     &result);
 }
 
 
 // casum
-void
+cublasStatus_t
 asum(cublasHandle_t handle, int n,
      const ComplexFloat* x, int incX,
      float& result)
 {
   BLAM_DEBUG_OUT("cublasCasum");
 
-  cublasScasum(handle, n,
-               reinterpret_cast<const cuFloatComplex*>(x), incX,
-               &result);
+  return cublasScasum(handle, n,
+                      reinterpret_cast<const cuFloatComplex*>(x), incX,
+                      &result);
 }
 
 // zasum
-void
+cublasStatus_t
 asum(cublasHandle_t handle, int n,
      const ComplexDouble* x, int incX,
      double& result)
 {
   BLAM_DEBUG_OUT("cublasDzasum");
 
-  cublasDzasum(handle, n,
-               reinterpret_cast<const cuDoubleComplex*>(x), incX,
-               &result);
+  return cublasDzasum(handle, n,
+                      reinterpret_cast<const cuDoubleComplex*>(x), incX,
+                      &result);
 }
 
 // blam -> cublas

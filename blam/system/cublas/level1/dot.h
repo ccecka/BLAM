@@ -36,7 +36,7 @@ namespace cublas
 {
 
 // sdot
-void
+cublasStatus_t
 dotu(cublasHandle_t handle, int n,
      const float* x, int incX,
      const float* y, int incY,
@@ -44,14 +44,14 @@ dotu(cublasHandle_t handle, int n,
 {
   BLAM_DEBUG_OUT("cublasSdot");
 
-  cublasSdot(handle, n,
-             x, incX,
-             y, incY,
-             result);
+  return cublasSdot(handle, n,
+                    x, incX,
+                    y, incY,
+                    result);
 }
 
 // ddot
-void
+cublasStatus_t
 dotu(cublasHandle_t handle, int n,
      const double* x, int incX,
      const double* y, int incY,
@@ -59,14 +59,14 @@ dotu(cublasHandle_t handle, int n,
 {
   BLAM_DEBUG_OUT("cublasDdot");
 
-  cublasDdot(handle, n,
-             x, incX,
-             y, incY,
-             result);
+  return cublasDdot(handle, n,
+                    x, incX,
+                    y, incY,
+                    result);
 }
 
 // cdotu
-void
+cublasStatus_t
 dotu(cublasHandle_t handle, int n,
      const ComplexFloat* x, int incX,
      const ComplexFloat* y, int incY,
@@ -74,14 +74,14 @@ dotu(cublasHandle_t handle, int n,
 {
   BLAM_DEBUG_OUT("cublasCdotu");
 
-  cublasCdotu(handle, n,
-              reinterpret_cast<const cuFloatComplex*>(x), incX,
-              reinterpret_cast<const cuFloatComplex*>(y), incY,
-              reinterpret_cast<cuFloatComplex*>(result));
+  return cublasCdotu(handle, n,
+                     reinterpret_cast<const cuFloatComplex*>(x), incX,
+                     reinterpret_cast<const cuFloatComplex*>(y), incY,
+                     reinterpret_cast<cuFloatComplex*>(result));
 }
 
 // zdotu
-void
+cublasStatus_t
 dotu(cublasHandle_t handle, int n,
      const ComplexDouble* x, int incX,
      const ComplexDouble* y, int incY,
@@ -89,14 +89,14 @@ dotu(cublasHandle_t handle, int n,
 {
   BLAM_DEBUG_OUT("cublasZdotu");
 
-  cublasZdotu(handle, n,
-              reinterpret_cast<const cuDoubleComplex*>(x), incX,
-              reinterpret_cast<const cuDoubleComplex*>(y), incY,
-              reinterpret_cast<cuDoubleComplex*>(result));
+  return cublasZdotu(handle, n,
+                     reinterpret_cast<const cuDoubleComplex*>(x), incX,
+                     reinterpret_cast<const cuDoubleComplex*>(y), incY,
+                     reinterpret_cast<cuDoubleComplex*>(result));
 }
 
 // cdotc
-void
+cublasStatus_t
 dotc(cublasHandle_t handle, int n,
      const ComplexFloat* x, int incX,
      const ComplexFloat* y, int incY,
@@ -104,14 +104,14 @@ dotc(cublasHandle_t handle, int n,
 {
   BLAM_DEBUG_OUT("cublasCdotc");
 
-  cublasCdotc(handle, n,
-              reinterpret_cast<const cuFloatComplex*>(x), incX,
-              reinterpret_cast<const cuFloatComplex*>(y), incY,
-              reinterpret_cast<cuFloatComplex*>(result));
+  return cublasCdotc(handle, n,
+                     reinterpret_cast<const cuFloatComplex*>(x), incX,
+                     reinterpret_cast<const cuFloatComplex*>(y), incY,
+                     reinterpret_cast<cuFloatComplex*>(result));
 }
 
 // zdotc
-void
+cublasStatus_t
 dotc(cublasHandle_t handle, int n,
      const ComplexDouble* x, int incX,
      const ComplexDouble* y, int incY,
@@ -119,10 +119,10 @@ dotc(cublasHandle_t handle, int n,
 {
   BLAM_DEBUG_OUT("cublasZdotc");
 
-  cublasZdotc(handle, n,
-              reinterpret_cast<const cuDoubleComplex*>(x), incX,
-              reinterpret_cast<const cuDoubleComplex*>(y), incY,
-              reinterpret_cast<cuDoubleComplex*>(result));
+  return cublasZdotc(handle, n,
+                     reinterpret_cast<const cuDoubleComplex*>(x), incX,
+                     reinterpret_cast<const cuDoubleComplex*>(y), incY,
+                     reinterpret_cast<cuDoubleComplex*>(result));
 }
 
 // blam -> cublas

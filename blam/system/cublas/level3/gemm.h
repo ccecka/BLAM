@@ -36,7 +36,7 @@ namespace cublas
 {
 
 // sgemm
-void
+cublasStatus_t
 gemm(cublasHandle_t handle,
      cublasOperation_t transA, cublasOperation_t transB,
      int m, int n, int k,
@@ -48,17 +48,17 @@ gemm(cublasHandle_t handle,
 {
   BLAM_DEBUG_OUT("cublasSgemm");
 
-  cublasSgemm(handle, transA, transB,
-              m, n, k,
-              alpha,
-              A, ldA,
-              B, ldB,
-              beta,
-              C, ldC);
+  return cublasSgemm(handle, transA, transB,
+                     m, n, k,
+                     alpha,
+                     A, ldA,
+                     B, ldB,
+                     beta,
+                     C, ldC);
 }
 
 // dgemm
-void
+cublasStatus_t
 gemm(cublasHandle_t handle,
      cublasOperation_t transA, cublasOperation_t transB,
      int m, int n, int k,
@@ -70,17 +70,17 @@ gemm(cublasHandle_t handle,
 {
   BLAM_DEBUG_OUT("cublasDgemm");
 
-  cublasDgemm(handle, transA, transB,
-              m, n, k,
-              alpha,
-              A, ldA,
-              B, ldB,
-              beta,
-              C, ldC);
+  return cublasDgemm(handle, transA, transB,
+                     m, n, k,
+                     alpha,
+                     A, ldA,
+                     B, ldB,
+                     beta,
+                     C, ldC);
 }
 
 // cgemm
-void
+cublasStatus_t
 gemm(cublasHandle_t handle,
      cublasOperation_t transA, cublasOperation_t transB,
      int m, int n, int k,
@@ -92,17 +92,17 @@ gemm(cublasHandle_t handle,
 {
   BLAM_DEBUG_OUT("cublasCgemm");
 
-  cublasCgemm(handle, transA, transB,
-              m, n, k,
-              reinterpret_cast<const cuFloatComplex*>(alpha),
-              reinterpret_cast<const cuFloatComplex*>(A), ldA,
-              reinterpret_cast<const cuFloatComplex*>(B), ldB,
-              reinterpret_cast<const cuFloatComplex*>(beta),
-              reinterpret_cast<cuFloatComplex*>(C), ldC);
+  return cublasCgemm(handle, transA, transB,
+                     m, n, k,
+                     reinterpret_cast<const cuFloatComplex*>(alpha),
+                     reinterpret_cast<const cuFloatComplex*>(A), ldA,
+                     reinterpret_cast<const cuFloatComplex*>(B), ldB,
+                     reinterpret_cast<const cuFloatComplex*>(beta),
+                     reinterpret_cast<cuFloatComplex*>(C), ldC);
 }
 
 // zgemm
-void
+cublasStatus_t
 gemm(cublasHandle_t handle,
      cublasOperation_t transA, cublasOperation_t transB,
      int m, int n, int k,
@@ -114,13 +114,13 @@ gemm(cublasHandle_t handle,
 {
   BLAM_DEBUG_OUT("cublasZgemm");
 
-  cublasZgemm(handle, transA, transB,
-              m, n, k,
-              reinterpret_cast<const cuDoubleComplex*>(alpha),
-              reinterpret_cast<const cuDoubleComplex*>(A), ldA,
-              reinterpret_cast<const cuDoubleComplex*>(B), ldB,
-              reinterpret_cast<const cuDoubleComplex*>(beta),
-              reinterpret_cast<cuDoubleComplex*>(C), ldC);
+  return cublasZgemm(handle, transA, transB,
+                     m, n, k,
+                     reinterpret_cast<const cuDoubleComplex*>(alpha),
+                     reinterpret_cast<const cuDoubleComplex*>(A), ldA,
+                     reinterpret_cast<const cuDoubleComplex*>(B), ldB,
+                     reinterpret_cast<const cuDoubleComplex*>(beta),
+                     reinterpret_cast<cuDoubleComplex*>(C), ldC);
 }
 
 // blam -> cublas
@@ -173,13 +173,6 @@ gemm(const execution_policy<DerivedPolicy>& exec,
                      &alpha,
                      A, ldA,
                      B, ldB,
-                     &beta,
-                     C, ldC),
-                gemm(exec, transB, transA,
-                     n, m, k,
-                     &alpha,
-                     B, ldB,
-                     A, ldA,
                      &beta,
                      C, ldC))
 {

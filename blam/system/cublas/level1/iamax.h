@@ -36,57 +36,57 @@ namespace cublas
 {
 
 // isamax
-void
+cublasStatus_t
 iamax(cublasHandle_t handle, int n,
       const float* x, int incX,
       int* result)
 {
   BLAM_DEBUG_OUT("cublasIsamax");
 
-  cublasIsamax(handle, n,
-               x, incX,
-               result);
+  return cublasIsamax(handle, n,
+                      x, incX,
+                      result);
 }
 
 
 // idamax
-void
+cublasStatus_t
 iamax(cublasHandle_t handle, int n,
       const double* x, int incX,
       int* result)
 {
   BLAM_DEBUG_OUT("cublasIdamax");
 
-  cublasIdamax(handle, n,
-               x, incX,
-               result);
+  return cublasIdamax(handle, n,
+                      x, incX,
+                      result);
 }
 
 
 // icamax
-void
+cublasStatus_t
 iamax(cublasHandle_t handle, int n,
       const ComplexFloat* x, int incX,
       int* result)
 {
   BLAM_DEBUG_OUT("cublasIcamax");
 
-  cublasIcamax(handle, n,
-               reinterpret_cast<const cuFloatComplex*>(x), incX,
-               result);
+  return cublasIcamax(handle, n,
+                      reinterpret_cast<const cuFloatComplex*>(x), incX,
+                      result);
 }
 
 // izamax
-void
+cublasStatus_t
 iamax(cublasHandle_t handle, int n,
       const ComplexDouble* x, int incX,
       int* result)
 {
   BLAM_DEBUG_OUT("cublasIzamax");
 
-  cublasIzamax(handle, n,
-               reinterpret_cast<const cuDoubleComplex*>(x), incX,
-               result);
+  return cublasIzamax(handle, n,
+                      reinterpret_cast<const cuDoubleComplex*>(x), incX,
+                      result);
 }
 
 // blam -> cublas

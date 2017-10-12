@@ -36,7 +36,7 @@ namespace cublas
 {
 
 // sspmv
-void
+cublasStatus_t
 spmv(cublasHandle_t handle, cublasFillMode_t uplo,
      int n,
      const float* alpha,
@@ -47,17 +47,17 @@ spmv(cublasHandle_t handle, cublasFillMode_t uplo,
 {
   BLAM_DEBUG_OUT("cublasSspmv");
 
-  cublasSspmv(handle, uplo,
-              n,
-              alpha,
-              A,
-              x, incX,
-              beta,
-              y, incY);
+  return cublasSspmv(handle, uplo,
+                     n,
+                     alpha,
+                     A,
+                     x, incX,
+                     beta,
+                     y, incY);
 }
 
 // dspmv
-void
+cublasStatus_t
 spmv(cublasHandle_t handle, cublasFillMode_t uplo,
      int n,
      const double* alpha,
@@ -68,13 +68,13 @@ spmv(cublasHandle_t handle, cublasFillMode_t uplo,
 {
   BLAM_DEBUG_OUT("cublasDspmv");
 
-  cublasDspmv(handle, uplo,
-              n,
-              alpha,
-              A,
-              x, incX,
-              beta,
-              y, incY);
+  return cublasDspmv(handle, uplo,
+                     n,
+                     alpha,
+                     A,
+                     x, incX,
+                     beta,
+                     y, incY);
 }
 
 // blam -> cublas

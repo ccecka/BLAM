@@ -36,7 +36,7 @@ namespace cublas
 {
 
 // ssymm
-void
+cublasStatus_t
 symm(cublasHandle_t handle,
      cublasSideMode_t side, cublasFillMode_t uplo,
      int m, int n,
@@ -48,17 +48,17 @@ symm(cublasHandle_t handle,
 {
   BLAM_DEBUG_OUT("cublasSsymm");
 
-  cublasSsymm(handle, side, uplo,
-              m, n,
-              alpha,
-              A, ldA,
-              B, ldB,
-              beta,
-              C, ldC);
+  return cublasSsymm(handle, side, uplo,
+                     m, n,
+                     alpha,
+                     A, ldA,
+                     B, ldB,
+                     beta,
+                     C, ldC);
 }
 
 // dsymm
-void
+cublasStatus_t
 symm(cublasHandle_t handle,
      cublasSideMode_t side, cublasFillMode_t uplo,
      int m, int n,
@@ -70,17 +70,17 @@ symm(cublasHandle_t handle,
 {
   BLAM_DEBUG_OUT("cublasDsymm");
 
-  cublasDsymm(handle, side, uplo,
-              m, n,
-              alpha,
-              A, ldA,
-              B, ldB,
-              beta,
-              C, ldC);
+  return cublasDsymm(handle, side, uplo,
+                     m, n,
+                     alpha,
+                     A, ldA,
+                     B, ldB,
+                     beta,
+                     C, ldC);
 }
 
 // csymm
-void
+cublasStatus_t
 symm(cublasHandle_t handle,
      cublasSideMode_t side, cublasFillMode_t uplo,
      int m, int n,
@@ -92,17 +92,17 @@ symm(cublasHandle_t handle,
 {
   BLAM_DEBUG_OUT("cublasCsymm");
 
-  cublasCsymm(handle, side, uplo,
-              m, n,
-              reinterpret_cast<const cuFloatComplex*>(&alpha),
-              reinterpret_cast<const cuFloatComplex*>(A), ldA,
-              reinterpret_cast<const cuFloatComplex*>(B), ldB,
-              reinterpret_cast<const cuFloatComplex*>(&beta),
-              reinterpret_cast<cuFloatComplex*>(C), ldC);
+  return cublasCsymm(handle, side, uplo,
+                     m, n,
+                     reinterpret_cast<const cuFloatComplex*>(&alpha),
+                     reinterpret_cast<const cuFloatComplex*>(A), ldA,
+                     reinterpret_cast<const cuFloatComplex*>(B), ldB,
+                     reinterpret_cast<const cuFloatComplex*>(&beta),
+                     reinterpret_cast<cuFloatComplex*>(C), ldC);
 }
 
 // zsymm
-void
+cublasStatus_t
 symm(cublasHandle_t handle,
      cublasSideMode_t side, cublasFillMode_t uplo,
      int m, int n,
@@ -114,13 +114,13 @@ symm(cublasHandle_t handle,
 {
   BLAM_DEBUG_OUT("cublasZsymm");
 
-  cublasZsymm(handle, side, uplo,
-              m, n,
-              reinterpret_cast<const cuDoubleComplex*>(alpha),
-              reinterpret_cast<const cuDoubleComplex*>(A), ldA,
-              reinterpret_cast<const cuDoubleComplex*>(B), ldB,
-              reinterpret_cast<const cuDoubleComplex*>(beta),
-              reinterpret_cast<cuDoubleComplex*>(C), ldC);
+  return cublasZsymm(handle, side, uplo,
+                     m, n,
+                     reinterpret_cast<const cuDoubleComplex*>(alpha),
+                     reinterpret_cast<const cuDoubleComplex*>(A), ldA,
+                     reinterpret_cast<const cuDoubleComplex*>(B), ldB,
+                     reinterpret_cast<const cuDoubleComplex*>(beta),
+                     reinterpret_cast<cuDoubleComplex*>(C), ldC);
 }
 
 // blam -> cublas

@@ -36,7 +36,7 @@ namespace cublas
 {
 
 // sger
-void
+cublasStatus_t
 geru(cublasHandle_t handle,
      int m, int n,
      const float* alpha,
@@ -46,16 +46,16 @@ geru(cublasHandle_t handle,
 {
   BLAM_DEBUG_OUT("cublasSger");
 
-  cublasSger(handle,
-             m, n,
-             alpha,
-             x, incX,
-             y, incY,
-             A, ldA);
+  return cublasSger(handle,
+                    m, n,
+                    alpha,
+                    x, incX,
+                    y, incY,
+                    A, ldA);
 }
 
 // dger
-void
+cublasStatus_t
 geru(cublasHandle_t handle,
      int m, int n,
      const double* alpha,
@@ -65,16 +65,16 @@ geru(cublasHandle_t handle,
 {
   BLAM_DEBUG_OUT("cublasDger");
 
-  cublasDger(handle,
-             m, n,
-             alpha,
-             x, incX,
-             y, incY,
-             A, ldA);
+  return cublasDger(handle,
+                    m, n,
+                    alpha,
+                    x, incX,
+                    y, incY,
+                    A, ldA);
 }
 
 // cgerc
-void
+cublasStatus_t
 gerc(cublasHandle_t handle,
      int m, int n,
      const ComplexFloat* alpha,
@@ -84,16 +84,16 @@ gerc(cublasHandle_t handle,
 {
   BLAM_DEBUG_OUT("cublasCgerc");
 
-  cublasCgerc(handle,
-              m, n,
-              reinterpret_cast<const cuFloatComplex*>(alpha),
-              reinterpret_cast<const cuFloatComplex*>(x), incX,
-              reinterpret_cast<const cuFloatComplex*>(y), incY,
-              reinterpret_cast<cuFloatComplex*>(A), ldA);
+  return cublasCgerc(handle,
+                     m, n,
+                     reinterpret_cast<const cuFloatComplex*>(alpha),
+                     reinterpret_cast<const cuFloatComplex*>(x), incX,
+                     reinterpret_cast<const cuFloatComplex*>(y), incY,
+                     reinterpret_cast<cuFloatComplex*>(A), ldA);
 }
 
 // zgerc
-void
+cublasStatus_t
 gerc(cublasHandle_t handle,
      int m, int n,
      const ComplexDouble* alpha,
@@ -103,16 +103,16 @@ gerc(cublasHandle_t handle,
 {
   BLAM_DEBUG_OUT("cublasZgerc");
 
-  cublasZgerc(handle,
-              m, n,
-              reinterpret_cast<const cuDoubleComplex*>(alpha),
-              reinterpret_cast<const cuDoubleComplex*>(x), incX,
-              reinterpret_cast<const cuDoubleComplex*>(y), incY,
-              reinterpret_cast<cuDoubleComplex*>(A), ldA);
+  return cublasZgerc(handle,
+                     m, n,
+                     reinterpret_cast<const cuDoubleComplex*>(alpha),
+                     reinterpret_cast<const cuDoubleComplex*>(x), incX,
+                     reinterpret_cast<const cuDoubleComplex*>(y), incY,
+                     reinterpret_cast<cuDoubleComplex*>(A), ldA);
 }
 
 // cgeru
-void
+cublasStatus_t
 geru(cublasHandle_t handle,
      int m, int n,
      const ComplexFloat* alpha,
@@ -122,16 +122,16 @@ geru(cublasHandle_t handle,
 {
   BLAM_DEBUG_OUT("cublasCgeru");
 
-  cublasCgeru(handle,
-              m, n,
-              reinterpret_cast<const cuFloatComplex*>(alpha),
-              reinterpret_cast<const cuFloatComplex*>(x), incX,
-              reinterpret_cast<const cuFloatComplex*>(y), incY,
-              reinterpret_cast<cuFloatComplex*>(A), ldA);
+  return cublasCgeru(handle,
+                     m, n,
+                     reinterpret_cast<const cuFloatComplex*>(alpha),
+                     reinterpret_cast<const cuFloatComplex*>(x), incX,
+                     reinterpret_cast<const cuFloatComplex*>(y), incY,
+                     reinterpret_cast<cuFloatComplex*>(A), ldA);
 }
 
 // zgeru
-void
+cublasStatus_t
 geru(cublasHandle_t handle,
      int m, int n,
      const ComplexDouble* alpha,
@@ -141,12 +141,12 @@ geru(cublasHandle_t handle,
 {
   BLAM_DEBUG_OUT("cublasZgeru");
 
-  cublasZgeru(handle,
-              m, n,
-              reinterpret_cast<const cuDoubleComplex*>(alpha),
-              reinterpret_cast<const cuDoubleComplex*>(x), incX,
-              reinterpret_cast<const cuDoubleComplex*>(y), incY,
-              reinterpret_cast<cuDoubleComplex*>(A), ldA);
+  return cublasZgeru(handle,
+                     m, n,
+                     reinterpret_cast<const cuDoubleComplex*>(alpha),
+                     reinterpret_cast<const cuDoubleComplex*>(x), incX,
+                     reinterpret_cast<const cuDoubleComplex*>(y), incY,
+                     reinterpret_cast<cuDoubleComplex*>(A), ldA);
 }
 
 // blam -> cublas

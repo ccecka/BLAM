@@ -36,7 +36,7 @@ namespace cublas
 {
 
 // sspr
-void
+cublasStatus_t
 spr(cublasHandle_t handle, cublasFillMode_t uplo,
     int n,
     const float* alpha,
@@ -45,15 +45,15 @@ spr(cublasHandle_t handle, cublasFillMode_t uplo,
 {
   BLAM_DEBUG_OUT("cublasSspr");
 
-  cublasSspr(handle, uplo,
-             n,
-             alpha,
-             x, incX,
-             A);
+  return cublasSspr(handle, uplo,
+                    n,
+                    alpha,
+                    x, incX,
+                    A);
 }
 
 // dspr
-void
+cublasStatus_t
 spr(cublasHandle_t handle, cublasFillMode_t uplo,
     int n,
     const double* alpha,
@@ -62,11 +62,11 @@ spr(cublasHandle_t handle, cublasFillMode_t uplo,
 {
   BLAM_DEBUG_OUT("cublasDspr");
 
-  cublasDspr(handle, uplo,
-             n,
-             alpha,
-             x, incX,
-             A);
+  return cublasDspr(handle, uplo,
+                    n,
+                    alpha,
+                    x, incX,
+                    A);
 }
 
 // blam -> cublas

@@ -36,7 +36,7 @@ namespace cublas
 {
 
 // sgemv
-void
+cublasStatus_t
 gemv(cublasHandle_t handle, cublasOperation_t trans,
      int m, int n,
      const float* alpha,
@@ -47,17 +47,17 @@ gemv(cublasHandle_t handle, cublasOperation_t trans,
 {
   BLAM_DEBUG_OUT("cublasSgemv");
 
-  cublasSgemv(handle, trans,
-              m, n,
-              alpha,
-              A, ldA,
-              x, incX,
-              beta,
-              y, incY);
+  return cublasSgemv(handle, trans,
+                     m, n,
+                     alpha,
+                     A, ldA,
+                     x, incX,
+                     beta,
+                     y, incY);
 }
 
 // dgemv
-void
+cublasStatus_t
 gemv(cublasHandle_t handle, cublasOperation_t trans,
      int m, int n,
      const double* alpha,
@@ -68,17 +68,17 @@ gemv(cublasHandle_t handle, cublasOperation_t trans,
 {
   BLAM_DEBUG_OUT("cublasDgemv");
 
-  cublasDgemv(handle, trans,
-              m, n,
-              alpha,
-              A, ldA,
-              x, incX,
-              beta,
-              y, incY);
+  return cublasDgemv(handle, trans,
+                     m, n,
+                     alpha,
+                     A, ldA,
+                     x, incX,
+                     beta,
+                     y, incY);
 }
 
 // cgemv
-void
+cublasStatus_t
 gemv(cublasHandle_t handle, cublasOperation_t trans,
      int m, int n,
      const ComplexFloat* alpha,
@@ -89,17 +89,17 @@ gemv(cublasHandle_t handle, cublasOperation_t trans,
 {
   BLAM_DEBUG_OUT("cublasCgemv");
 
-  cublasCgemv(handle, trans,
-              m, n,
-              reinterpret_cast<const cuFloatComplex*>(alpha),
-              reinterpret_cast<const cuFloatComplex*>(A), ldA,
-              reinterpret_cast<const cuFloatComplex*>(x), incX,
-              reinterpret_cast<const cuFloatComplex*>(beta),
-              reinterpret_cast<cuFloatComplex*>(y), incY);
+  return cublasCgemv(handle, trans,
+                     m, n,
+                     reinterpret_cast<const cuFloatComplex*>(alpha),
+                     reinterpret_cast<const cuFloatComplex*>(A), ldA,
+                     reinterpret_cast<const cuFloatComplex*>(x), incX,
+                     reinterpret_cast<const cuFloatComplex*>(beta),
+                     reinterpret_cast<cuFloatComplex*>(y), incY);
 }
 
 // zgemv
-void
+cublasStatus_t
 gemv(cublasHandle_t handle, cublasOperation_t trans,
      int m, int n,
      const ComplexDouble* alpha,
@@ -110,17 +110,17 @@ gemv(cublasHandle_t handle, cublasOperation_t trans,
 {
   BLAM_DEBUG_OUT("cublasZgemv");
 
-  cublasZgemv(handle, trans,
-              m, n,
-              reinterpret_cast<const cuDoubleComplex*>(alpha),
-              reinterpret_cast<const cuDoubleComplex*>(A), ldA,
-              reinterpret_cast<const cuDoubleComplex*>(x), incX,
-              reinterpret_cast<const cuDoubleComplex*>(beta),
-              reinterpret_cast<cuDoubleComplex*>(y), incY);
+  return cublasZgemv(handle, trans,
+                     m, n,
+                     reinterpret_cast<const cuDoubleComplex*>(alpha),
+                     reinterpret_cast<const cuDoubleComplex*>(A), ldA,
+                     reinterpret_cast<const cuDoubleComplex*>(x), incX,
+                     reinterpret_cast<const cuDoubleComplex*>(beta),
+                     reinterpret_cast<cuDoubleComplex*>(y), incY);
 }
 
 // csgemv   XXX: Move to general
-void
+cublasStatus_t
 gemv(cublasHandle_t handle, cublasOperation_t trans,
      int m, int n,
      const float* alpha,
@@ -129,21 +129,21 @@ gemv(cublasHandle_t handle, cublasOperation_t trans,
      const float* beta,
      ComplexFloat* y, int incY)
 {
-  BLAM_DEBUG_OUT("cublasZgemv");
+  BLAM_DEBUG_OUT("cublasC[S]gemv");
 
   assert(incY == 1);
 
-  cublasSgemv(handle, trans,
-              2*m, n,
-              reinterpret_cast<const float*>(alpha),
-              reinterpret_cast<const float*>(A), 2*ldA,
-              reinterpret_cast<const float*>(x), incX,
-              reinterpret_cast<const float*>(beta),
-              reinterpret_cast<float*>(y), incY);
+  return cublasSgemv(handle, trans,
+                     2*m, n,
+                     reinterpret_cast<const float*>(alpha),
+                     reinterpret_cast<const float*>(A), 2*ldA,
+                     reinterpret_cast<const float*>(x), incX,
+                     reinterpret_cast<const float*>(beta),
+                     reinterpret_cast<float*>(y), incY);
 }
 
 // zdgemv   XXX: Move to general
-void
+cublasStatus_t
 gemv(cublasHandle_t handle, cublasOperation_t trans,
      int m, int n,
      const double* alpha,
@@ -152,17 +152,17 @@ gemv(cublasHandle_t handle, cublasOperation_t trans,
      const double* beta,
      ComplexDouble* y, int incY)
 {
-  BLAM_DEBUG_OUT("cublasZgemv");
+  BLAM_DEBUG_OUT("cublasZ[D]gemv");
 
   assert(incY == 1);
 
-  cublasDgemv(handle, trans,
-              2*m, n,
-              reinterpret_cast<const double*>(alpha),
-              reinterpret_cast<const double*>(A), 2*ldA,
-              reinterpret_cast<const double*>(x), incX,
-              reinterpret_cast<const double*>(beta),
-              reinterpret_cast<double*>(y), incY);
+  return cublasDgemv(handle, trans,
+                     2*m, n,
+                     reinterpret_cast<const double*>(alpha),
+                     reinterpret_cast<const double*>(A), 2*ldA,
+                     reinterpret_cast<const double*>(x), incX,
+                     reinterpret_cast<const double*>(beta),
+                     reinterpret_cast<double*>(y), incY);
 }
 
 // blam -> cublas

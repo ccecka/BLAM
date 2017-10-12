@@ -36,7 +36,7 @@ namespace cublas
 {
 
 // chbmv
-void
+cublasStatus_t
 hbmv(cublasHandle_t handle, cublasFillMode_t uplo,
      int n, int k,
      const ComplexFloat* alpha,
@@ -47,17 +47,17 @@ hbmv(cublasHandle_t handle, cublasFillMode_t uplo,
 {
   BLAM_DEBUG_OUT("cublasChbmv");
 
-  cublasChbmv(handle, uplo,
-              n, k,
-              reinterpret_cast<const cuFloatComplex*>(alpha),
-              reinterpret_cast<const cuFloatComplex*>(A), ldA,
-              reinterpret_cast<const cuFloatComplex*>(x), incX,
-              reinterpret_cast<const cuFloatComplex*>(beta),
-              reinterpret_cast<cuFloatComplex*>(y), incY);
+  return cublasChbmv(handle, uplo,
+                     n, k,
+                     reinterpret_cast<const cuFloatComplex*>(alpha),
+                     reinterpret_cast<const cuFloatComplex*>(A), ldA,
+                     reinterpret_cast<const cuFloatComplex*>(x), incX,
+                     reinterpret_cast<const cuFloatComplex*>(beta),
+                     reinterpret_cast<cuFloatComplex*>(y), incY);
 }
 
 // zhbmv
-void
+cublasStatus_t
 hbmv(cublasHandle_t handle, cublasFillMode_t uplo,
      int n, int k,
      const ComplexDouble* alpha,
@@ -68,13 +68,13 @@ hbmv(cublasHandle_t handle, cublasFillMode_t uplo,
 {
   BLAM_DEBUG_OUT("cublasZhbmv");
 
-  cublasZhbmv(handle, uplo,
-              n, k,
-              reinterpret_cast<const cuDoubleComplex*>(alpha),
-              reinterpret_cast<const cuDoubleComplex*>(A), ldA,
-              reinterpret_cast<const cuDoubleComplex*>(x), incX,
-              reinterpret_cast<const cuDoubleComplex*>(beta),
-              reinterpret_cast<cuDoubleComplex*>(y), incY);
+  return cublasZhbmv(handle, uplo,
+                     n, k,
+                     reinterpret_cast<const cuDoubleComplex*>(alpha),
+                     reinterpret_cast<const cuDoubleComplex*>(A), ldA,
+                     reinterpret_cast<const cuDoubleComplex*>(x), incX,
+                     reinterpret_cast<const cuDoubleComplex*>(beta),
+                     reinterpret_cast<cuDoubleComplex*>(y), incY);
 }
 
 // blam -> cublas

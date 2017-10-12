@@ -36,7 +36,7 @@ namespace cublas
 {
 
 // cherk
-void
+cublasStatus_t
 herk(cublasHandle_t handle,
      cublasFillMode_t uplo, cublasOperation_t trans,
      int n, int k,
@@ -47,16 +47,16 @@ herk(cublasHandle_t handle,
 {
   BLAM_DEBUG_OUT("cublasCherk");
 
-  cublasCherk(handle, uplo, trans,
-              n, k,
-              alpha,
-              reinterpret_cast<const cuFloatComplex*>(A), ldA,
-              beta,
-              reinterpret_cast<cuFloatComplex*>(C), ldC);
+  return cublasCherk(handle, uplo, trans,
+                     n, k,
+                     alpha,
+                     reinterpret_cast<const cuFloatComplex*>(A), ldA,
+                     beta,
+                     reinterpret_cast<cuFloatComplex*>(C), ldC);
 }
 
 // zherk
-void
+cublasStatus_t
 herk(cublasHandle_t handle,
      cublasFillMode_t uplo, cublasOperation_t trans,
      int n, int k,
@@ -67,12 +67,12 @@ herk(cublasHandle_t handle,
 {
   BLAM_DEBUG_OUT("cublasZherk");
 
-  cublasZherk(handle, uplo, trans,
-              n, k,
-              alpha,
-              reinterpret_cast<const cuDoubleComplex*>(A), ldA,
-              beta,
-              reinterpret_cast<cuDoubleComplex*>(C), ldC);
+  return cublasZherk(handle, uplo, trans,
+                     n, k,
+                     alpha,
+                     reinterpret_cast<const cuDoubleComplex*>(A), ldA,
+                     beta,
+                     reinterpret_cast<cuDoubleComplex*>(C), ldC);
 }
 
 // blam -> cublas

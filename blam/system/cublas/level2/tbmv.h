@@ -36,7 +36,7 @@ namespace cublas
 {
 
 // stbmv
-void
+cublasStatus_t
 tbmv(cublasHandle_t handle,
      cublasFillMode_t uplo, cublasOperation_t transA, cublasDiagType_t diag,
      int n, int k,
@@ -45,14 +45,14 @@ tbmv(cublasHandle_t handle,
 {
   BLAM_DEBUG_OUT("cublasStbmv");
 
-  cublasStbmv(handle, uplo, transA, diag,
-              n, k,
-              A, ldA,
-              x, incX);
+  return cublasStbmv(handle, uplo, transA, diag,
+                     n, k,
+                     A, ldA,
+                     x, incX);
 }
 
 // dtbmv
-void
+cublasStatus_t
 tbmv(cublasHandle_t handle,
      cublasFillMode_t uplo, cublasOperation_t transA, cublasDiagType_t diag,
      int n, int k,
@@ -61,14 +61,14 @@ tbmv(cublasHandle_t handle,
 {
   BLAM_DEBUG_OUT("cublasDtbmv");
 
-  cublasDtbmv(handle, uplo, transA, diag,
-              n, k,
-              A, ldA,
-              x, incX);
+  return cublasDtbmv(handle, uplo, transA, diag,
+                     n, k,
+                     A, ldA,
+                     x, incX);
 }
 
 // ctbmv
-void
+cublasStatus_t
 tbmv(cublasHandle_t handle,
      cublasFillMode_t uplo, cublasOperation_t transA, cublasDiagType_t diag,
      int n, int k,
@@ -77,14 +77,14 @@ tbmv(cublasHandle_t handle,
 {
   BLAM_DEBUG_OUT("cublasCtbmv");
 
-  cublasCtbmv(handle, uplo, transA, diag,
-              n, k,
-              reinterpret_cast<const cuFloatComplex*>(A), ldA,
-              reinterpret_cast<cuFloatComplex*>(x), incX);
+  return cublasCtbmv(handle, uplo, transA, diag,
+                     n, k,
+                     reinterpret_cast<const cuFloatComplex*>(A), ldA,
+                     reinterpret_cast<cuFloatComplex*>(x), incX);
 }
 
 // ztbmv
-void
+cublasStatus_t
 tbmv(cublasHandle_t handle,
      cublasFillMode_t uplo, cublasOperation_t transA, cublasDiagType_t diag,
      int n, int k,
@@ -93,10 +93,10 @@ tbmv(cublasHandle_t handle,
 {
   BLAM_DEBUG_OUT("cublasZtbmv");
 
-  cublasZtbmv(handle, uplo, transA, diag,
-              n, k,
-              reinterpret_cast<const cuDoubleComplex*>(A), ldA,
-              reinterpret_cast<cuDoubleComplex*>(x), incX);
+  return cublasZtbmv(handle, uplo, transA, diag,
+                     n, k,
+                     reinterpret_cast<const cuDoubleComplex*>(A), ldA,
+                     reinterpret_cast<cuDoubleComplex*>(x), incX);
 }
 
 // blam -> cublas
