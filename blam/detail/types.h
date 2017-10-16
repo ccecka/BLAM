@@ -41,17 +41,10 @@ using ComplexFloat  = complex<float>;
 using ComplexDouble = complex<double>;
 #endif // BLAM_COMPLEX_TYPES
 
-float abs1(float v) {
-  using std::abs;
-  return abs(v);
-}
-
-double abs1(double v) {
-  using std::abs;
-  return abs(v);
-}
-
-long double abs1(long double v) {
+// -----------------------------------------------------------------------------
+// 1-norm absolute value, |Re(x)| + |Im(x)|
+template <typename T>
+T abs1(const T& v) {
   using std::abs;
   return abs(v);
 }
