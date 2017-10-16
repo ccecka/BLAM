@@ -164,21 +164,18 @@ syrk(const execution_policy<DerivedPolicy>& exec,
                      beta,
                      C, ldC))
 {
-  if (order == ColMajor) {
-    return syrk(exec, uplo, trans,
-                n, k,
-                alpha,
-                A, ldA,
-                beta,
-                C, ldC);
-  } else {
-    return syrk(exec, (uplo==Upper) ? Lower : Upper, Op(trans^ConjTrans),
-                n, k,
-                conj(alpha),
-                A, ldA,
-                beta,
-                C, ldC);
+  if (order == RowMajor) {
+    // Swap upper <=> lower; A => A^T, A^T|A^H => A
+    uplo = (uplo==Lower ? Upper : Lower);
+    trans = (trans==NoTrans ? ConjTrans : NoTrans);
   }
+
+  return syrk(exec, uplo, trans,
+              n, k,
+              alpha,
+              A, ldA,
+              beta,
+              C, ldC);
 }
 
 } // end namespace cublas

@@ -170,27 +170,27 @@ gemm(const execution_policy<DerivedPolicy>& exec,
      MC* C, int ldC)
     -> decltype(gemm(exec, transA, transB,
                      m, n, k,
-                     &alpha,
+                     alpha,
                      A, ldA,
                      B, ldB,
-                     &beta,
+                     beta,
                      C, ldC))
 {
   if (order == ColMajor) {
     return gemm(exec, transA, transB,
                 m, n, k,
-                &alpha,
+                alpha,
                 A, ldA,
                 B, ldB,
-                &beta,
+                beta,
                 C, ldC);
-  } else { // RowMajor: swap A & B
+  } else { // RowMajor: swap A <=> B, transA <=> transB, m <=> n
     return gemm(exec, transB, transA,
                 n, m, k,
-                &alpha,
+                alpha,
                 B, ldB,
                 A, ldA,
-                &beta,
+                beta,
                 C, ldC);
   }
 }

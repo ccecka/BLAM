@@ -188,11 +188,6 @@ geru(const execution_policy<DerivedPolicy>& exec,
                      alpha,
                      x, incX,
                      y, incY,
-                     A, ldA),
-                geru(exec, n, m,
-                     alpha,
-                     y, incY,
-                     x, incX,
                      A, ldA))
 {
   if (order == ColMajor) {
@@ -201,7 +196,7 @@ geru(const execution_policy<DerivedPolicy>& exec,
                 x, incX,
                 y, incY,
                 A, ldA);
-  } else { // RowMajor: swap x & y
+  } else { // RowMajor: swap m <=> n, x <=> y
     return geru(exec, n, m,
                 alpha,
                 y, incY,

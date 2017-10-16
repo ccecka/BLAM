@@ -132,23 +132,20 @@ hemm(const execution_policy<DerivedPolicy>& exec,
                      beta,
                      C, ldC))
 {
-  if (order == ColMajor) {
-    hemm(exec, side, uplo,
-         m, n,
-         alpha,
-         A, ldA,
-         B, ldB,
-         beta,
-         C, ldC);
-  } else {
-    hemm(exec, (side==Left) ? Right : Left, (uplo==Upper) ? Lower : Upper,
-         n, m,
-         alpha,
-         A, ldA,
-         B, ldB,
-         beta,
-         C, ldC);
+  if (order == RowMajor) {
+    // Swap left <=> right, upper <=> lower, m <=> n
+    side = (side==Left) ? Right : Left;
+    uplo = (uplo==Upper) ? Lower : Upper;
+    std::swap(m,n);
   }
+
+  return hemm(exec, side, uplo,
+              m, n,
+              alpha,
+              A, ldA,
+              B, ldB,
+              beta,
+              C, ldC);
 }
 
 } // end namespace cublas

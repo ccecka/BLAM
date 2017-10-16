@@ -91,7 +91,32 @@ her(const execution_policy<DerivedPolicy>& exec,
              A, ldA);
 }
 
-// XXX TODO RowMajor -> ColMajor?
+// RowMajor -> ColMajor?
+template <typename DerivedPolicy,
+          typename Alpha,
+          typename VX, typename MA>
+auto
+her(const execution_policy<DerivedPolicy>& exec,
+    Layout order, Uplo uplo,
+    int n,
+    const Alpha& alpha,
+    const VX* x, int incX,
+    MA* A, int ldA)
+    -> decltype(her(exec, uplo,
+                    n, alpha,
+                    x, incX,
+                    A, ldA))
+{
+  if (order == RowMajor) {
+    // Swap upper <=> lower
+    uplo = (uplo==Upper) ? Lower : Upper;
+  }
+
+  return her(exec, uplo,
+             n, alpha,
+             x, incX,
+             A, ldA);
+}
 
 } // end namespace cublas
 } // end namespace blam

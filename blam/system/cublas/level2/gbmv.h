@@ -171,23 +171,20 @@ gbmv(const execution_policy<DerivedPolicy>& exec,
                      beta,
                      y, incY))
 {
-  if (order == ColMajor) {
-    return gbmv(exec, trans,
-                m, n, kl, ku,
-                alpha,
-                A, ldA,
-                x, incX,
-                beta,
-                y, incY);
-  } else { // RowMajor: transpose A
-    return gbmv(exec, Op(trans ^ Trans),
-                n, m, ku, kl,
-                alpha,
-                A, ldA,
-                x, incX,
-                beta,
-                y, incY);
+  if (order == RowMajor) {
+    // Transpose A, swap m <=> n, kl <=> ku
+    trans = Op(trans ^ Trans);
+    std::swap(m,n);
+    std::swap(kl,ku);
   }
+
+  return gbmv(exec, trans,
+              m, n, kl, ku,
+              alpha,
+              A, ldA,
+              x, incX,
+              beta,
+              y, incY);
 }
 
 } // end namespace cublas

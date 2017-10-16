@@ -216,23 +216,19 @@ gemv(const execution_policy<DerivedPolicy>& exec,
                      beta,
                      y, incY))
 {
-  if (order == ColMajor) {
-    return gemv(exec, trans,
-                m, n,
-                alpha,
-                A, ldA,
-                x, incX,
-                beta,
-                y, incY);
-  } else { // RowMajor: transpose A
-    return gemv(exec, Op(trans ^ Trans),
-                n, m,
-                alpha,
-                A, ldA,
-                x, incX,
-                beta,
-                y, incY);
+  if (order == RowMajor) {
+    // Transpose A, swap m <=> n
+    trans = Op(trans ^ Trans);
+    std::swap(m,n);
   }
+
+  return gemv(exec, trans,
+              m, n,
+              alpha,
+              A, ldA,
+              x, incX,
+              beta,
+              y, incY);
 }
 
 } // end namespace cublas

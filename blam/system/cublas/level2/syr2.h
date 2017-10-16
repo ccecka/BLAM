@@ -136,7 +136,35 @@ syr2(const execution_policy<DerivedPolicy>& exec,
               A, ldA);
 }
 
-// XXX TODO RowMajor -> ColMajor?
+// RowMajor -> ColMajor
+template <typename DerivedPolicy,
+          typename Alpha,
+          typename VX, typename VY, typename MA>
+auto
+syr2(const execution_policy<DerivedPolicy>& exec,
+     Layout order, Uplo uplo,
+     int n,
+     const Alpha& alpha,
+     const VX* x, int incX,
+     const VY* y, int incY,
+     MA* A, int ldA)
+    -> decltype(syr2(exec, uplo,
+                     n, alpha,
+                     x, incX,
+                     y, incY,
+                     A, ldA))
+{
+  if (order == RowMajor) {
+    // Swap upper <=> lower
+    uplo = (uplo==Upper) ? Lower : Upper;
+  }
+
+  return syr2(exec, uplo,
+              n, alpha,
+              x, incX,
+              y, incY,
+              A, ldA);
+}
 
 } // end namespace cublas
 } // end namespace blam

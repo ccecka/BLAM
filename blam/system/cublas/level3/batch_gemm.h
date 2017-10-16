@@ -304,7 +304,7 @@ batch_gemm(const execution_policy<DerivedPolicy>& exec,
                       beta,
                       C, ldC, loC,
                       batch_size);
-  } else { // RowMajor: swap A & B
+  } else { // RowMajor: swap A <=> B, transA <=> transB, m <=> n
     return batch_gemm(exec, transB, transA,
                       n, m, k,
                       alpha,

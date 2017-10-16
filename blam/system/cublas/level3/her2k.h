@@ -132,23 +132,19 @@ her2k(const execution_policy<DerivedPolicy>& exec,
                       beta,
                       C, ldC))
 {
-  if (order == ColMajor) {
-    her2k(exec, uplo, trans,
-          n, k,
-          alpha,
-          A, ldA,
-          B, ldB,
-          beta,
-          C, ldC);
-  } else {
-    her2k(exec, (uplo==Upper) ? Lower : Upper, Op(trans ^ ConjTrans),
-          n, k,
-          conj(alpha),
-          A, ldA,
-          B, ldB,
-          beta,
-          C, ldC);
+  if (order == RowMajor) {
+    // Swap upper <=> lower; A => A^T, A^T|A^H => A
+    uplo = (uplo==Lower ? Upper : Lower);
+    trans = (trans==NoTrans ? ConjTrans : NoTrans);
   }
+
+  return her2k(exec, uplo, trans,
+               n, k,
+               alpha,
+               A, ldA,
+               B, ldB,
+               beta,
+               C, ldC);
 }
 
 } // end namespace cublas

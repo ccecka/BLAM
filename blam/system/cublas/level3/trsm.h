@@ -154,21 +154,18 @@ trsm(const execution_policy<DerivedPolicy>& exec,
                      A, ldA,
                      B, ldB))
 {
-  if (order == ColMajor) {
-    trsm(exec, side, uplo,
-         trans, diag,
-         m, n,
-         alpha,
-         A, ldA,
-         B, ldB);
-  } else {
-    trsm(exec, (side==Left) ? Right : Left, (uplo==Upper) ? Lower : Upper,
-         trans, diag,
-         n, m,
-         alpha,
-         A, ldA,
-         B, ldB);
+  if (order == RowMajor) {
+    // Swap left <=> right, upper <=> lower
+    side = (side==Left) ? Right : Left;
+    uplo = (uplo==Upper) ? Lower : Upper;
   }
+
+  return trsm(exec, side, uplo,
+              trans, diag,
+              m, n,
+              alpha,
+              A, ldA,
+              B, ldB);
 }
 
 } // end namespace cublas

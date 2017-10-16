@@ -129,6 +129,7 @@ tpmv(const execution_policy<DerivedPolicy>& exec,
                      x, incX))
 {
   if (order == RowMajor) {
+    // Transpose A, swap upper <=> lower
     transA = Op(transA ^ Trans);
     uplo = (uplo==Upper) ? Lower : Upper;
   }

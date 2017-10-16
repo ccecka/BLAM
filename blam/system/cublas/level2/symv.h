@@ -170,6 +170,7 @@ symv(const execution_policy<DerivedPolicy>& exec,
                      y, incY))
 {
   if (order == RowMajor) {
+    // Swap upper <=> lower
     uplo = (uplo==Upper) ? Lower : Upper;
   }
 

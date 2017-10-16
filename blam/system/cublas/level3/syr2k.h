@@ -129,7 +129,7 @@ template <typename DerivedPolicy,
           typename Beta, typename MC>
 auto
 syr2k(const execution_policy<DerivedPolicy>& exec,
-      Side side, Uplo uplo,
+      Uplo uplo, Op trans,
       int n, int k,
       const Alpha& alpha,
       const MA* A, int ldA,
@@ -137,7 +137,7 @@ syr2k(const execution_policy<DerivedPolicy>& exec,
       const Beta& beta,
       MC* C, int ldC)
     -> decltype(syr2k(handle(derived_cast(exec)),
-                      cublas_type(side), cublas_type(uplo),
+                      cublas_type(uplo), cublas_type(trans),
                       n, k,
                       &alpha,
                       A, ldA,
@@ -146,7 +146,7 @@ syr2k(const execution_policy<DerivedPolicy>& exec,
                       C, ldC))
 {
   return syr2k(handle(derived_cast(exec)),
-               cublas_type(side), cublas_type(uplo),
+               cublas_type(uplo), cublas_type(trans),
                n, k,
                &alpha,
                A, ldA,
@@ -161,14 +161,14 @@ template <typename DerivedPolicy,
           typename Beta, typename MC>
 auto
 syr2k(const execution_policy<DerivedPolicy>& exec,
-      Layout order, Side side, Uplo uplo,
+      Layout order, Uplo uplo, Op trans,
       int n, int k,
       const Alpha& alpha,
       const MA* A, int ldA,
       const MB* B, int ldB,
       const Beta& beta,
       MC* C, int ldC)
-    -> decltype(syr2k(exec, side, uplo,
+    -> decltype(syr2k(exec, uplo, trans,
                       n, k,
                       alpha,
                       A, ldA,
@@ -176,23 +176,19 @@ syr2k(const execution_policy<DerivedPolicy>& exec,
                       beta,
                       C, ldC))
 {
-  if (order == ColMajor) {
-    return syr2k(exec, side, uplo,
-                 n, k,
-                 alpha,
-                 A, ldA,
-                 B, ldB,
-                 beta,
-                 C, ldC);
-  } else {
-    return syr2k(exec, (side==Left) ? Right : Left, (uplo==Upper) ? Lower : Upper,
-                 n, k,
-                 conj(alpha),
-                 A, ldA,
-                 B, ldB,
-                 beta,
-                 C, ldC);
+  if (order == RowMajor) {
+    // Swap upper <=> lower; A => A^T, A^T|A^H => A
+    uplo = (uplo==Lower ? Upper : Lower);
+    trans = (trans==NoTrans ? ConjTrans : NoTrans);
   }
+
+  return syr2k(exec, uplo, trans,
+               n, k,
+               alpha,
+               A, ldA,
+               B, ldB,
+               beta,
+               C, ldC);
 }
 
 } // end namespace cublas
