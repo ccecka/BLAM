@@ -38,14 +38,14 @@ namespace cblas
 // stbmv
 void
 tbmv(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
-     CBLAS_TRANSPOSE transA, CBLAS_DIAG diag,
+     CBLAS_TRANSPOSE trans, CBLAS_DIAG diag,
      int n, int k,
      const float* A, int ldA,
      float* x, int incX)
 {
   BLAM_DEBUG_OUT("cblas_stbmv");
 
-  cblas_stbmv(order, uplo, transA, diag,
+  cblas_stbmv(order, uplo, trans, diag,
               n, k,
               A, ldA,
               x, incX);
@@ -54,14 +54,14 @@ tbmv(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
 // dtbmv
 void
 tbmv(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
-     CBLAS_TRANSPOSE transA, CBLAS_DIAG diag,
+     CBLAS_TRANSPOSE trans, CBLAS_DIAG diag,
      int n, int k,
      const double* A, int ldA,
      double* x, int incX)
 {
   BLAM_DEBUG_OUT("cblas_dtbmv");
 
-  cblas_dtbmv(order, uplo, transA, diag,
+  cblas_dtbmv(order, uplo, trans, diag,
               n, k,
               A, ldA,
               x, incX);
@@ -70,14 +70,14 @@ tbmv(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
 // ctbmv
 void
 tbmv(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
-     CBLAS_TRANSPOSE transA, CBLAS_DIAG diag,
+     CBLAS_TRANSPOSE trans, CBLAS_DIAG diag,
      int n, int k,
      const ComplexFloat* A, int ldA,
      ComplexFloat* x, int incX)
 {
   BLAM_DEBUG_OUT("cblas_ctbmv");
 
-  cblas_ctbmv(order, uplo, transA, diag,
+  cblas_ctbmv(order, uplo, trans, diag,
               n, k,
               reinterpret_cast<const float*>(A), ldA,
               reinterpret_cast<float*>(x), incX);
@@ -86,14 +86,14 @@ tbmv(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
 // ztbmv
 void
 tbmv(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
-     CBLAS_TRANSPOSE transA, CBLAS_DIAG diag,
+     CBLAS_TRANSPOSE trans, CBLAS_DIAG diag,
      int n, int k,
      const ComplexDouble* A, int ldA,
      ComplexDouble* x, int incX)
 {
   BLAM_DEBUG_OUT("cblas_ztbmv");
 
-  cblas_ztbmv(order, uplo, transA, diag,
+  cblas_ztbmv(order, uplo, trans, diag,
               n, k,
               reinterpret_cast<const double*>(A), ldA,
               reinterpret_cast<double*>(x), incX);
@@ -104,18 +104,18 @@ template <typename DerivedPolicy,
           typename MA, typename VX>
 auto
 tbmv(const execution_policy<DerivedPolicy>& /*exec*/,
-     Layout order, Uplo uplo, Op transA, Diag diag,
+     Layout order, Uplo uplo, Op trans, Diag diag,
      int n, int k,
      const MA* A, int ldA,
      VX* x, int incX)
     -> decltype(tbmv(cblas_type(order), cblas_type(uplo),
-                     cblas_type(transA), cblas_type(diag),
+                     cblas_type(trans), cblas_type(diag),
                      n, k,
                      A, ldA,
                      x, incX))
 {
   return tbmv(cblas_type(order), cblas_type(uplo),
-              cblas_type(transA), cblas_type(diag),
+              cblas_type(trans), cblas_type(diag),
               n, k,
               A, ldA,
               x, incX);

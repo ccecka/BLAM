@@ -38,14 +38,14 @@ namespace cublas
 // stpsv
 cublasStatus_t
 tpsv(cublasHandle_t handle,
-     cublasFillMode_t uplo, cublasOperation_t transA, cublasDiagType_t diag,
+     cublasFillMode_t uplo, cublasOperation_t trans, cublasDiagType_t diag,
      int n,
      const float* A,
      float* x, int incX)
 {
   BLAM_DEBUG_OUT("cublasStpsv");
 
-  return cublasStpsv(handle, uplo, transA, diag,
+  return cublasStpsv(handle, uplo, trans, diag,
                      n, A,
                      x, incX);
 }
@@ -53,14 +53,14 @@ tpsv(cublasHandle_t handle,
 // dtpsv
 cublasStatus_t
 tpsv(cublasHandle_t handle,
-     cublasFillMode_t uplo, cublasOperation_t transA, cublasDiagType_t diag,
+     cublasFillMode_t uplo, cublasOperation_t trans, cublasDiagType_t diag,
      int n,
      const double* A,
      double* x, int incX)
 {
   BLAM_DEBUG_OUT("cublasDtpsv");
 
-  return cublasDtpsv(handle, uplo, transA, diag,
+  return cublasDtpsv(handle, uplo, trans, diag,
                      n, A,
                      x, incX);
 }
@@ -68,14 +68,14 @@ tpsv(cublasHandle_t handle,
 // ctpsv
 cublasStatus_t
 tpsv(cublasHandle_t handle,
-     cublasFillMode_t uplo, cublasOperation_t transA, cublasDiagType_t diag,
+     cublasFillMode_t uplo, cublasOperation_t trans, cublasDiagType_t diag,
      int n,
      const ComplexFloat* A,
      ComplexFloat* x, int incX)
 {
   BLAM_DEBUG_OUT("cublasCtpsv");
 
-  return cublasCtpsv(handle, uplo, transA, diag,
+  return cublasCtpsv(handle, uplo, trans, diag,
                      n, reinterpret_cast<const cuFloatComplex*>(A),
                      reinterpret_cast<cuFloatComplex*>(x), incX);
 }
@@ -83,14 +83,14 @@ tpsv(cublasHandle_t handle,
 // ztpsv
 cublasStatus_t
 tpsv(cublasHandle_t handle,
-     cublasFillMode_t uplo, cublasOperation_t transA, cublasDiagType_t diag,
+     cublasFillMode_t uplo, cublasOperation_t trans, cublasDiagType_t diag,
      int n,
      const ComplexDouble* A,
      ComplexDouble* x, int incX)
 {
   BLAM_DEBUG_OUT("cublasZtpsv");
 
-  return cublasZtpsv(handle, uplo, transA, diag,
+  return cublasZtpsv(handle, uplo, trans, diag,
                      n, reinterpret_cast<const cuDoubleComplex*>(A),
                      reinterpret_cast<cuDoubleComplex*>(x), incX);
 }
@@ -100,17 +100,17 @@ template <typename DerivedPolicy,
           typename MA, typename VX>
 auto
 tpsv(const execution_policy<DerivedPolicy>& exec,
-     Uplo uplo, Op transA, Diag diag,
+     Uplo uplo, Op trans, Diag diag,
      int n,
      const MA* A,
      VX* x, int incX)
     -> decltype(tpsv(handle(derived_cast(exec)), cublas_type(uplo),
-                     cublas_type(transA), cublas_type(diag),
+                     cublas_type(trans), cublas_type(diag),
                      n, A,
                      x, incX))
 {
   return tpsv(handle(derived_cast(exec)), cublas_type(uplo),
-              cublas_type(transA), cublas_type(diag),
+              cublas_type(trans), cublas_type(diag),
               n, A,
               x, incX);
 }
@@ -120,21 +120,21 @@ template <typename DerivedPolicy,
           typename MA, typename VX>
 auto
 tpsv(const execution_policy<DerivedPolicy>& exec,
-     Layout order, Uplo uplo, Op transA, Diag diag,
+     Layout order, Uplo uplo, Op trans, Diag diag,
      int n,
      const MA* A,
      VX* x, int incX)
-    -> decltype(tpsv(exec, uplo, transA, diag,
+    -> decltype(tpsv(exec, uplo, trans, diag,
                      n, A,
                      x, incX))
 {
   if (order == RowMajor) {
     // Transpose A, swap upper <=> lower
-    transA = Op(transA ^ Trans);
+    trans = Op(trans ^ Trans);
     uplo = (uplo==Upper) ? Lower : Upper;
   }
 
-  return tpsv(exec, uplo, transA, diag,
+  return tpsv(exec, uplo, trans, diag,
               n, A,
               x, incX);
 }

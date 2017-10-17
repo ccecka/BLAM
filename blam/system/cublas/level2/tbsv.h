@@ -38,14 +38,14 @@ namespace cublas
 // stbsv
 cublasStatus_t
 tbsv(cublasHandle_t handle,
-     cublasFillMode_t uplo, cublasOperation_t transA, cublasDiagType_t diag,
+     cublasFillMode_t uplo, cublasOperation_t trans, cublasDiagType_t diag,
      int n, int k,
      const float* A, int ldA,
      float* x, int incX)
 {
   BLAM_DEBUG_OUT("cublasStbsv");
 
-  return cublasStbsv(handle, uplo, transA, diag,
+  return cublasStbsv(handle, uplo, trans, diag,
                      n, k,
                      A, ldA,
                      x, incX);
@@ -54,14 +54,14 @@ tbsv(cublasHandle_t handle,
 // dtbsv
 cublasStatus_t
 tbsv(cublasHandle_t handle,
-     cublasFillMode_t uplo, cublasOperation_t transA, cublasDiagType_t diag,
+     cublasFillMode_t uplo, cublasOperation_t trans, cublasDiagType_t diag,
      int n, int k,
      const double* A, int ldA,
      double* x, int incX)
 {
   BLAM_DEBUG_OUT("cublasDtbsv");
 
-  return cublasDtbsv(handle, uplo, transA, diag,
+  return cublasDtbsv(handle, uplo, trans, diag,
                      n, k,
                      A, ldA,
                      x, incX);
@@ -70,14 +70,14 @@ tbsv(cublasHandle_t handle,
 // ctbsv
 cublasStatus_t
 tbsv(cublasHandle_t handle,
-     cublasFillMode_t uplo, cublasOperation_t transA, cublasDiagType_t diag,
+     cublasFillMode_t uplo, cublasOperation_t trans, cublasDiagType_t diag,
      int n, int k,
      const ComplexFloat* A, int ldA,
      ComplexFloat* x, int incX)
 {
   BLAM_DEBUG_OUT("cublasCtbsv");
 
-  return cublasCtbsv(handle, uplo, transA, diag,
+  return cublasCtbsv(handle, uplo, trans, diag,
                      n, k,
                      reinterpret_cast<const cuFloatComplex*>(A), ldA,
                      reinterpret_cast<cuFloatComplex*>(x), incX);
@@ -86,14 +86,14 @@ tbsv(cublasHandle_t handle,
 // ztbsv
 cublasStatus_t
 tbsv(cublasHandle_t handle,
-     cublasFillMode_t uplo, cublasOperation_t transA, cublasDiagType_t diag,
+     cublasFillMode_t uplo, cublasOperation_t trans, cublasDiagType_t diag,
      int n, int k,
      const ComplexDouble* A, int ldA,
      ComplexDouble* x, int incX)
 {
   BLAM_DEBUG_OUT("cublasZtbsv");
 
-  return cublasZtbsv(handle, uplo, transA, diag,
+  return cublasZtbsv(handle, uplo, trans, diag,
                      n, k,
                      reinterpret_cast<const cuDoubleComplex*>(A), ldA,
                      reinterpret_cast<cuDoubleComplex*>(x), incX);
@@ -104,18 +104,18 @@ template <typename DerivedPolicy,
           typename MA, typename VX>
 auto
 tbsv(const execution_policy<DerivedPolicy>& exec,
-     Uplo uplo, Op transA, Diag diag,
+     Uplo uplo, Op trans, Diag diag,
      int n, int k,
      const MA* A, int ldA,
      VX* x, int incX)
     -> decltype(tbsv(handle(derived_cast(exec)), cublas_type(uplo),
-                     cublas_type(transA), cublas_type(diag),
+                     cublas_type(trans), cublas_type(diag),
                      n, k,
                      A, ldA,
                      x, incX))
 {
   return tbsv(handle(derived_cast(exec)), cublas_type(uplo),
-              cublas_type(transA), cublas_type(diag),
+              cublas_type(trans), cublas_type(diag),
               n, k,
               A, ldA,
               x, incX);
@@ -126,22 +126,22 @@ template <typename DerivedPolicy,
           typename MA, typename VX>
 auto
 tbsv(const execution_policy<DerivedPolicy>& exec,
-     Layout order, Uplo uplo, Op transA, Diag diag,
+     Layout order, Uplo uplo, Op trans, Diag diag,
      int n, int k,
      const MA* A, int ldA,
      VX* x, int incX)
-    -> decltype(tbsv(exec, uplo, transA, diag,
+    -> decltype(tbsv(exec, uplo, trans, diag,
                      n, k,
                      A, ldA,
                      x, incX))
 {
   if (order == RowMajor) {
     // Transpose A, swap upper <=> lower
-    transA = Op(transA ^ Trans);
+    trans = Op(trans ^ Trans);
     uplo = (uplo==Upper) ? Lower : Upper;
   }
 
-  return tbsv(exec, uplo, transA, diag,
+  return tbsv(exec, uplo, trans, diag,
               n, k,
               A, ldA,
               x, incX);

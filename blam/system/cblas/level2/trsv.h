@@ -38,14 +38,14 @@ namespace cblas
 // strsv
 void
 trsv(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
-     CBLAS_TRANSPOSE transA, CBLAS_DIAG diag,
+     CBLAS_TRANSPOSE trans, CBLAS_DIAG diag,
      int n,
      const float* A, int ldA,
      float* x, int incX)
 {
   BLAM_DEBUG_OUT("cblas_strsv");
 
-  cblas_strsv(order, uplo, transA, diag,
+  cblas_strsv(order, uplo, trans, diag,
               n,
               A, ldA,
               x, incX);
@@ -54,14 +54,14 @@ trsv(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
 // dtrsv
 void
 trsv(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
-     CBLAS_TRANSPOSE transA, CBLAS_DIAG diag,
+     CBLAS_TRANSPOSE trans, CBLAS_DIAG diag,
      int n,
      const double* A, int ldA,
      double* x, int incX)
 {
   BLAM_DEBUG_OUT("cblas_dtrsv");
 
-  cblas_dtrsv(order, uplo, transA, diag,
+  cblas_dtrsv(order, uplo, trans, diag,
               n,
               A, ldA,
               x, incX);
@@ -70,14 +70,14 @@ trsv(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
 // ctrsv
 void
 trsv(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
-     CBLAS_TRANSPOSE transA, CBLAS_DIAG diag,
+     CBLAS_TRANSPOSE trans, CBLAS_DIAG diag,
      int n,
      const ComplexFloat* A, int ldA,
      ComplexFloat* x, int incX)
 {
   BLAM_DEBUG_OUT("cblas_ctrsv");
 
-  cblas_ctrsv(order, uplo, transA, diag,
+  cblas_ctrsv(order, uplo, trans, diag,
               n,
               reinterpret_cast<const float*>(A), ldA,
               reinterpret_cast<float*>(x), incX);
@@ -86,14 +86,14 @@ trsv(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
 // ztrsv
 void
 trsv(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
-     CBLAS_TRANSPOSE transA, CBLAS_DIAG diag,
+     CBLAS_TRANSPOSE trans, CBLAS_DIAG diag,
      int n,
      const ComplexDouble* A, int ldA,
      ComplexDouble* x, int incX)
 {
   BLAM_DEBUG_OUT("cblas_ztrsv");
 
-  cblas_ztrsv(order, uplo, transA, diag,
+  cblas_ztrsv(order, uplo, trans, diag,
               n,
               reinterpret_cast<const double*>(A), ldA,
               reinterpret_cast<double*>(x), incX);
@@ -104,18 +104,18 @@ template <typename DerivedPolicy,
           typename MA, typename VX>
 auto
 trsv(const execution_policy<DerivedPolicy>& /*exec*/,
-     Layout order, Uplo uplo, Op transA, Diag diag,
+     Layout order, Uplo uplo, Op trans, Diag diag,
      int n,
      const MA* A, int ldA,
      VX* x, int incX)
     -> decltype(trsv(cblas_type(order), cblas_type(uplo),
-                     cblas_type(transA), cblas_type(diag),
+                     cblas_type(trans), cblas_type(diag),
                      n,
                      A, ldA,
                      x, incX))
 {
   return trsv(cblas_type(order), cblas_type(uplo),
-              cblas_type(transA), cblas_type(diag),
+              cblas_type(trans), cblas_type(diag),
               n,
               A, ldA,
               x, incX);

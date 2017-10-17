@@ -38,14 +38,14 @@ namespace cublas
 // stpmv
 cublasStatus_t
 tpmv(cublasHandle_t handle,
-     cublasFillMode_t uplo, cublasOperation_t transA, cublasDiagType_t diag,
+     cublasFillMode_t uplo, cublasOperation_t trans, cublasDiagType_t diag,
      int n,
      const float* A,
      float* x, int incX)
 {
   BLAM_DEBUG_OUT("cublasStpmv");
 
-  return cublasStpmv(handle, uplo, transA, diag,
+  return cublasStpmv(handle, uplo, trans, diag,
                      n, A,
                      x, incX);
 }
@@ -53,14 +53,14 @@ tpmv(cublasHandle_t handle,
 // dtpmv
 cublasStatus_t
 tpmv(cublasHandle_t handle,
-     cublasFillMode_t uplo, cublasOperation_t transA, cublasDiagType_t diag,
+     cublasFillMode_t uplo, cublasOperation_t trans, cublasDiagType_t diag,
      int n,
      const double* A,
      double* x, int incX)
 {
   BLAM_DEBUG_OUT("cublasDtpmv");
 
-  return cublasDtpmv(handle, uplo, transA, diag,
+  return cublasDtpmv(handle, uplo, trans, diag,
                      n, A,
                      x, incX);
 }
@@ -68,14 +68,14 @@ tpmv(cublasHandle_t handle,
 // ctpmv
 cublasStatus_t
 tpmv(cublasHandle_t handle,
-     cublasFillMode_t uplo, cublasOperation_t transA, cublasDiagType_t diag,
+     cublasFillMode_t uplo, cublasOperation_t trans, cublasDiagType_t diag,
      int n,
      const ComplexFloat* A,
      ComplexFloat* x, int incX)
 {
   BLAM_DEBUG_OUT("cublasCtpmv");
 
-  return cublasCtpmv(handle, uplo, transA, diag,
+  return cublasCtpmv(handle, uplo, trans, diag,
                      n, reinterpret_cast<const cuFloatComplex*>(A),
                      reinterpret_cast<cuFloatComplex*>(x), incX);
 }
@@ -83,14 +83,14 @@ tpmv(cublasHandle_t handle,
 // ztpmv
 cublasStatus_t
 tpmv(cublasHandle_t handle,
-     cublasFillMode_t uplo, cublasOperation_t transA, cublasDiagType_t diag,
+     cublasFillMode_t uplo, cublasOperation_t trans, cublasDiagType_t diag,
      int n,
      const ComplexDouble* A,
      ComplexDouble* x, int incX)
 {
   BLAM_DEBUG_OUT("cublasZtpmv");
 
-  return cublasZtpmv(handle, uplo, transA, diag,
+  return cublasZtpmv(handle, uplo, trans, diag,
                      n, reinterpret_cast<const cuDoubleComplex*>(A),
                      reinterpret_cast<cuDoubleComplex*>(x), incX);
 }
@@ -100,17 +100,17 @@ template <typename DerivedPolicy,
           typename MA, typename VX>
 auto
 tpmv(const execution_policy<DerivedPolicy>& exec,
-     Uplo uplo, Op transA, Diag diag,
+     Uplo uplo, Op trans, Diag diag,
      int n,
      const MA* A,
      VX* x, int incX)
     -> decltype(tpmv(handle(derived_cast(exec)), cublas_type(uplo),
-                     cublas_type(transA), cublas_type(diag),
+                     cublas_type(trans), cublas_type(diag),
                      n, A,
                      x, incX))
 {
   return tpmv(handle(derived_cast(exec)), cublas_type(uplo),
-              cublas_type(transA), cublas_type(diag),
+              cublas_type(trans), cublas_type(diag),
               n, A,
               x, incX);
 }
@@ -120,21 +120,21 @@ template <typename DerivedPolicy,
           typename MA, typename VX>
 auto
 tpmv(const execution_policy<DerivedPolicy>& exec,
-     Layout order, Uplo uplo, Op transA, Diag diag,
+     Layout order, Uplo uplo, Op trans, Diag diag,
      int n,
      const MA* A,
      VX* x, int incX)
-    -> decltype(tpmv(exec, uplo, transA, diag,
+    -> decltype(tpmv(exec, uplo, trans, diag,
                      n, A,
                      x, incX))
 {
   if (order == RowMajor) {
     // Transpose A, swap upper <=> lower
-    transA = Op(transA ^ Trans);
+    trans = Op(trans ^ Trans);
     uplo = (uplo==Upper) ? Lower : Upper;
   }
 
-  return tpmv(exec, uplo, transA, diag,
+  return tpmv(exec, uplo, trans, diag,
               n, A,
               x, incX);
 }
