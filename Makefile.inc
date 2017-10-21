@@ -67,7 +67,14 @@ endif
 ###############
 
 # Define the C++ compiler to use
-USE_CXX := $(shell which clang++)
+ifeq ($(kernel-name),Darwin)
+	USE_CXX := $(shell which clang++)
+	CXXFLAGS += -fopenmp=libiomp5
+endif
+ifeq ($(kernel-name),Linux)
+	USE_CXX := $(shell which g++)
+	CXXFLAGS += -fopenmp
+endif
 CXX := $(USE_CXX) -std=c++11
 # Check for CUDA compiler
 USE_NVCC := $(shell which nvcc)
@@ -86,7 +93,7 @@ DEPSFLAGS = -MD -MF $(DEPSFILE) #-MP
 INCLUDES += -I$(BLAM_PATH) $(BLAS_INC)
 
 # Define cxx compile flags
-CXXFLAGS  = -O3
+CXXFLAGS += -O3
 
 # Define nvcc compile flags   TODO: Detect and generate appropriate sm_XX?
 NVCCFLAGS := -arch=sm_35 -O3 --compiler-options "$(CXXFLAGS)"
