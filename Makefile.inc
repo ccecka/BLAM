@@ -48,7 +48,7 @@ endif
 
 BLAM_PATH := $(dir $(lastword $(MAKEFILE_LIST)))
 
-CUDA_PATH = /usr/local/cuda-9.0
+CUDA_PATH = /usr/local/cuda
 
 INTEL_PATH = /opt/intel
 MKL_PATH = $(INTEL_PATH)/mkl
@@ -67,13 +67,7 @@ endif
 ###############
 
 # Define the C++ compiler to use
-ifeq ($(kernel-name),Darwin)
-	USE_CXX := $(shell which g++)
-endif
-ifeq ($(kernel-name),Linux)
-	USE_CXX := $(shell which g++-6)
-	#USE_CXX := $(shell which clang++)
-endif
+USE_CXX := $(shell which clang++)
 CXX := $(USE_CXX) -std=c++11
 # Check for CUDA compiler
 USE_NVCC := $(shell which nvcc)
@@ -92,7 +86,7 @@ DEPSFLAGS = -MD -MF $(DEPSFILE) #-MP
 INCLUDES += -I$(BLAM_PATH) $(BLAS_INC)
 
 # Define cxx compile flags
-CXXFLAGS  = -O3 -fopenmp
+CXXFLAGS  = -O3
 
 # Define nvcc compile flags   TODO: Detect and generate appropriate sm_XX?
 NVCCFLAGS := -arch=sm_35 -O3 --compiler-options "$(CXXFLAGS)"
