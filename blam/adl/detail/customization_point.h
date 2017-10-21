@@ -64,9 +64,9 @@ class customization_point : multi_function<Functions...>
 
   template <class... Args>
   constexpr auto operator()(Args&&... args) const ->
-      decltype(super()(self(), std::forward<Args>(args)...))
+      decltype(this->super()(this->self(), std::forward<Args>(args)...))
   {
-    return super()(self(), std::forward<Args>(args)...);
+    return this->super()(this->self(), std::forward<Args>(args)...);
   }
 };
 
