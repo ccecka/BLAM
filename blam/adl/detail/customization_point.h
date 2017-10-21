@@ -92,6 +92,18 @@ class customization_point : multi_function<Functions...>
 // This implementation works around an NVCC EDG Bug by defining the
 // call_ functors in a separate namespace, which should not be necessary.
 
+namespace blamadl
+{
+struct call_generic {
+  template <class CP, class... Args>
+  constexpr auto operator()(CP&& cp, Args&&... args) const ->
+      decltype(generic(std::forward<CP>(cp), std::forward<Args>(args)...))
+  {
+    return generic(std::forward<CP>(cp), std::forward<Args>(args)...);
+  }
+};
+}
+
 #define BLAM_CUSTOMIZATION_POINT(NAME)                                  \
   namespace blamadl {                                                   \
   struct call_member_##NAME {                                           \
@@ -118,22 +130,13 @@ class customization_point : multi_function<Functions...>
       return NAME(std::forward<Args>(args)...);                         \
     }                                                                   \
   };                                                                    \
-                                                                        \
-  struct call_generic_##NAME {                                          \
-    template <class CP, class... Args>                                  \
-    constexpr auto operator()(CP&& cp, Args&&... args) const ->         \
-        decltype(generic(std::forward<CP>(cp), std::forward<Args>(args)...)) \
-    {                                                                   \
-      return generic(std::forward<CP>(cp), std::forward<Args>(args)...); \
-    }                                                                   \
-  };                                                                    \
   }                                                                     \
                                                                         \
   namespace blam {                                                      \
   struct NAME##_t : detail::customization_point<NAME##_t,               \
                                                 blamadl::call_member_##NAME, \
                                                 blamadl::call_free_##NAME, \
-                                                blamadl::call_generic_##NAME> \
+                                                blamadl::call_generic>  \
   {};                                                                   \
   namespace {                                                           \
   constexpr auto const& NAME = detail::static_const<NAME##_t>::value;   \
