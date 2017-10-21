@@ -28,6 +28,7 @@
 #pragma once
 
 #include <complex>
+#include <type_traits>
 
 namespace blam
 {
@@ -36,10 +37,17 @@ namespace blam
 #ifndef BLAM_COMPLEX_TYPES
 #define BLAM_COMPLEX_TYPES 1
 template <typename T>
-using complex       = std::complex<T>;
-using ComplexFloat  = complex<float>;
-using ComplexDouble = complex<double>;
+using Complex       = std::complex<T>;
+using ComplexFloat  = Complex<float>;
+using ComplexDouble = Complex<double>;
 #endif // BLAM_COMPLEX_TYPES
+
+// -----------------------------------------------------------------------------
+// Compile-time checks on blam::Complex
+static_assert(std::is_same<Complex<float>, ComplexFloat>::value, "Complex<float> != ComplexFloat");
+static_assert(std::is_same<Complex<double>, ComplexDouble>::value, "Complex<double> != ComplexDouble");
+static_assert(sizeof(ComplexFloat) == 2*sizeof(float), "ComplexFloat should model LiteralType");    // XXX: improve
+static_assert(sizeof(ComplexDouble) == 2*sizeof(double), "ComplexDouble should model LiteralType"); // XXX: improve
 
 // -----------------------------------------------------------------------------
 // 1-norm absolute value, |Re(x)| + |Im(x)|
@@ -50,7 +58,7 @@ T abs1(const T& v) {
 }
 
 template <typename T>
-T abs1(const complex<T>& v) {
+T abs1(const Complex<T>& v) {
   using std::real; using std::imag;
   return abs1(real(v)) + abs1(imag(v));
 }
