@@ -69,11 +69,11 @@ endif
 # Define the C++ compiler to use
 ifeq ($(kernel-name),Darwin)
 	USE_CXX := $(shell which clang++)
-	CXXFLAGS += -fopenmp=libiomp5
+	CXXFLAGS = -fopenmp=libiomp5
 endif
 ifeq ($(kernel-name),Linux)
 	USE_CXX := $(shell which g++)
-	CXXFLAGS += -fopenmp
+	CXXFLAGS = -fopenmp
 endif
 CXX := $(USE_CXX) -std=c++11
 # Check for CUDA compiler
