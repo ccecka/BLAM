@@ -65,7 +65,7 @@
 #include <blam/blas/level2/ger.h>
 
 // Level 3
-#include <blam/blas/level3/batch_gemm.h>
+#include <blam/blas/level3/gemm_batch.h>
 #include <blam/blas/level3/gemm.h>
 #include <blam/blas/level3/hemm.h>
 #include <blam/blas/level3/her2k.h>

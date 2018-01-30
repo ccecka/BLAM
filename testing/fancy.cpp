@@ -31,7 +31,7 @@
 #include "print_type.h"
 
 #define BLAM_USE_DECAY
-#include <blam/blas/level3/batch_gemm.h>
+#include <blam/blas/level3/gemm_batch.h>
 
 #include <blam/system/mkl/mkl.h>
 
@@ -76,7 +76,7 @@ test(const ExecutionPolicy& exec, int n)
   std::vector<T> B(k*n*p, T(2.0));
   std::vector<T> C(m*n*p, T(0.0));
 
-  blam::batch_gemm(exec,
+  blam::gemm_batch(exec,
                    m, n, k,
                    alpha,
                    A.data(), m, 0,

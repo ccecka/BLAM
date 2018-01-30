@@ -30,7 +30,7 @@
 #include <blam/detail/config.h>
 #include <blam/adl/detail/customization_point.h>
 
-BLAM_CUSTOMIZATION_POINT(batch_gemm);
+BLAM_CUSTOMIZATION_POINT(gemm_batch);
 
 #if defined(BLAM_USE_DECAY)
 # include <blam/blas/level3/gemm.h>
@@ -44,7 +44,7 @@ template <typename ExecutionPolicy,
           typename Alpha, typename MA, typename MB,
           typename Beta, typename MC>
 void
-generic(blam::batch_gemm_t, const ExecutionPolicy& exec,
+generic(blam::gemm_batch_t, const ExecutionPolicy& exec,
         Layout order, Op transA, Op transB,
         int m, int n, int k,
         const Alpha& alpha,
@@ -75,7 +75,7 @@ template <typename ExecutionPolicy,
           typename Alpha, typename MA, typename MB,
           typename Beta, typename MC>
 auto
-generic(blam::batch_gemm_t, const ExecutionPolicy& exec,
+generic(blam::gemm_batch_t, const ExecutionPolicy& exec,
         Op transA, Op transB,
         int m, int n, int k,
         const Alpha& alpha,
@@ -86,7 +86,7 @@ generic(blam::batch_gemm_t, const ExecutionPolicy& exec,
         int batch_size)
 BLAM_DECLTYPE_AUTO_RETURN
 (
-  blam::batch_gemm(exec,
+  blam::gemm_batch(exec,
                    ColMajor, transA, transB,
                    m, n, k,
                    alpha,
@@ -102,7 +102,7 @@ template <typename ExecutionPolicy,
           typename Alpha, typename MA, typename MB,
           typename Beta, typename MC>
 auto
-generic(blam::batch_gemm_t, const ExecutionPolicy& exec,
+generic(blam::gemm_batch_t, const ExecutionPolicy& exec,
         int m, int n, int k,
         const Alpha& alpha,
         const MA* A, int ldA, int loA,
@@ -112,7 +112,7 @@ generic(blam::batch_gemm_t, const ExecutionPolicy& exec,
         int batch_size)
 BLAM_DECLTYPE_AUTO_RETURN
 (
-  blam::batch_gemm(exec,
+  blam::gemm_batch(exec,
                    NoTrans, NoTrans,
                    m, n, k,
                    alpha,

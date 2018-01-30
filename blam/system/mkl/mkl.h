@@ -38,4 +38,4 @@
 // Level 2
 
 // Level 3
-#include <blam/system/mkl/batch_gemm.h>
+#include <blam/system/mkl/gemm_batch.h>

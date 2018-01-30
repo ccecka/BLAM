@@ -39,7 +39,7 @@ namespace cublas
 
 // sgemm
 cublasStatus_t
-batch_gemm(cublasHandle_t handle,
+gemm_batch(cublasHandle_t handle,
            cublasOperation_t transA, cublasOperation_t transB,
            int m, int n, int k,
            const float* alpha,
@@ -63,7 +63,7 @@ batch_gemm(cublasHandle_t handle,
 
 // dgemm
 cublasStatus_t
-batch_gemm(cublasHandle_t handle,
+gemm_batch(cublasHandle_t handle,
            cublasOperation_t transA, cublasOperation_t transB,
            int m, int n, int k,
            const double* alpha,
@@ -87,7 +87,7 @@ batch_gemm(cublasHandle_t handle,
 
 // cgemm
 cublasStatus_t
-batch_gemm(cublasHandle_t handle,
+gemm_batch(cublasHandle_t handle,
            cublasOperation_t transA, cublasOperation_t transB,
            int m, int n, int k,
            const ComplexFloat* alpha,
@@ -111,7 +111,7 @@ batch_gemm(cublasHandle_t handle,
 
 // zgemm
 cublasStatus_t
-batch_gemm(cublasHandle_t handle,
+gemm_batch(cublasHandle_t handle,
            cublasOperation_t transA, cublasOperation_t transB,
            int m, int n, int k,
            const ComplexDouble* alpha,
@@ -135,7 +135,7 @@ batch_gemm(cublasHandle_t handle,
 
 // scgemm    XXX: Move to general?
 cublasStatus_t
-batch_gemm(cublasHandle_t handle,
+gemm_batch(cublasHandle_t handle,
            cublasOperation_t transA, cublasOperation_t transB,
            int m, int n, int k,
            const float* alpha,
@@ -161,7 +161,7 @@ batch_gemm(cublasHandle_t handle,
 
 // csgemm    XXX: Move to general?
 cublasStatus_t
-batch_gemm(cublasHandle_t handle,
+gemm_batch(cublasHandle_t handle,
            cublasOperation_t transA, cublasOperation_t transB,
            int m, int n, int k,
            const float* alpha,
@@ -187,7 +187,7 @@ batch_gemm(cublasHandle_t handle,
 
 // zdgemm    XXX: Move to general?
 cublasStatus_t
-batch_gemm(cublasHandle_t handle,
+gemm_batch(cublasHandle_t handle,
            cublasOperation_t transA, cublasOperation_t transB,
            int m, int n, int k,
            const double* alpha,
@@ -213,7 +213,7 @@ batch_gemm(cublasHandle_t handle,
 
 // dzgemm    XXX: Move to general?
 cublasStatus_t
-batch_gemm(cublasHandle_t handle,
+gemm_batch(cublasHandle_t handle,
            cublasOperation_t transA, cublasOperation_t transB,
            int m, int n, int k,
            const double* alpha,
@@ -242,7 +242,7 @@ template <typename DerivedPolicy,
           typename Alpha, typename MA, typename MB,
           typename Beta, typename MC>
 auto
-batch_gemm(const execution_policy<DerivedPolicy>& exec,
+gemm_batch(const execution_policy<DerivedPolicy>& exec,
            Op transA, Op transB,
            int m, int n, int k,
            const Alpha& alpha,
@@ -251,7 +251,7 @@ batch_gemm(const execution_policy<DerivedPolicy>& exec,
            const Beta& beta,
            MC* C, int ldC, int loC,
            int batch_size)
-    -> decltype(batch_gemm(handle(derived_cast(exec)),
+    -> decltype(gemm_batch(handle(derived_cast(exec)),
                            cublas_type(transA), cublas_type(transB),
                            m, n, k,
                            &alpha,
@@ -261,7 +261,7 @@ batch_gemm(const execution_policy<DerivedPolicy>& exec,
                            C, ldC, loC,
                            batch_size))
 {
-  return batch_gemm(handle(derived_cast(exec)),
+  return gemm_batch(handle(derived_cast(exec)),
                     cublas_type(transA), cublas_type(transB),
                     m, n, k,
                     &alpha,
@@ -277,7 +277,7 @@ template <typename DerivedPolicy,
           typename Alpha, typename MA, typename MB,
           typename Beta, typename MC>
 auto
-batch_gemm(const execution_policy<DerivedPolicy>& exec,
+gemm_batch(const execution_policy<DerivedPolicy>& exec,
            Layout order, Op transA, Op transB,
            int m, int n, int k,
            const Alpha& alpha,
@@ -286,7 +286,7 @@ batch_gemm(const execution_policy<DerivedPolicy>& exec,
            const Beta& beta,
            MC* C, int ldC, int loC,
            int batch_size)
-    -> decltype(batch_gemm(exec, transA, transB,
+    -> decltype(gemm_batch(exec, transA, transB,
                            m, n, k,
                            alpha,
                            A, ldA, loA,
@@ -296,7 +296,7 @@ batch_gemm(const execution_policy<DerivedPolicy>& exec,
                            batch_size))
 {
   if (order == ColMajor) {
-    return batch_gemm(exec, transA, transB,
+    return gemm_batch(exec, transA, transB,
                       m, n, k,
                       alpha,
                       A, ldA, loA,
@@ -305,7 +305,7 @@ batch_gemm(const execution_policy<DerivedPolicy>& exec,
                       C, ldC, loC,
                       batch_size);
   } else { // RowMajor: swap A <=> B, transA <=> transB, m <=> n
-    return batch_gemm(exec, transB, transA,
+    return gemm_batch(exec, transB, transA,
                       n, m, k,
                       alpha,
                       B, ldB, loB,

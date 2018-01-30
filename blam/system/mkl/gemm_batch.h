@@ -39,7 +39,7 @@ namespace mkl
 
 // sgemm
 void
-batch_gemm(CBLAS_LAYOUT order,
+gemm_batch(CBLAS_LAYOUT order,
            const CBLAS_TRANSPOSE* transA, const CBLAS_TRANSPOSE* transB,
            const int* m, const int* n, const int* k,
            const float* alpha,
@@ -63,7 +63,7 @@ batch_gemm(CBLAS_LAYOUT order,
 
 // dgemm
 void
-batch_gemm(CBLAS_LAYOUT order,
+gemm_batch(CBLAS_LAYOUT order,
            const CBLAS_TRANSPOSE* transA, const CBLAS_TRANSPOSE* transB,
            const int* m, const int* n, const int* k,
            const double* alpha,
@@ -87,7 +87,7 @@ batch_gemm(CBLAS_LAYOUT order,
 
 // cgemm
 void
-batch_gemm(CBLAS_LAYOUT order,
+gemm_batch(CBLAS_LAYOUT order,
            const CBLAS_TRANSPOSE* transA, const CBLAS_TRANSPOSE* transB,
            const int* m, const int* n, const int* k,
            const ComplexFloat* alpha,
@@ -111,7 +111,7 @@ batch_gemm(CBLAS_LAYOUT order,
 
 // zgemm
 void
-batch_gemm(CBLAS_LAYOUT order,
+gemm_batch(CBLAS_LAYOUT order,
            const CBLAS_TRANSPOSE* transA, const CBLAS_TRANSPOSE* transB,
            const int* m, const int* n, const int* k,
            const ComplexDouble* alpha,
@@ -137,7 +137,7 @@ batch_gemm(CBLAS_LAYOUT order,
 template <typename DerivedPolicy,
           typename T>
 void
-batch_gemm(const execution_policy<DerivedPolicy>& /*exec*/,
+gemm_batch(const execution_policy<DerivedPolicy>& /*exec*/,
            Layout order, Op transA, Op transB,
            int m, int n, int k,
            const T& alpha,
@@ -158,7 +158,7 @@ batch_gemm(const execution_policy<DerivedPolicy>& /*exec*/,
   CBLAS_TRANSPOSE tA = cblas_type(transA);
   CBLAS_TRANSPOSE tB = cblas_type(transB);
 
-  return batch_gemm(cblas_type(order), &tA, &tB,
+  return gemm_batch(cblas_type(order), &tA, &tB,
                     &m, &n, &k,
                     &alpha,
                     a_array, &ldA,
