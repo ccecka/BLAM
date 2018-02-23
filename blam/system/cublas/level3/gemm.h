@@ -35,6 +35,28 @@ namespace blam
 namespace cublas
 {
 
+// hgemm
+cublasStatus_t
+gemm(cublasHandle_t handle,
+     cublasOperation_t transA, cublasOperation_t transB,
+     int m, int n, int k,
+     const __half* alpha,
+     const __half* A, int ldA,
+     const __half* B, int ldB,
+     const __half* beta,
+     __half* C, int ldC)
+{
+  BLAM_DEBUG_OUT("cublasHgemm");
+
+  return cublasHgemm(handle, transA, transB,
+                     m, n, k,
+                     alpha,
+                     A, ldA,
+                     B, ldB,
+                     beta,
+                     C, ldC);
+}
+
 // sgemm
 cublasStatus_t
 gemm(cublasHandle_t handle,

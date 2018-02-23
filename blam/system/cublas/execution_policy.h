@@ -30,6 +30,7 @@
 #include <blam/detail/config.h>
 #include <blam/detail/execution_policy.h>
 
+#include <cuda_runtime.h>
 #include <cublas_v2.h>
 
 #include <blam/system/cublas/types.h>

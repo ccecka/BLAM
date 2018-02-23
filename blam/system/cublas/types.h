@@ -106,7 +106,7 @@ cublas_get_error(cublasStatus_t status)
     case CUBLAS_STATUS_LICENSE_ERROR:
       return "CUBLAS_STATUS_LICENSE_ERROR -- An error was detected when checking the current licensing.";
     default:
-      return "<unknown>";
+      return "CUBLAS_ERROR -- <unknown>";
   }
 }
 
