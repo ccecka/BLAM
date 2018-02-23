@@ -96,7 +96,7 @@ INCLUDES += -I$(BLAM_PATH) $(BLAS_INC)
 CXXFLAGS += -O3
 
 # Define nvcc compile flags   TODO: Detect and generate appropriate sm_XX?
-NVCCFLAGS := -arch=sm_35 -O3 --compiler-options "$(CXXFLAGS)"
+NVCCFLAGS := -arch=sm_70 -O3 --compiler-options "$(CXXFLAGS)"
 
 # Define any directories containing libraries
 #   To include directories use -Lpath/to/files
