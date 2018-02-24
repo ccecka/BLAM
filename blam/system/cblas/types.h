@@ -29,6 +29,10 @@
 
 #include <blam/detail/config.h>
 
+#include <cblas.h>
+
+using CBLAS_LAYOUT = CBLAS_ORDER;
+
 namespace blam
 {
 

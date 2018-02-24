@@ -30,9 +30,6 @@
 #include <blam/detail/config.h>
 #include <blam/detail/execution_policy.h>
 
-#include <cuda_runtime.h>
-#include <cublas_v2.h>
-
 #include <blam/system/cublas/types.h>
 
 namespace blam
@@ -155,6 +152,46 @@ class execute_on_handle
 };
 
 static const execute_on_handle par;
+
+//
+// Library type ADLs
+//
+
+const char*
+get_error(cublas::tag, cublasStatus_t status)
+{
+  return cublas_get_error(status);
+}
+
+bool
+is_error(cublas::tag, cublasStatus_t status)
+{
+  return cublas_is_error(status);
+}
+
+cublasOperation_t
+library_type(cublas::tag, Op trans)
+{
+  return cublas_type(trans);
+}
+
+cublasFillMode_t
+library_type(cublas::tag, Uplo uplo)
+{
+  return cublas_type(uplo);
+}
+
+cublasSideMode_t
+library_type(cublas::tag, Side side)
+{
+  return cublas_type(side);
+}
+
+cublasDiagType_t
+library_type(cublas::tag, Diag diag)
+{
+  return cublas_type(diag);
+}
 
 } // end namespace cublas
 } // end namespace blam

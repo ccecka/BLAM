@@ -29,6 +29,9 @@
 
 #include <blam/detail/config.h>
 
+#include <cuda_runtime.h>
+#include <cublas_v2.h>
+
 namespace blam
 {
 
@@ -108,6 +111,12 @@ cublas_get_error(cublasStatus_t status)
     default:
       return "CUBLAS_ERROR -- <unknown>";
   }
+}
+
+bool
+cublas_is_error(cublasStatus_t status)
+{
+  return status == CUBLAS_STATUS_SUCCESS;
 }
 
 } // end namespace blam

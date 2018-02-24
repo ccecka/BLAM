@@ -73,5 +73,39 @@ struct execution_policy
 
 static const tag par{};
 
+//
+// Library type ADLs
+//
+
+CBLAS_LAYOUT
+library_type(cblas::tag, Layout order)
+{
+  return cblas_type(order);
+}
+
+CBLAS_TRANSPOSE
+library_type(cblas::tag, Op trans)
+{
+  return cblas_type(trans);
+}
+
+CBLAS_UPLO
+library_type(cblas::tag, Uplo uplo)
+{
+  return cblas_type(uplo);
+}
+
+CBLAS_SIDE
+library_type(cblas::tag, Side side)
+{
+  return cblas_type(side);
+}
+
+CBLAS_DIAG
+library_type(cblas::tag, Diag diag)
+{
+  return cblas_type(diag);
+}
+
 } // end namespace cblas
 } // end namespace blam
