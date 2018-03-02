@@ -52,38 +52,39 @@ static_assert(sizeof(ComplexDouble) == 2*sizeof(double), "ComplexDouble should m
 // -----------------------------------------------------------------------------
 // 1-norm absolute value, |Re(x)| + |Im(x)|
 template <typename T>
-T abs1(const T& v) {
+inline T
+abs1(const T& v) {
   using std::abs;
   return abs(v);
 }
 
 template <typename T>
-T abs1(const Complex<T>& v) {
+inline T
+abs1(const Complex<T>& v) {
   using std::real; using std::imag;
   return abs1(real(v)) + abs1(imag(v));
 }
 
-} // end namespace blam
-
-
-namespace blam
-{
+//
+// -----------------------------------------------------------------------------
+//
 
 enum Layout : char {
-  ColMajor = 0,
-  RowMajor = 1
+  ColMajor = 'C',
+  RowMajor = 'R'
 };
 
 enum Op : char {
-  NoTrans   = 0,
-  Conj      = 1,
-  Trans     = 2,
-  ConjTrans = 3
+  NoTrans   = 'N',
+  Conj      = 'X',
+  Trans     = 'T',
+  ConjTrans = 'C'
 };
 
 enum Uplo : char {
   Upper = 'U',
-  Lower = 'L'
+  Lower = 'L',
+  General   = 'G'
 };
 
 enum Diag : char {
@@ -95,5 +96,137 @@ enum Side : char {
   Left  = 'L',
   Right = 'R'
 };
+
+// -----------------------------------------------------------------------------
+// Convert enum to LAPACK-style char.
+
+inline char
+to_char(Layout layout)
+{
+  return char(layout);
+}
+
+inline char
+to_char(Op op)
+{
+  return char(op);
+}
+
+inline char
+to_char(Uplo uplo)
+{
+  return char(uplo);
+}
+
+inline char
+to_char(Diag diag)
+{
+  return char(diag);
+}
+
+inline char
+to_char(Side side)
+{
+  return char(side);
+}
+
+// -----------------------------------------------------------------------------
+// Convert LAPACK-style char to enum.
+
+inline Layout
+char2layout(char layout)
+{
+  layout = (char) toupper(layout);
+  assert(layout == 'C' || layout == 'R');
+  return Layout(layout);
+}
+
+inline Op
+char2op(char op)
+{
+  op = (char) toupper(op);
+  assert(op == 'N' || op == 'T' || op == 'C');
+  return Op(op);
+}
+
+inline Uplo
+char2uplo(char uplo)
+{
+  uplo = (char) toupper(uplo);
+  assert(uplo == 'L' || uplo == 'U' || uplo == 'G');
+  return Uplo(uplo);
+}
+
+inline Diag
+char2diag(char diag)
+{
+  diag = (char) toupper(diag);
+  assert(diag == 'N' || diag == 'U');
+  return Diag(diag);
+}
+
+inline Side
+char2side(char side)
+{
+  side = (char) toupper(side);
+  assert(side == 'L' || side == 'R');
+  return Side(side);
+}
+
+// -----------------------------------------------------------------------------
+// Convert enum to LAPACK-style string.
+
+inline const char*
+to_string(Layout layout)
+{
+  switch (layout) {
+    case Layout::ColMajor: return "col";
+    case Layout::RowMajor: return "row";
+  }
+  return "<unknown>";
+}
+
+inline const char*
+to_string(Op op)
+{
+  switch (op) {
+    case Op::NoTrans:   return "notrans";
+    case Op::Trans:     return "trans";
+    case Op::ConjTrans: return "conj";
+    case Op::Conj:      return "";
+  }
+  return "<unknown>";
+}
+
+inline const char*
+to_string(Uplo uplo)
+{
+  switch (uplo) {
+    case Uplo::Lower:   return "lower";
+    case Uplo::Upper:   return "upper";
+    case Uplo::General: return "general";
+  }
+  return "<unknown>";
+}
+
+inline const char*
+to_string(Diag diag)
+{
+  switch (diag) {
+    case Diag::NonUnit: return "nonunit";
+    case Diag::Unit:    return "unit";
+  }
+  return "<unknown>";
+}
+
+inline const char*
+to_string(Side side)
+{
+  switch (side) {
+    case Side::Left:  return "left";
+    case Side::Right: return "right";
+  }
+  return "<unknown>";
+}
 
 } // end namespace blam
