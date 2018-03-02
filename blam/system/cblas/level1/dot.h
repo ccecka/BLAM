@@ -27,7 +27,7 @@
 
 #pragma once
 
-#include <blam/detail/config.h>
+#include <blam/system/cblas/config.h>
 #include <blam/system/cblas/execution_policy.h>
 
 namespace blam
@@ -35,8 +35,16 @@ namespace blam
 namespace cblas
 {
 
+struct any_cast {
+  template <typename T>
+  operator T*() {
+    return reinterpret_cast<T*>(ptr_);
+  }
+  void* ptr_;
+};
+
 // sdsdot
-void
+inline void
 sdotu(int n, const float& alpha,
       const float* x, int incX,
       const float* y, int incY,
@@ -48,7 +56,7 @@ sdotu(int n, const float& alpha,
 }
 
 // dsdot
-void
+inline void
 dotu(int n,
      const float* x, int incX,
      const float* y, int incY,
@@ -60,7 +68,7 @@ dotu(int n,
 }
 
 // sdot
-void
+inline void
 dotu(int n,
      const float* x, int incX,
      const float* y, int incY,
@@ -72,7 +80,7 @@ dotu(int n,
 }
 
 // ddot
-void
+inline void
 dotu(int n,
      const double* x, int incX,
      const double* y, int incY,
@@ -84,7 +92,7 @@ dotu(int n,
 }
 
 // cdotu_sub
-void
+inline void
 dotu(int n,
      const ComplexFloat* x, int incX,
      const ComplexFloat* y, int incY,
@@ -94,11 +102,12 @@ dotu(int n,
 
   cblas_cdotu_sub(n, reinterpret_cast<const float*>(x), incX,
                   reinterpret_cast<const float*>(y), incY,
-                  reinterpret_cast<float*>(&result));
+                  any_cast{&result});
+                  //reinterpret_cast<float*>(&result));
 }
 
 // zdotu_sub
-void
+inline void
 dotu(int n,
      const ComplexDouble* x, int incX,
      const ComplexDouble* y, int incY,
@@ -108,11 +117,12 @@ dotu(int n,
 
   cblas_zdotu_sub(n, reinterpret_cast<const double*>(x), incX,
                   reinterpret_cast<const double*>(y), incY,
-                  reinterpret_cast<double*>(&result));
+                  any_cast{&result});
+                  //reinterpret_cast<double*>(&result));
 }
 
 // cdotc_sub
-void
+inline void
 dotc(int n,
      const ComplexFloat* x, int incX,
      const ComplexFloat* y, int incY,
@@ -122,11 +132,12 @@ dotc(int n,
 
   cblas_cdotc_sub(n, reinterpret_cast<const float*>(x), incX,
                   reinterpret_cast<const float*>(y), incY,
-                  reinterpret_cast<float*>(&result));
+                  any_cast{&result});
+                  //reinterpret_cast<float*>(&result));
 }
 
 // zdotc_sub
-void
+inline void
 dotc(int n,
      const ComplexDouble* x, int incX,
      const ComplexDouble* y, int incY,
@@ -136,13 +147,14 @@ dotc(int n,
 
   cblas_zdotc_sub(n, reinterpret_cast<const double*>(x), incX,
                   reinterpret_cast<const double*>(y), incY,
-                  reinterpret_cast<double*>(&result));
+                  any_cast{&result});
+                  //reinterpret_cast<double*>(&result));
 }
 
 // blam -> cblas
 template <typename DerivedPolicy,
           typename VX, typename VY, typename R>
-auto
+inline auto
 dotu(const execution_policy<DerivedPolicy>& /*exec*/, int n,
      const VX* x, int incX,
      const VY* y, int incY,
@@ -155,7 +167,7 @@ dotu(const execution_policy<DerivedPolicy>& /*exec*/, int n,
 // blam -> cblas
 template <typename DerivedPolicy,
           typename VX, typename VY, typename R>
-auto
+inline auto
 dotc(const execution_policy<DerivedPolicy>& /*exec*/, int n,
      const VX* x, int incX,
      const VY* y, int incY,

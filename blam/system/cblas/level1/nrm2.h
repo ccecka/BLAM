@@ -27,7 +27,7 @@
 
 #pragma once
 
-#include <blam/detail/config.h>
+#include <blam/system/cblas/config.h>
 #include <blam/system/cblas/execution_policy.h>
 
 namespace blam
@@ -36,7 +36,7 @@ namespace cblas
 {
 
 // snrm2
-void
+inline void
 nrm2(int n, const float* x, int incX, float& norm)
 {
   BLAM_DEBUG_OUT("cblas_snrm2");
@@ -45,7 +45,7 @@ nrm2(int n, const float* x, int incX, float& norm)
 }
 
 // dnrm2
-void
+inline void
 nrm2(int n, const double* x, int incX, double& norm)
 {
   BLAM_DEBUG_OUT("cblas_dnrm2");
@@ -54,7 +54,7 @@ nrm2(int n, const double* x, int incX, double& norm)
 }
 
 // scnrm2
-void
+inline void
 nrm2(int n, const ComplexFloat* x, int incX, float& norm)
 {
   BLAM_DEBUG_OUT("cblas_scnrm2");
@@ -63,7 +63,7 @@ nrm2(int n, const ComplexFloat* x, int incX, float& norm)
 }
 
 // dznrm2
-void
+inline void
 nrm2(int n, const ComplexDouble* x, int incX, double& norm)
 {
   BLAM_DEBUG_OUT("cblas_dznrm2");
@@ -74,7 +74,7 @@ nrm2(int n, const ComplexDouble* x, int incX, double& norm)
 // blam -> cblas
 template <typename DerivedPolicy,
           typename VX, typename R>
-auto
+inline auto
 nrm2(const execution_policy<DerivedPolicy>& /*exec*/, int n,
      const VX* x, int incX,
      R& result)

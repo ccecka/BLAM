@@ -27,7 +27,7 @@
 
 #pragma once
 
-#include <blam/detail/config.h>
+#include <blam/system/cblas/config.h>
 #include <blam/system/cblas/execution_policy.h>
 
 namespace blam
@@ -36,7 +36,7 @@ namespace cblas
 {
 
 // scopy
-void
+inline void
 copy(int n, const float* x, int incX,
      float* y, int incY)
 {
@@ -46,7 +46,7 @@ copy(int n, const float* x, int incX,
 }
 
 // dcopy
-void
+inline void
 copy(int n, const double* x, int incX,
      double* y, int incY)
 {
@@ -56,7 +56,7 @@ copy(int n, const double* x, int incX,
 }
 
 // ccopy
-void
+inline void
 copy(int n, const ComplexFloat* x, int incX,
      ComplexFloat* y, int incY)
 {
@@ -68,7 +68,7 @@ copy(int n, const ComplexFloat* x, int incX,
 }
 
 // zcopy
-void
+inline void
 copy(int n, const ComplexDouble* x, int incX,
      ComplexDouble* y, int incY)
 {
@@ -81,7 +81,7 @@ copy(int n, const ComplexDouble* x, int incX,
 // blam -> cblas
 template <typename DerivedPolicy,
           typename VX, typename VY>
-auto
+inline auto
 copy(const execution_policy<DerivedPolicy>& /*exec*/,
      int n, const VX* x, int incX,
      VY* y, int incY)

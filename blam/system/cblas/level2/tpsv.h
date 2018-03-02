@@ -27,7 +27,7 @@
 
 #pragma once
 
-#include <blam/detail/config.h>
+#include <blam/system/cblas/config.h>
 #include <blam/system/cblas/execution_policy.h>
 
 namespace blam
@@ -36,7 +36,7 @@ namespace cblas
 {
 
 // stpsv
-void
+inline void
 tpsv(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
      CBLAS_TRANSPOSE trans, CBLAS_DIAG diag,
      int n,
@@ -52,7 +52,7 @@ tpsv(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
 }
 
 // dtpsv
-void
+inline void
 tpsv(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
      CBLAS_TRANSPOSE trans, CBLAS_DIAG diag,
      int n,
@@ -68,7 +68,7 @@ tpsv(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
 }
 
 // ctpsv
-void
+inline void
 tpsv(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
      CBLAS_TRANSPOSE trans, CBLAS_DIAG diag,
      int n,
@@ -84,7 +84,7 @@ tpsv(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
 }
 
 // ztpsv
-void
+inline void
 tpsv(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
      CBLAS_TRANSPOSE trans, CBLAS_DIAG diag,
      int n,
@@ -102,7 +102,7 @@ tpsv(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
 // blam -> cblas
 template <typename DerivedPolicy,
           typename MA, typename VX>
-auto
+inline auto
 tpsv(const execution_policy<DerivedPolicy>& /*exec*/,
      Layout order, Uplo uplo, Op trans, Diag diag,
      int n,

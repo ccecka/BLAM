@@ -27,7 +27,7 @@
 
 #pragma once
 
-#include <blam/detail/config.h>
+#include <blam/system/cblas/config.h>
 #include <blam/system/cblas/execution_policy.h>
 
 namespace blam
@@ -36,7 +36,7 @@ namespace cblas
 {
 
 // ssymm
-void
+inline void
 symm(CBLAS_LAYOUT order, CBLAS_SIDE side, CBLAS_UPLO uplo,
      int m, int n,
      const float& alpha,
@@ -57,7 +57,7 @@ symm(CBLAS_LAYOUT order, CBLAS_SIDE side, CBLAS_UPLO uplo,
 }
 
 // dsymm
-void
+inline void
 symm(CBLAS_LAYOUT order, CBLAS_SIDE side, CBLAS_UPLO uplo,
      int m, int n,
      const double& alpha,
@@ -78,7 +78,7 @@ symm(CBLAS_LAYOUT order, CBLAS_SIDE side, CBLAS_UPLO uplo,
 }
 
 // csymm
-void
+inline void
 symm(CBLAS_LAYOUT order, CBLAS_SIDE side, CBLAS_UPLO uplo,
      int m, int n,
      const ComplexFloat& alpha,
@@ -99,7 +99,7 @@ symm(CBLAS_LAYOUT order, CBLAS_SIDE side, CBLAS_UPLO uplo,
 }
 
 // zsymm
-void
+inline void
 symm(CBLAS_LAYOUT order, CBLAS_SIDE side, CBLAS_UPLO uplo,
      int m, int n,
      const ComplexDouble& alpha,
@@ -123,7 +123,7 @@ symm(CBLAS_LAYOUT order, CBLAS_SIDE side, CBLAS_UPLO uplo,
 template <typename DerivedPolicy,
           typename Alpha, typename MA, typename MB,
           typename Beta, typename MC>
-auto
+inline auto
 symm(const execution_policy<DerivedPolicy>& /*exec*/,
      Layout order, Side side, Uplo uplo,
      int m, int n,

@@ -27,7 +27,7 @@
 
 #pragma once
 
-#include <blam/detail/config.h>
+#include <blam/system/cblas/config.h>
 #include <blam/system/cblas/execution_policy.h>
 
 namespace blam
@@ -36,7 +36,7 @@ namespace cblas
 {
 
 // ssyrk
-void
+inline void
 syrk(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
      CBLAS_TRANSPOSE trans,
      int n, int k,
@@ -56,7 +56,7 @@ syrk(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
 }
 
 // dsyrk
-void
+inline void
 syrk(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
      CBLAS_TRANSPOSE trans,
      int n, int k,
@@ -76,7 +76,7 @@ syrk(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
 }
 
 // csyrk
-void
+inline void
 syrk(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
      CBLAS_TRANSPOSE trans,
      int n, int k,
@@ -96,7 +96,7 @@ syrk(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
 }
 
 // zsyrk
-void
+inline void
 syrk(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
      CBLAS_TRANSPOSE trans,
      int n, int k,
@@ -119,7 +119,7 @@ syrk(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
 template <typename DerivedPolicy,
           typename Alpha, typename MA,
           typename Beta, typename MC>
-auto
+inline auto
 syrk(const execution_policy<DerivedPolicy>& /*exec*/,
      Layout order, Uplo uplo, Op trans,
      int n, int k,

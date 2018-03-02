@@ -27,7 +27,7 @@
 
 #pragma once
 
-#include <blam/detail/config.h>
+#include <blam/system/cblas/config.h>
 #include <blam/system/cblas/execution_policy.h>
 
 namespace blam
@@ -36,7 +36,7 @@ namespace cblas
 {
 
 // cgerc
-void
+inline void
 her2(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
      int n,
      const ComplexFloat& alpha,
@@ -55,7 +55,7 @@ her2(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
 }
 
 // zgerc
-void
+inline void
 her2(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
      int n,
      const ComplexDouble& alpha,
@@ -77,7 +77,7 @@ her2(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
 template <typename DerivedPolicy,
           typename Alpha,
           typename VX, typename VY, typename MA>
-auto
+inline auto
 her2(const execution_policy<DerivedPolicy>& /*exec*/,
      Layout order, Uplo uplo,
      int n,

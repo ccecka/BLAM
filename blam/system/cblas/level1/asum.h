@@ -27,7 +27,7 @@
 
 #pragma once
 
-#include <blam/detail/config.h>
+#include <blam/system/cblas/config.h>
 #include <blam/system/cblas/execution_policy.h>
 
 namespace blam
@@ -36,7 +36,7 @@ namespace cblas
 {
 
 // sasum
-void
+inline void
 asum(int n, const float* x, int incX, float& absSum)
 {
   BLAM_DEBUG_OUT("cblas_sasum");
@@ -45,7 +45,7 @@ asum(int n, const float* x, int incX, float& absSum)
 }
 
 // dasum
-void
+inline void
 asum(int n, const double* x, int incX, double& absSum)
 {
   BLAM_DEBUG_OUT("cblas_dasum");
@@ -54,7 +54,7 @@ asum(int n, const double* x, int incX, double& absSum)
 }
 
 // scasum
-void
+inline void
 asum(int n, const ComplexFloat* x, int incX, float& absSum)
 {
   BLAM_DEBUG_OUT("cblas_scasum");
@@ -63,7 +63,7 @@ asum(int n, const ComplexFloat* x, int incX, float& absSum)
 }
 
 // dzasum
-void
+inline void
 asum(int n, const ComplexDouble* x, int incX, double& absSum)
 {
   BLAM_DEBUG_OUT("cblas_dzasum");
@@ -74,7 +74,7 @@ asum(int n, const ComplexDouble* x, int incX, double& absSum)
 // blam -> cblas
 template <typename DerivedPolicy,
           typename VX, typename R>
-auto
+inline auto
 asum(const execution_policy<DerivedPolicy>& /*exec*/,
      int n,
      const VX* x, int incX,

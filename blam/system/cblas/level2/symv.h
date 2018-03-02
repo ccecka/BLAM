@@ -27,7 +27,7 @@
 
 #pragma once
 
-#include <blam/detail/config.h>
+#include <blam/system/cblas/config.h>
 #include <blam/system/cblas/execution_policy.h>
 
 namespace blam
@@ -36,9 +36,10 @@ namespace cblas
 {
 
 // ssymv
-void
+inline void
 symv(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
-     int n, const float& alpha,
+     int n,
+     const float& alpha,
      const float* A, int ldA,
      const float* x, int incX,
      const float& beta,
@@ -55,9 +56,10 @@ symv(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
 }
 
 // dsymv
-void
+inline void
 symv(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
-     int n, const double& alpha,
+     int n,
+     const double& alpha,
      const double* A, int ldA,
      const double* x, int incX,
      const double& beta,
@@ -73,11 +75,57 @@ symv(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
               y, incY);
 }
 
+#if 0  // XXX TODO: Requires Lapack
+
+// csymv
+inline void
+symv(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
+     int n,
+     const ComplexFloat& alpha,
+     const ComplexFloat* A, int ldA,
+     const ComplexFloat* x, int incX,
+     const ComplexFloat& beta,
+     ComplexFloat* y, int incY)
+{
+  BLAM_DEBUG_OUT("cblas_csymv");
+
+  cblas_csymv(order, uplo,
+              n,
+              reinterpret_cast<const float*>(&alpha),
+              reinterpret_cast<const float*>(A), ldA,
+              reinterpret_cast<const float*>(x), incX,
+              reinterpret_cast<const float*>(&beta),
+              reinterpret_cast<float*>(y), incY);
+}
+
+// zsymv
+inline void
+symv(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
+     int n,
+     const ComplexDouble& alpha,
+     const ComplexDouble* A, int ldA,
+     const ComplexDouble* x, int incX,
+     const ComplexDouble& beta,
+     ComplexDouble* y, int incY)
+{
+  BLAM_DEBUG_OUT("cblas_zsymv");
+
+  cblas_zsymv(order, uplo,
+              n,
+              reinterpret_cast<const double*>(&alpha),
+              reinterpret_cast<const double*>(A), ldA,
+              reinterpret_cast<const double*>(x), incX,
+              reinterpret_cast<const double*>(&beta),
+              reinterpret_cast<double*>(y), incY);
+}
+
+#endif
+
 // blam -> cblas
 template <typename DerivedPolicy,
           typename Alpha, typename MA, typename VX,
           typename Beta, typename VY>
-auto
+inline auto
 symv(const execution_policy<DerivedPolicy>& /*exec*/,
      Layout order, Uplo uplo,
      int n,

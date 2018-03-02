@@ -27,7 +27,7 @@
 
 #pragma once
 
-#include <blam/detail/config.h>
+#include <blam/system/cblas/config.h>
 #include <blam/system/cblas/execution_policy.h>
 
 namespace blam
@@ -36,7 +36,7 @@ namespace cblas
 {
 
 // strmm
-void
+inline void
 trmm(CBLAS_LAYOUT order, CBLAS_SIDE side, CBLAS_UPLO uplo,
      CBLAS_TRANSPOSE transA, CBLAS_DIAG diag,
      int m, int n,
@@ -54,7 +54,7 @@ trmm(CBLAS_LAYOUT order, CBLAS_SIDE side, CBLAS_UPLO uplo,
 }
 
 // dtrmm
-void
+inline void
 trmm(CBLAS_LAYOUT order, CBLAS_SIDE side, CBLAS_UPLO uplo,
      CBLAS_TRANSPOSE transA, CBLAS_DIAG diag,
      int m, int n,
@@ -72,7 +72,7 @@ trmm(CBLAS_LAYOUT order, CBLAS_SIDE side, CBLAS_UPLO uplo,
 }
 
 // ctrmm
-void
+inline void
 trmm(CBLAS_LAYOUT order, CBLAS_SIDE side, CBLAS_UPLO uplo,
      CBLAS_TRANSPOSE transA, CBLAS_DIAG diag,
      int m, int n,
@@ -90,7 +90,7 @@ trmm(CBLAS_LAYOUT order, CBLAS_SIDE side, CBLAS_UPLO uplo,
 }
 
 // ztrmm
-void
+inline void
 trmm(CBLAS_LAYOUT order, CBLAS_SIDE side, CBLAS_UPLO uplo,
      CBLAS_TRANSPOSE transA, CBLAS_DIAG diag,
      int m, int n,
@@ -110,7 +110,7 @@ trmm(CBLAS_LAYOUT order, CBLAS_SIDE side, CBLAS_UPLO uplo,
 // blam -> cblas
 template <typename DerivedPolicy,
           typename Alpha, typename MA, typename MB>
-auto
+inline auto
 trmm(const execution_policy<DerivedPolicy>& /*exec*/,
      Layout order, Side side, Uplo uplo, Op transA, Diag diag,
      int m, int n,

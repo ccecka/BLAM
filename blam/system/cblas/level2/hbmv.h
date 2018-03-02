@@ -27,7 +27,7 @@
 
 #pragma once
 
-#include <blam/detail/config.h>
+#include <blam/system/cblas/config.h>
 #include <blam/system/cblas/execution_policy.h>
 
 namespace blam
@@ -36,7 +36,7 @@ namespace cblas
 {
 
 // chbmv
-void
+inline void
 hbmv(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
      int n, int k,
      const ComplexFloat& alpha,
@@ -57,7 +57,7 @@ hbmv(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
 }
 
 // zhbmv
-void
+inline void
 hbmv(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
      int n, int k,
      const ComplexDouble& alpha,
@@ -81,7 +81,7 @@ hbmv(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
 template <typename DerivedPolicy,
           typename Alpha, typename MA, typename VX,
           typename Beta, typename VY>
-auto
+inline auto
 hbmv(const execution_policy<DerivedPolicy>& /*exec*/,
      Layout order, Uplo uplo,
      int n, int k,

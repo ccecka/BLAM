@@ -27,7 +27,7 @@
 
 #pragma once
 
-#include <blam/detail/config.h>
+#include <blam/system/cblas/config.h>
 #include <blam/system/cblas/execution_policy.h>
 
 namespace blam
@@ -36,7 +36,7 @@ namespace cblas
 {
 
 // sgbmv
-void
+inline void
 gbmv(CBLAS_LAYOUT order, CBLAS_TRANSPOSE trans,
      int m, int n, int kl, int ku,
      const float& alpha,
@@ -57,7 +57,7 @@ gbmv(CBLAS_LAYOUT order, CBLAS_TRANSPOSE trans,
 }
 
 // dgbmv
-void
+inline void
 gbmv(CBLAS_LAYOUT order, CBLAS_TRANSPOSE trans,
      int m, int n, int kl, int ku,
      const double& alpha,
@@ -78,7 +78,7 @@ gbmv(CBLAS_LAYOUT order, CBLAS_TRANSPOSE trans,
 }
 
 // cgbmv
-void
+inline void
 gbmv(CBLAS_LAYOUT order, CBLAS_TRANSPOSE trans,
      int m, int n, int kl, int ku,
      const ComplexFloat& alpha,
@@ -99,7 +99,7 @@ gbmv(CBLAS_LAYOUT order, CBLAS_TRANSPOSE trans,
 }
 
 // zgbmv
-void
+inline void
 gbmv(CBLAS_LAYOUT order, CBLAS_TRANSPOSE trans,
      int m, int n, int kl, int ku,
      const ComplexDouble& alpha,
@@ -123,7 +123,7 @@ gbmv(CBLAS_LAYOUT order, CBLAS_TRANSPOSE trans,
 template <typename DerivedPolicy,
           typename Alpha, typename MA, typename VX,
           typename Beta, typename VY>
-auto
+inline auto
 gbmv(const execution_policy<DerivedPolicy>& /*exec*/,
      Layout order, Op trans,
      int m, int n, int kl, int ku,

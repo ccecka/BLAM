@@ -27,7 +27,7 @@
 
 #pragma once
 
-#include <blam/detail/config.h>
+#include <blam/system/cblas/config.h>
 #include <blam/system/cblas/execution_policy.h>
 
 namespace blam
@@ -36,7 +36,7 @@ namespace cblas
 {
 
 // sgemm
-void
+inline void
 gemm(CBLAS_LAYOUT order,
      CBLAS_TRANSPOSE transA, CBLAS_TRANSPOSE transB,
      int m, int n, int k,
@@ -58,7 +58,7 @@ gemm(CBLAS_LAYOUT order,
 }
 
 // dgemm
-void
+inline void
 gemm(CBLAS_LAYOUT order,
      CBLAS_TRANSPOSE transA, CBLAS_TRANSPOSE transB,
      int m, int n, int k,
@@ -80,7 +80,7 @@ gemm(CBLAS_LAYOUT order,
 }
 
 // cgemm
-void
+inline void
 gemm(CBLAS_LAYOUT order,
      CBLAS_TRANSPOSE transA, CBLAS_TRANSPOSE transB,
      int m, int n, int k,
@@ -102,7 +102,7 @@ gemm(CBLAS_LAYOUT order,
 }
 
 // zgemm
-void
+inline void
 gemm(CBLAS_LAYOUT order,
      CBLAS_TRANSPOSE transA, CBLAS_TRANSPOSE transB,
      int m, int n, int k,
@@ -127,7 +127,7 @@ gemm(CBLAS_LAYOUT order,
 template <typename DerivedPolicy,
           typename Alpha, typename MA, typename MB,
           typename Beta, typename MC>
-auto
+inline auto
 gemm(const execution_policy<DerivedPolicy>& /*exec*/,
      Layout order, Op transA, Op transB,
      int m, int n, int k,

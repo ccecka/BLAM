@@ -27,7 +27,7 @@
 
 #pragma once
 
-#include <blam/detail/config.h>
+#include <blam/system/cblas/config.h>
 #include <blam/system/cblas/execution_policy.h>
 
 namespace blam
@@ -36,7 +36,7 @@ namespace cblas
 {
 
 // sger
-void
+inline void
 geru(CBLAS_LAYOUT order,
      int m, int n,
      const float& alpha,
@@ -55,7 +55,7 @@ geru(CBLAS_LAYOUT order,
 }
 
 // dger
-void
+inline void
 geru(CBLAS_LAYOUT order,
      int m, int n,
      const double& alpha,
@@ -74,7 +74,7 @@ geru(CBLAS_LAYOUT order,
 }
 
 // cgeru
-void
+inline void
 geru(CBLAS_LAYOUT order,
      int m, int n,
      const ComplexFloat& alpha,
@@ -93,7 +93,7 @@ geru(CBLAS_LAYOUT order,
 }
 
 // zgeru
-void
+inline void
 geru(CBLAS_LAYOUT order,
      int m, int n,
      const ComplexDouble& alpha,
@@ -112,7 +112,7 @@ geru(CBLAS_LAYOUT order,
 }
 
 // cgerc
-void
+inline void
 gerc(CBLAS_LAYOUT order,
      int m, int n,
      const ComplexFloat& alpha,
@@ -131,7 +131,7 @@ gerc(CBLAS_LAYOUT order,
 }
 
 // zgerc
-void
+inline void
 gerc(CBLAS_LAYOUT order,
      int m, int n,
      const ComplexDouble& alpha,
@@ -153,7 +153,7 @@ gerc(CBLAS_LAYOUT order,
 template <typename DerivedPolicy,
           typename Alpha,
           typename VX, typename VY, typename MA>
-auto
+inline auto
 geru(const execution_policy<DerivedPolicy>& /*exec*/,
      Layout order, int m, int n,
      const Alpha& alpha,
@@ -177,7 +177,7 @@ geru(const execution_policy<DerivedPolicy>& /*exec*/,
 template <typename DerivedPolicy,
           typename Alpha,
           typename VX, typename VY, typename MA>
-auto
+inline auto
 gerc(const execution_policy<DerivedPolicy>& /*exec*/,
      Layout order, int m, int n,
      const Alpha& alpha,

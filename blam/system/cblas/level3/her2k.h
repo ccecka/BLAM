@@ -27,7 +27,7 @@
 
 #pragma once
 
-#include <blam/detail/config.h>
+#include <blam/system/cblas/config.h>
 #include <blam/system/cblas/execution_policy.h>
 
 namespace blam
@@ -36,7 +36,7 @@ namespace cblas
 {
 
 // cher2k
-void
+inline void
 her2k(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
       CBLAS_TRANSPOSE trans,
       int n, int k,
@@ -58,7 +58,7 @@ her2k(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
 }
 
 // zher2k
-void
+inline void
 her2k(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
       CBLAS_TRANSPOSE trans,
       int n, int k,
@@ -83,7 +83,7 @@ her2k(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
 template <typename DerivedPolicy,
           typename Alpha, typename MA, typename MB,
           typename Beta, typename MC>
-auto
+inline auto
 her2k(const execution_policy<DerivedPolicy>& /*exec*/,
       Layout order, Uplo uplo, Op trans,
       int n, int k,

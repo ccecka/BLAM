@@ -27,7 +27,7 @@
 
 #pragma once
 
-#include <blam/detail/config.h>
+#include <blam/system/cblas/config.h>
 #include <blam/system/cblas/execution_policy.h>
 
 namespace blam
@@ -36,7 +36,7 @@ namespace cblas
 {
 
 // stbmv
-void
+inline void
 tbmv(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
      CBLAS_TRANSPOSE trans, CBLAS_DIAG diag,
      int n, int k,
@@ -52,7 +52,7 @@ tbmv(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
 }
 
 // dtbmv
-void
+inline void
 tbmv(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
      CBLAS_TRANSPOSE trans, CBLAS_DIAG diag,
      int n, int k,
@@ -68,7 +68,7 @@ tbmv(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
 }
 
 // ctbmv
-void
+inline void
 tbmv(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
      CBLAS_TRANSPOSE trans, CBLAS_DIAG diag,
      int n, int k,
@@ -84,7 +84,7 @@ tbmv(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
 }
 
 // ztbmv
-void
+inline void
 tbmv(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
      CBLAS_TRANSPOSE trans, CBLAS_DIAG diag,
      int n, int k,
@@ -102,7 +102,7 @@ tbmv(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
 // RowMajor -> ColMajor
 template <typename DerivedPolicy,
           typename MA, typename VX>
-auto
+inline auto
 tbmv(const execution_policy<DerivedPolicy>& /*exec*/,
      Layout order, Uplo uplo, Op trans, Diag diag,
      int n, int k,

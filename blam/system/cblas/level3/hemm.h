@@ -27,7 +27,7 @@
 
 #pragma once
 
-#include <blam/detail/config.h>
+#include <blam/system/cblas/config.h>
 #include <blam/system/cblas/execution_policy.h>
 
 namespace blam
@@ -36,7 +36,7 @@ namespace cblas
 {
 
 // chemm
-void
+inline void
 hemm(CBLAS_LAYOUT order,
      CBLAS_SIDE side, CBLAS_UPLO uplo,
      int m, int n,
@@ -58,7 +58,7 @@ hemm(CBLAS_LAYOUT order,
 }
 
 // zhemm
-void
+inline void
 hemm(CBLAS_LAYOUT order,
      CBLAS_SIDE side, CBLAS_UPLO uplo,
      int m, int n,
@@ -83,7 +83,7 @@ hemm(CBLAS_LAYOUT order,
 template <typename DerivedPolicy,
           typename Alpha, typename MA, typename MB,
           typename Beta, typename MC>
-auto
+inline auto
 hemm(const execution_policy<DerivedPolicy>& /*exec*/,
      Layout order, Side side, Uplo uplo,
      int m, int n,

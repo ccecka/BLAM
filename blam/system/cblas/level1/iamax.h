@@ -27,7 +27,7 @@
 
 #pragma once
 
-#include <blam/detail/config.h>
+#include <blam/system/cblas/config.h>
 #include <blam/system/cblas/execution_policy.h>
 
 namespace blam
@@ -36,8 +36,8 @@ namespace cblas
 {
 
 // isamax
-void
-iamax(int n, const float* x, int incX, int& result)
+inline void
+iamax(int n, const float* x, int incX, int64_t& result)
 {
   BLAM_DEBUG_OUT("cblas_isamax");
 
@@ -45,8 +45,8 @@ iamax(int n, const float* x, int incX, int& result)
 }
 
 // idamax
-void
-iamax(int n, const double* x, int incX, int& result)
+inline void
+iamax(int n, const double* x, int incX, int64_t& result)
 {
   BLAM_DEBUG_OUT("cblas_idamax");
 
@@ -54,8 +54,8 @@ iamax(int n, const double* x, int incX, int& result)
 }
 
 // icamax
-void
-iamax(int n, const ComplexFloat* x, int incX, int& result)
+inline void
+iamax(int n, const ComplexFloat* x, int incX, int64_t& result)
 {
   BLAM_DEBUG_OUT("cblas_icamax");
 
@@ -63,8 +63,8 @@ iamax(int n, const ComplexFloat* x, int incX, int& result)
 }
 
 // izamax
-void
-iamax(int n, const ComplexDouble* x, int incX, int& result)
+inline void
+iamax(int n, const ComplexDouble* x, int incX, int64_t& result)
 {
   BLAM_DEBUG_OUT("cblas_izamax");
 
@@ -74,7 +74,7 @@ iamax(int n, const ComplexDouble* x, int incX, int& result)
 // blam -> cblas
 template <typename DerivedPolicy,
           typename VX, typename R>
-auto
+inline auto
 iamax(const execution_policy<DerivedPolicy>& /*exec*/, int n,
       const VX* x, int incX,
       R& result)

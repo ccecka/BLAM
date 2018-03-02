@@ -27,7 +27,7 @@
 
 #pragma once
 
-#include <blam/detail/config.h>
+#include <blam/system/cblas/config.h>
 #include <blam/system/cblas/execution_policy.h>
 
 namespace blam
@@ -36,7 +36,7 @@ namespace cblas
 {
 
 // ssyr2k
-void
+inline void
 syr2k(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
       CBLAS_TRANSPOSE trans,
       int n, int k,
@@ -58,7 +58,7 @@ syr2k(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
 }
 
 // dsyr2k
-void
+inline void
 syr2k(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
       CBLAS_TRANSPOSE trans,
       int n, int k,
@@ -80,7 +80,7 @@ syr2k(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
 }
 
 // csyr2k
-void
+inline void
 syr2k(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
       CBLAS_TRANSPOSE trans,
       int n, int k,
@@ -102,7 +102,7 @@ syr2k(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
 }
 
 // zsyr2k
-void
+inline void
 syr2k(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
       CBLAS_TRANSPOSE trans,
       int n, int k,
@@ -127,16 +127,16 @@ syr2k(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
 template <typename DerivedPolicy,
           typename Alpha, typename MA, typename MB,
           typename Beta, typename MC>
-auto
+inline auto
 syr2k(const execution_policy<DerivedPolicy>& /*exec*/,
-      Layout order, Side side, Uplo uplo,
+      Layout order, Uplo uplo, Op trans,
       int n, int k,
       const Alpha& alpha,
       const MA* A, int ldA,
       const MB* B, int ldB,
       const Beta& beta,
       MC* C, int ldC)
-    -> decltype(syr2k(cblas_type(order), cblas_type(side), cblas_type(uplo),
+    -> decltype(syr2k(cblas_type(order), cblas_type(uplo), cblas_type(trans),
                       n, k,
                       alpha,
                       A, ldA,
@@ -144,7 +144,7 @@ syr2k(const execution_policy<DerivedPolicy>& /*exec*/,
                       beta,
                       C, ldC))
 {
-  return syr2k(cblas_type(order), cblas_type(side), cblas_type(uplo),
+  return syr2k(cblas_type(order), cblas_type(uplo), cblas_type(trans),
                n, k,
                alpha,
                A, ldA,

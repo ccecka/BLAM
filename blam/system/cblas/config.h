@@ -29,14 +29,16 @@
 
 #include <blam/detail/config.h>
 
+#if !defined(__MKL_CBLAS_H__)
 #include <cblas.h>
-
 using CBLAS_LAYOUT = CBLAS_ORDER;
+#endif
+
 
 namespace blam
 {
 
-CBLAS_LAYOUT
+inline CBLAS_LAYOUT
 cblas_type(Layout order)
 {
   switch (order) {
@@ -48,7 +50,7 @@ cblas_type(Layout order)
   }
 }
 
-CBLAS_TRANSPOSE
+inline CBLAS_TRANSPOSE
 cblas_type(Op trans)
 {
   switch (trans) {
@@ -61,7 +63,7 @@ cblas_type(Op trans)
   }
 }
 
-CBLAS_UPLO
+inline CBLAS_UPLO
 cblas_type(Uplo uplo)
 {
   switch (uplo) {
@@ -73,7 +75,7 @@ cblas_type(Uplo uplo)
   }
 }
 
-CBLAS_SIDE
+inline CBLAS_SIDE
 cblas_type(Side side)
 {
   switch (side) {
@@ -85,7 +87,7 @@ cblas_type(Side side)
   }
 }
 
-CBLAS_DIAG
+inline CBLAS_DIAG
 cblas_type(Diag diag)
 {
   switch (diag) {

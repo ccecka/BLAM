@@ -27,7 +27,7 @@
 
 #pragma once
 
-#include <blam/detail/config.h>
+#include <blam/system/cblas/config.h>
 #include <blam/system/cblas/execution_policy.h>
 
 namespace blam
@@ -36,7 +36,7 @@ namespace cblas
 {
 
 // saxpy
-void
+inline void
 axpy(int n, const float& alpha, const float* x, int incX,
      float* y, int incY)
 {
@@ -46,7 +46,7 @@ axpy(int n, const float& alpha, const float* x, int incX,
 }
 
 // daxpy
-void
+inline void
 axpy(int n, const double& alpha, const double* x, int incX,
      double* y, int incY)
 {
@@ -56,7 +56,7 @@ axpy(int n, const double& alpha, const double* x, int incX,
 }
 
 // caxpy
-void
+inline void
 axpy(int n, const ComplexFloat& alpha,
      const ComplexFloat* x, int incX,
      ComplexFloat* y, int incY)
@@ -69,7 +69,7 @@ axpy(int n, const ComplexFloat& alpha,
 }
 
 // zaxpy
-void
+inline void
 axpy(int n, const ComplexDouble& alpha,
      const ComplexDouble* x, int incX,
      ComplexDouble* y, int incY)
@@ -84,7 +84,7 @@ axpy(int n, const ComplexDouble& alpha,
 // blam -> cblas
 template <typename DerivedPolicy,
           typename Alpha, typename VX, typename VY>
-auto
+inline auto
 axpy(const execution_policy<DerivedPolicy>& /*exec*/,
      int n, const Alpha& alpha,
      const VX* x, int incX,

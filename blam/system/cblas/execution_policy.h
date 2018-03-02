@@ -27,10 +27,9 @@
 
 #pragma once
 
-#include <blam/detail/config.h>
-#include <blam/detail/execution_policy.h>
+#include <blam/system/cblas/config.h>
 
-#include <blam/system/cblas/types.h>
+#include <blam/detail/execution_policy.h>
 
 namespace blam
 {
@@ -77,31 +76,31 @@ static const tag par{};
 // Library type ADLs
 //
 
-CBLAS_LAYOUT
+inline CBLAS_LAYOUT
 library_type(cblas::tag, Layout order)
 {
   return cblas_type(order);
 }
 
-CBLAS_TRANSPOSE
+inline CBLAS_TRANSPOSE
 library_type(cblas::tag, Op trans)
 {
   return cblas_type(trans);
 }
 
-CBLAS_UPLO
+inline CBLAS_UPLO
 library_type(cblas::tag, Uplo uplo)
 {
   return cblas_type(uplo);
 }
 
-CBLAS_SIDE
+inline CBLAS_SIDE
 library_type(cblas::tag, Side side)
 {
   return cblas_type(side);
 }
 
-CBLAS_DIAG
+inline CBLAS_DIAG
 library_type(cblas::tag, Diag diag)
 {
   return cblas_type(diag);

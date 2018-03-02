@@ -27,7 +27,7 @@
 
 #pragma once
 
-#include <blam/detail/config.h>
+#include <blam/system/cblas/config.h>
 #include <blam/system/cblas/execution_policy.h>
 
 namespace blam
@@ -36,7 +36,7 @@ namespace cblas
 {
 
 // sgemv
-void
+inline void
 gemv(CBLAS_LAYOUT order, CBLAS_TRANSPOSE trans,
      int m, int n,
      const float& alpha,
@@ -57,7 +57,7 @@ gemv(CBLAS_LAYOUT order, CBLAS_TRANSPOSE trans,
 }
 
 // dgemv
-void
+inline void
 gemv(CBLAS_LAYOUT order, CBLAS_TRANSPOSE trans,
      int m, int n,
      const double& alpha,
@@ -78,7 +78,7 @@ gemv(CBLAS_LAYOUT order, CBLAS_TRANSPOSE trans,
 }
 
 // cgemv
-void
+inline void
 gemv(CBLAS_LAYOUT order, CBLAS_TRANSPOSE trans,
      int m, int n,
      const ComplexFloat& alpha,
@@ -99,7 +99,7 @@ gemv(CBLAS_LAYOUT order, CBLAS_TRANSPOSE trans,
 }
 
 // zgemv
-void
+inline void
 gemv(CBLAS_LAYOUT order, CBLAS_TRANSPOSE trans,
      int m, int n,
      const ComplexDouble& alpha,
@@ -123,7 +123,7 @@ gemv(CBLAS_LAYOUT order, CBLAS_TRANSPOSE trans,
 template <typename DerivedPolicy,
           typename Alpha, typename MA, typename VX,
           typename Beta, typename VY>
-auto
+inline auto
 gemv(const execution_policy<DerivedPolicy>& /*exec*/,
      Layout order, Op trans,
      int m, int n,

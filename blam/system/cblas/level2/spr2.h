@@ -27,7 +27,7 @@
 
 #pragma once
 
-#include <blam/detail/config.h>
+#include <blam/system/cblas/config.h>
 #include <blam/system/cblas/execution_policy.h>
 
 namespace blam
@@ -36,7 +36,7 @@ namespace cblas
 {
 
 // sspr2
-void
+inline void
 spr2(CBLAS_LAYOUT order,   CBLAS_UPLO uplo,
      int n,
      const float& alpha,
@@ -54,7 +54,7 @@ spr2(CBLAS_LAYOUT order,   CBLAS_UPLO uplo,
 }
 
 // dspr2
-void
+inline void
 spr2(CBLAS_LAYOUT order,   CBLAS_UPLO uplo,
      int n,
      const double& alpha,
@@ -75,7 +75,7 @@ spr2(CBLAS_LAYOUT order,   CBLAS_UPLO uplo,
 template <typename DerivedPolicy,
           typename Alpha,
           typename VX, typename VY, typename MA>
-auto
+inline auto
 spr2(const execution_policy<DerivedPolicy>& /*exec*/,
      Layout order, Uplo uplo,
      int n,

@@ -27,7 +27,7 @@
 
 #pragma once
 
-#include <blam/detail/config.h>
+#include <blam/system/cblas/config.h>
 #include <blam/system/cblas/execution_policy.h>
 
 namespace blam
@@ -36,7 +36,7 @@ namespace cblas
 {
 
 // sswap
-void
+inline void
 swap(int n,
      float* x, int incX,
      float* y, int incY)
@@ -47,7 +47,7 @@ swap(int n,
 }
 
 // dswap
-void
+inline void
 swap(int n,
      double* x, int incX,
      double* y, int incY)
@@ -58,7 +58,7 @@ swap(int n,
 }
 
 // cswap
-void
+inline void
 swap(int n,
      ComplexFloat* x, int incX,
      ComplexFloat* y, int incY)
@@ -70,7 +70,7 @@ swap(int n,
 }
 
 // zswap
-void
+inline void
 swap(int n,
      ComplexDouble* x, int incX,
      ComplexDouble* y, int incY)
@@ -84,7 +84,7 @@ swap(int n,
 // blam -> cblas
 template <typename DerivedPolicy,
           typename VX, typename VY>
-auto
+inline auto
 swap(const execution_policy<DerivedPolicy>& /*exec*/, int n,
      VX* x, int incX,
      VY* y, int incY)

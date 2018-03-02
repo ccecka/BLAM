@@ -27,7 +27,7 @@
 
 #pragma once
 
-#include <blam/detail/config.h>
+#include <blam/system/cblas/config.h>
 #include <blam/system/cblas/execution_policy.h>
 
 namespace blam
@@ -36,7 +36,7 @@ namespace cblas
 {
 
 // ssyr
-void
+inline void
 syr(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
     int n,
     const float& alpha,
@@ -52,7 +52,7 @@ syr(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
 }
 
 // dsyr
-void
+inline void
 syr(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
     int n,
     const double& alpha,
@@ -71,7 +71,7 @@ syr(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
 template <typename DerivedPolicy,
           typename Alpha,
           typename VX, typename MA>
-auto
+inline auto
 syr(const execution_policy<DerivedPolicy>& /*exec*/,
     Layout order, Uplo uplo,
     int n,

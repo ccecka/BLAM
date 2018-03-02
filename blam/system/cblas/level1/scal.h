@@ -27,7 +27,7 @@
 
 #pragma once
 
-#include <blam/detail/config.h>
+#include <blam/system/cblas/config.h>
 #include <blam/system/cblas/execution_policy.h>
 
 namespace blam
@@ -36,7 +36,7 @@ namespace cblas
 {
 
 // sscal
-void
+inline void
 scal(int n, const float& alpha, float* x, int incX)
 {
   BLAM_DEBUG_OUT("cblas_sscal");
@@ -45,7 +45,7 @@ scal(int n, const float& alpha, float* x, int incX)
 }
 
 // dscal
-void
+inline void
 scal(int n, const double& alpha, double* x, int incX)
 {
   BLAM_DEBUG_OUT("cblas_dscal");
@@ -54,7 +54,7 @@ scal(int n, const double& alpha, double* x, int incX)
 }
 
 // cscal
-void
+inline void
 scal(int n, const ComplexFloat& alpha, ComplexFloat* x, int incX)
 {
   BLAM_DEBUG_OUT("cblas_cscal");
@@ -64,7 +64,7 @@ scal(int n, const ComplexFloat& alpha, ComplexFloat* x, int incX)
 }
 
 // zscal
-void
+inline void
 scal(int n, const ComplexDouble& alpha, ComplexDouble* x, int incX)
 {
   BLAM_DEBUG_OUT("cblas_zscal");
@@ -74,7 +74,7 @@ scal(int n, const ComplexDouble& alpha, ComplexDouble* x, int incX)
 }
 
 // csscal
-void
+inline void
 scal(int n, const float& alpha, ComplexFloat* x, int incX)
 {
   BLAM_DEBUG_OUT("cblas_csscal");
@@ -83,7 +83,7 @@ scal(int n, const float& alpha, ComplexFloat* x, int incX)
 }
 
 // zdscal
-void
+inline void
 scal(int n, const double& alpha, ComplexDouble* x, int incX)
 {
   BLAM_DEBUG_OUT("cblas_zdscal");
@@ -94,10 +94,10 @@ scal(int n, const double& alpha, ComplexDouble* x, int incX)
 // blam -> cblas
 template <typename DerivedPolicy,
           typename Alpha, typename VX>
-auto
+inline auto
 scal(const execution_policy<DerivedPolicy>& /*exec*/,
      int n, const Alpha& alpha,
-     const VX* x, int incX)
+     VX* x, int incX)
     -> decltype(scal(n, alpha, x, incX))
 {
   return scal(n, alpha, x, incX);
