@@ -30,9 +30,9 @@
 #include <blam/detail/config.h>
 #include <blam/adl/detail/customization_point.h>
 
-BLAM_CUSTOMIZATION_POINT(ger);
-BLAM_CUSTOMIZATION_POINT(geru);
-BLAM_CUSTOMIZATION_POINT(gerc);
+BLAM_CUSTOMIZATION_POINT(ger)
+BLAM_CUSTOMIZATION_POINT(geru)
+BLAM_CUSTOMIZATION_POINT(gerc)
 
 namespace blam
 {

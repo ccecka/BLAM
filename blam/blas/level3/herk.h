@@ -30,7 +30,7 @@
 #include <blam/detail/config.h>
 #include <blam/adl/detail/customization_point.h>
 
-BLAM_CUSTOMIZATION_POINT(herk);
+BLAM_CUSTOMIZATION_POINT(herk)
 
 #include <blam/blas/level3/syrk.h>
 
@@ -94,7 +94,7 @@ BLAM_DECLTYPE_AUTO_RETURN
              C, ldC)
 )
 
-// sherk -> syrk
+// dherk -> syrk
 template <typename ExecutionPolicy>
 auto
 generic(blam::herk_t, const ExecutionPolicy& exec,

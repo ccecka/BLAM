@@ -30,7 +30,7 @@
 #include <blam/detail/config.h>
 #include <blam/adl/detail/customization_point.h>
 
-BLAM_CUSTOMIZATION_POINT(her);
+BLAM_CUSTOMIZATION_POINT(her)
 
 #include <blam/blas/level2/syr.h>
 
@@ -70,7 +70,7 @@ BLAM_DECLTYPE_AUTO_RETURN
             A, ldA)
 )
 
-// sher -> syr
+// sher -> ssyr
 template <typename ExecutionPolicy>
 auto
 generic(blam::her_t, const ExecutionPolicy& exec,
@@ -89,7 +89,7 @@ BLAM_DECLTYPE_AUTO_RETURN
             A, ldA)
 )
 
-// dher -> syr
+// dher -> dsyr
 template <typename ExecutionPolicy>
 auto
 generic(blam::her_t, const ExecutionPolicy& exec,

@@ -30,7 +30,7 @@
 #include <blam/detail/config.h>
 #include <blam/adl/detail/customization_point.h>
 
-BLAM_CUSTOMIZATION_POINT(gemm);
+BLAM_CUSTOMIZATION_POINT(gemm)
 
 namespace blam
 {

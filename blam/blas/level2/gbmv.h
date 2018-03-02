@@ -30,4 +30,4 @@
 #include <blam/detail/config.h>
 #include <blam/adl/detail/customization_point.h>
 
-BLAM_CUSTOMIZATION_POINT(gbmv);
+BLAM_CUSTOMIZATION_POINT(gbmv)

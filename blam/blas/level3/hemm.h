@@ -30,7 +30,7 @@
 #include <blam/detail/config.h>
 #include <blam/adl/detail/customization_point.h>
 
-BLAM_CUSTOMIZATION_POINT(hemm);
+BLAM_CUSTOMIZATION_POINT(hemm)
 
 #include <blam/blas/level3/symm.h>
 

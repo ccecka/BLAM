@@ -30,7 +30,7 @@
 #include <blam/detail/config.h>
 #include <blam/adl/detail/customization_point.h>
 
-BLAM_CUSTOMIZATION_POINT(her2k);
+BLAM_CUSTOMIZATION_POINT(her2k)
 
 #include <blam/blas/level3/syr2k.h>
 

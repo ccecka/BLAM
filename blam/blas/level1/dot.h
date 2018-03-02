@@ -30,9 +30,9 @@
 #include <blam/detail/config.h>
 #include <blam/adl/detail/customization_point.h>
 
-BLAM_CUSTOMIZATION_POINT(dot);
-BLAM_CUSTOMIZATION_POINT(dotu);
-BLAM_CUSTOMIZATION_POINT(dotc);
+BLAM_CUSTOMIZATION_POINT(dot)
+BLAM_CUSTOMIZATION_POINT(dotu)
+BLAM_CUSTOMIZATION_POINT(dotc)
 
 namespace blam
 {

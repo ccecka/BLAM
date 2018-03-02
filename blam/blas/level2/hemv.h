@@ -30,7 +30,7 @@
 #include <blam/detail/config.h>
 #include <blam/adl/detail/customization_point.h>
 
-BLAM_CUSTOMIZATION_POINT(hemv);
+BLAM_CUSTOMIZATION_POINT(hemv)
 
 #include <blam/blas/level2/symv.h>
 
@@ -58,7 +58,7 @@ template <typename ExecutionPolicy,
 auto
 generic(blam::hemv_t, const ExecutionPolicy& exec,
         Op trans,
-        int m, int n,
+        int n,
         const Alpha& alpha,
         const MA* A, int ldA,
         const VX* x, int incX,
@@ -67,7 +67,7 @@ generic(blam::hemv_t, const ExecutionPolicy& exec,
 BLAM_DECLTYPE_AUTO_RETURN
 (
   blam::hemv(exec, ColMajor, trans,
-             m, n,
+             n,
              alpha,
              A, ldA,
              x, incX,
@@ -81,7 +81,7 @@ template <typename ExecutionPolicy,
           typename Beta, typename VY>
 auto
 generic(blam::hemv_t, const ExecutionPolicy& exec,
-        int m, int n,
+        int n,
         const Alpha& alpha,
         const MA* A, int ldA,
         const VX* x, int incX,
@@ -90,7 +90,7 @@ generic(blam::hemv_t, const ExecutionPolicy& exec,
 BLAM_DECLTYPE_AUTO_RETURN
 (
   blam::hemv(exec, NoTrans,
-             m, n,
+             n,
              alpha,
              A, ldA,
              x, incX,
@@ -98,11 +98,12 @@ BLAM_DECLTYPE_AUTO_RETURN
              y, incY)
 )
 
-// shemv -> symv
+// shemv -> ssymv
 template <typename ExecutionPolicy>
 auto
 generic(blam::hemv_t, const ExecutionPolicy& exec,
-        int m, int n,
+        Layout order, Uplo uplo,
+        int n,
         const float& alpha,
         const float* A, int ldA,
         const float* x, int incX,
@@ -110,8 +111,8 @@ generic(blam::hemv_t, const ExecutionPolicy& exec,
         float* y, int incY)
 BLAM_DECLTYPE_AUTO_RETURN
 (
-  blam::symv(exec, NoTrans,
-             m, n,
+  blam::symv(exec, order, uplo,
+             n,
              alpha,
              A, ldA,
              x, incX,
@@ -119,11 +120,12 @@ BLAM_DECLTYPE_AUTO_RETURN
              y, incY)
 )
 
-// dhemv -> symv
+// dhemv -> dsymv
 template <typename ExecutionPolicy>
 auto
 generic(blam::hemv_t, const ExecutionPolicy& exec,
-        int m, int n,
+        Layout order, Uplo uplo,
+        int n,
         const double& alpha,
         const double* A, int ldA,
         const double* x, int incX,
@@ -131,8 +133,8 @@ generic(blam::hemv_t, const ExecutionPolicy& exec,
         double* y, int incY)
 BLAM_DECLTYPE_AUTO_RETURN
 (
-  blam::symv(exec, NoTrans,
-             m, n,
+  blam::symv(exec, order, uplo,
+             n,
              alpha,
              A, ldA,
              x, incX,

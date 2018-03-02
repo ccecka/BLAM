@@ -30,4 +30,4 @@
 #include <blam/detail/config.h>
 #include <blam/adl/detail/customization_point.h>
 
-BLAM_CUSTOMIZATION_POINT(nrm2);
+BLAM_CUSTOMIZATION_POINT(nrm2)
