@@ -29,7 +29,7 @@
 
 #if (INTEL_MKL_VERSION >= 110300)
 
-#include <blam/detail/config.h>
+#include <blam/system/mkl/config.h>
 #include <blam/system/mkl/execution_policy.h>
 
 namespace blam
@@ -38,7 +38,7 @@ namespace mkl
 {
 
 // sgemm
-void
+inline void
 gemm_batch(CBLAS_LAYOUT order,
            const CBLAS_TRANSPOSE* transA, const CBLAS_TRANSPOSE* transB,
            const int* m, const int* n, const int* k,
@@ -62,7 +62,7 @@ gemm_batch(CBLAS_LAYOUT order,
 }
 
 // dgemm
-void
+inline void
 gemm_batch(CBLAS_LAYOUT order,
            const CBLAS_TRANSPOSE* transA, const CBLAS_TRANSPOSE* transB,
            const int* m, const int* n, const int* k,
@@ -86,7 +86,7 @@ gemm_batch(CBLAS_LAYOUT order,
 }
 
 // cgemm
-void
+inline void
 gemm_batch(CBLAS_LAYOUT order,
            const CBLAS_TRANSPOSE* transA, const CBLAS_TRANSPOSE* transB,
            const int* m, const int* n, const int* k,
@@ -110,7 +110,7 @@ gemm_batch(CBLAS_LAYOUT order,
 }
 
 // zgemm
-void
+inline void
 gemm_batch(CBLAS_LAYOUT order,
            const CBLAS_TRANSPOSE* transA, const CBLAS_TRANSPOSE* transB,
            const int* m, const int* n, const int* k,
@@ -136,7 +136,7 @@ gemm_batch(CBLAS_LAYOUT order,
 // blam -> mkl
 template <typename DerivedPolicy,
           typename T>
-void
+inline void
 gemm_batch(const execution_policy<DerivedPolicy>& /*exec*/,
            Layout order, Op transA, Op transB,
            int m, int n, int k,
@@ -170,5 +170,9 @@ gemm_batch(const execution_policy<DerivedPolicy>& /*exec*/,
 
 } // end namespace mkl
 } // end namespace blam
+
+#else
+
+#warning "INTEL_MKL_VERSION < 110300: Some features unavailable"
 
 #endif // INTEL_MKL_VERSION >= 110300
