@@ -27,7 +27,7 @@
 
 #pragma once
 
-#include <blam/detail/config.h>
+#include <blam/system/cublas/config.h>
 #include <blam/system/cublas/execution_policy.h>
 
 namespace blam
@@ -36,7 +36,7 @@ namespace cublas
 {
 
 // stpmv
-cublasStatus_t
+inline cublasStatus_t
 tpmv(cublasHandle_t handle,
      cublasFillMode_t uplo, cublasOperation_t trans, cublasDiagType_t diag,
      int n,
@@ -51,7 +51,7 @@ tpmv(cublasHandle_t handle,
 }
 
 // dtpmv
-cublasStatus_t
+inline cublasStatus_t
 tpmv(cublasHandle_t handle,
      cublasFillMode_t uplo, cublasOperation_t trans, cublasDiagType_t diag,
      int n,
@@ -66,7 +66,7 @@ tpmv(cublasHandle_t handle,
 }
 
 // ctpmv
-cublasStatus_t
+inline cublasStatus_t
 tpmv(cublasHandle_t handle,
      cublasFillMode_t uplo, cublasOperation_t trans, cublasDiagType_t diag,
      int n,
@@ -81,7 +81,7 @@ tpmv(cublasHandle_t handle,
 }
 
 // ztpmv
-cublasStatus_t
+inline cublasStatus_t
 tpmv(cublasHandle_t handle,
      cublasFillMode_t uplo, cublasOperation_t trans, cublasDiagType_t diag,
      int n,
@@ -98,7 +98,7 @@ tpmv(cublasHandle_t handle,
 // blam -> cublas
 template <typename DerivedPolicy,
           typename MA, typename VX>
-auto
+inline auto
 tpmv(const execution_policy<DerivedPolicy>& exec,
      Uplo uplo, Op trans, Diag diag,
      int n,
@@ -118,7 +118,7 @@ tpmv(const execution_policy<DerivedPolicy>& exec,
 // RowMajor -> ColMajor
 template <typename DerivedPolicy,
           typename MA, typename VX>
-auto
+inline auto
 tpmv(const execution_policy<DerivedPolicy>& exec,
      Layout order, Uplo uplo, Op trans, Diag diag,
      int n,

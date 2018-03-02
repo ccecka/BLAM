@@ -27,7 +27,7 @@
 
 #pragma once
 
-#include <blam/detail/config.h>
+#include <blam/system/cublas/config.h>
 #include <blam/system/cublas/execution_policy.h>
 
 namespace blam
@@ -36,7 +36,7 @@ namespace cublas
 {
 
 // sger
-cublasStatus_t
+inline cublasStatus_t
 geru(cublasHandle_t handle,
      int m, int n,
      const float* alpha,
@@ -55,7 +55,7 @@ geru(cublasHandle_t handle,
 }
 
 // dger
-cublasStatus_t
+inline cublasStatus_t
 geru(cublasHandle_t handle,
      int m, int n,
      const double* alpha,
@@ -74,7 +74,7 @@ geru(cublasHandle_t handle,
 }
 
 // cgerc
-cublasStatus_t
+inline cublasStatus_t
 gerc(cublasHandle_t handle,
      int m, int n,
      const ComplexFloat* alpha,
@@ -93,7 +93,7 @@ gerc(cublasHandle_t handle,
 }
 
 // zgerc
-cublasStatus_t
+inline cublasStatus_t
 gerc(cublasHandle_t handle,
      int m, int n,
      const ComplexDouble* alpha,
@@ -112,7 +112,7 @@ gerc(cublasHandle_t handle,
 }
 
 // cgeru
-cublasStatus_t
+inline cublasStatus_t
 geru(cublasHandle_t handle,
      int m, int n,
      const ComplexFloat* alpha,
@@ -131,7 +131,7 @@ geru(cublasHandle_t handle,
 }
 
 // zgeru
-cublasStatus_t
+inline cublasStatus_t
 geru(cublasHandle_t handle,
      int m, int n,
      const ComplexDouble* alpha,
@@ -153,7 +153,7 @@ geru(cublasHandle_t handle,
 template <typename DerivedPolicy,
           typename Alpha,
           typename VX, typename VY, typename MA>
-auto
+inline auto
 geru(const execution_policy<DerivedPolicy>& exec,
      int m, int n,
      const Alpha& alpha,
@@ -177,7 +177,7 @@ geru(const execution_policy<DerivedPolicy>& exec,
 template <typename DerivedPolicy,
           typename Alpha,
           typename VX, typename VY, typename MA>
-auto
+inline auto
 geru(const execution_policy<DerivedPolicy>& exec,
      Layout order, int m, int n,
      const Alpha& alpha,
@@ -209,7 +209,7 @@ geru(const execution_policy<DerivedPolicy>& exec,
 template <typename DerivedPolicy,
           typename Alpha,
           typename VX, typename VY, typename MA>
-auto
+inline auto
 gerc(const execution_policy<DerivedPolicy>& exec,
      int m, int n,
      const Alpha& alpha,
@@ -233,7 +233,7 @@ gerc(const execution_policy<DerivedPolicy>& exec,
 template <typename DerivedPolicy,
           typename Alpha,
           typename VX, typename VY, typename MA>
-auto
+inline auto
 gerc(const execution_policy<DerivedPolicy>& exec,
      Layout order, int m, int n,
      const Alpha& alpha,

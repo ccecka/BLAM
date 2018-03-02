@@ -27,7 +27,7 @@
 
 #pragma once
 
-#include <blam/detail/config.h>
+#include <blam/system/cublas/config.h>
 #include <blam/system/cublas/execution_policy.h>
 
 namespace blam
@@ -36,7 +36,7 @@ namespace cublas
 {
 
 // sscal
-cublasStatus_t
+inline cublasStatus_t
 scal(cublasHandle_t handle, int n, const float* alpha,
      float* x, int incX)
 {
@@ -46,7 +46,7 @@ scal(cublasHandle_t handle, int n, const float* alpha,
 }
 
 // dscal
-cublasStatus_t
+inline cublasStatus_t
 scal(cublasHandle_t handle, int n, const double* alpha,
      double* x, int incX)
 {
@@ -56,7 +56,7 @@ scal(cublasHandle_t handle, int n, const double* alpha,
 }
 
 // csscal
-cublasStatus_t
+inline cublasStatus_t
 scal(cublasHandle_t handle, int n, const float* alpha,
      ComplexFloat* x, int incX)
 {
@@ -66,7 +66,7 @@ scal(cublasHandle_t handle, int n, const float* alpha,
 }
 
 // csscal
-cublasStatus_t
+inline cublasStatus_t
 scal(cublasHandle_t handle, int n, const ComplexFloat* alpha,
      ComplexFloat* x, int incX)
 {
@@ -78,7 +78,7 @@ scal(cublasHandle_t handle, int n, const ComplexFloat* alpha,
 }
 
 // zdscal
-cublasStatus_t
+inline cublasStatus_t
 scal(cublasHandle_t handle, int n, const double* alpha,
      ComplexDouble* x, int incX)
 {
@@ -90,7 +90,7 @@ scal(cublasHandle_t handle, int n, const double* alpha,
 }
 
 // zscal
-cublasStatus_t
+inline cublasStatus_t
 scal(cublasHandle_t handle, int n, const ComplexDouble* alpha,
      ComplexDouble* x, int incX)
 {
@@ -104,13 +104,13 @@ scal(cublasHandle_t handle, int n, const ComplexDouble* alpha,
 // blam -> cublas
 template <typename DerivedPolicy,
           typename Alpha, typename VX>
-auto
+inline auto
 scal(const execution_policy<DerivedPolicy>& exec,
      int n, const Alpha& alpha,
-     const VX* x, int incX)
-    -> decltype(scal(handle(derived_cast(exec)), n, alpha, x, incX))
+     VX* x, int incX)
+    -> decltype(scal(handle(derived_cast(exec)), n, &alpha, x, incX))
 {
-  return scal(handle(derived_cast(exec)), n, alpha, x, incX);
+  return scal(handle(derived_cast(exec)), n, &alpha, x, incX);
 }
 
 } // end namespace cublas

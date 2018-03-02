@@ -27,7 +27,7 @@
 
 #pragma once
 
-#include <blam/detail/config.h>
+#include <blam/system/cublas/config.h>
 #include <blam/system/cublas/execution_policy.h>
 
 namespace blam
@@ -36,7 +36,7 @@ namespace cublas
 {
 
 // strmv
-cublasStatus_t
+inline cublasStatus_t
 trmv(cublasHandle_t handle,
      cublasFillMode_t uplo, cublasOperation_t trans, cublasDiagType_t diag,
      int n,
@@ -52,7 +52,7 @@ trmv(cublasHandle_t handle,
 }
 
 // dtrmv
-cublasStatus_t
+inline cublasStatus_t
 trmv(cublasHandle_t handle,
      cublasFillMode_t uplo, cublasOperation_t trans, cublasDiagType_t diag,
      int n,
@@ -68,7 +68,7 @@ trmv(cublasHandle_t handle,
 }
 
 // ctrmv
-cublasStatus_t
+inline cublasStatus_t
 trmv(cublasHandle_t handle,
      cublasFillMode_t uplo, cublasOperation_t trans, cublasDiagType_t diag,
      int n,
@@ -84,7 +84,7 @@ trmv(cublasHandle_t handle,
 }
 
 // ztrmv
-cublasStatus_t
+inline cublasStatus_t
 trmv(cublasHandle_t handle,
      cublasFillMode_t uplo, cublasOperation_t trans, cublasDiagType_t diag,
      int n,
@@ -102,7 +102,7 @@ trmv(cublasHandle_t handle,
 // blam -> cublas
 template <typename DerivedPolicy,
           typename MA, typename VX>
-auto
+inline auto
 trmv(const execution_policy<DerivedPolicy>& exec,
      Uplo uplo, Op trans, Diag diag,
      int n,
@@ -124,7 +124,7 @@ trmv(const execution_policy<DerivedPolicy>& exec,
 // RowMajor -> ColMajor
 template <typename DerivedPolicy,
           typename MA, typename VX>
-auto
+inline auto
 trmv(const execution_policy<DerivedPolicy>& exec,
      Layout order, Uplo uplo, Op trans, Diag diag,
      int n,

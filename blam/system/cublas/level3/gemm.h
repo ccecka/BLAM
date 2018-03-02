@@ -27,7 +27,7 @@
 
 #pragma once
 
-#include <blam/detail/config.h>
+#include <blam/system/cublas/config.h>
 #include <blam/system/cublas/execution_policy.h>
 
 namespace blam
@@ -36,7 +36,7 @@ namespace cublas
 {
 
 // hgemm
-cublasStatus_t
+inline cublasStatus_t
 gemm(cublasHandle_t handle,
      cublasOperation_t transA, cublasOperation_t transB,
      int m, int n, int k,
@@ -58,7 +58,7 @@ gemm(cublasHandle_t handle,
 }
 
 // sgemm
-cublasStatus_t
+inline cublasStatus_t
 gemm(cublasHandle_t handle,
      cublasOperation_t transA, cublasOperation_t transB,
      int m, int n, int k,
@@ -80,7 +80,7 @@ gemm(cublasHandle_t handle,
 }
 
 // dgemm
-cublasStatus_t
+inline cublasStatus_t
 gemm(cublasHandle_t handle,
      cublasOperation_t transA, cublasOperation_t transB,
      int m, int n, int k,
@@ -102,7 +102,7 @@ gemm(cublasHandle_t handle,
 }
 
 // cgemm
-cublasStatus_t
+inline cublasStatus_t
 gemm(cublasHandle_t handle,
      cublasOperation_t transA, cublasOperation_t transB,
      int m, int n, int k,
@@ -124,7 +124,7 @@ gemm(cublasHandle_t handle,
 }
 
 // zgemm
-cublasStatus_t
+inline cublasStatus_t
 gemm(cublasHandle_t handle,
      cublasOperation_t transA, cublasOperation_t transB,
      int m, int n, int k,
@@ -149,7 +149,7 @@ gemm(cublasHandle_t handle,
 template <typename DerivedPolicy,
           typename Alpha, typename MA, typename MB,
           typename Beta, typename MC>
-auto
+inline auto
 gemm(const execution_policy<DerivedPolicy>& exec,
      Op transA, Op transB,
      int m, int n, int k,
@@ -181,7 +181,7 @@ gemm(const execution_policy<DerivedPolicy>& exec,
 template <typename DerivedPolicy,
           typename Alpha, typename MA, typename MB,
           typename Beta, typename MC>
-auto
+inline auto
 gemm(const execution_policy<DerivedPolicy>& exec,
      Layout order, Op transA, Op transB,
      int m, int n, int k,

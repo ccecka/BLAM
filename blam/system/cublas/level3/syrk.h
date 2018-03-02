@@ -27,7 +27,7 @@
 
 #pragma once
 
-#include <blam/detail/config.h>
+#include <blam/system/cublas/config.h>
 #include <blam/system/cublas/execution_policy.h>
 
 namespace blam
@@ -36,7 +36,7 @@ namespace cublas
 {
 
 // ssyrk
-cublasStatus_t
+inline cublasStatus_t
 syrk(cublasHandle_t handle,
      cublasFillMode_t uplo, cublasOperation_t trans,
      int n, int k,
@@ -56,7 +56,7 @@ syrk(cublasHandle_t handle,
 }
 
 // dsyrk
-cublasStatus_t
+inline cublasStatus_t
 syrk(cublasHandle_t handle,
      cublasFillMode_t uplo, cublasOperation_t trans,
      int n, int k,
@@ -76,7 +76,7 @@ syrk(cublasHandle_t handle,
 }
 
 // csyrk
-cublasStatus_t
+inline cublasStatus_t
 syrk(cublasHandle_t handle,
      cublasFillMode_t uplo, cublasOperation_t trans,
      int n, int k,
@@ -96,7 +96,7 @@ syrk(cublasHandle_t handle,
 }
 
 // zsyrk
-cublasStatus_t
+inline cublasStatus_t
 syrk(cublasHandle_t handle,
      cublasFillMode_t uplo, cublasOperation_t trans,
      int n, int k,
@@ -119,7 +119,7 @@ syrk(cublasHandle_t handle,
 template <typename DerivedPolicy,
           typename Alpha, typename MA,
           typename Beta, typename MC>
-auto
+inline auto
 syrk(const execution_policy<DerivedPolicy>& exec,
      Uplo uplo, Op trans,
      int n, int k,
@@ -146,15 +146,14 @@ syrk(const execution_policy<DerivedPolicy>& exec,
 
 // RowMajor -> ColMajor
 template <typename DerivedPolicy,
-          typename Alpha, typename MA, typename MB,
+          typename Alpha, typename MA,
           typename Beta, typename MC>
-auto
+inline auto
 syrk(const execution_policy<DerivedPolicy>& exec,
      Layout order, Uplo uplo, Op trans,
      int n, int k,
      const Alpha& alpha,
      const MA* A, int ldA,
-     const MB* B, int ldB,
      const Beta& beta,
      MC* C, int ldC)
     -> decltype(syrk(exec, uplo, trans,

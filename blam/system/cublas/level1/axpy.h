@@ -27,7 +27,7 @@
 
 #pragma once
 
-#include <blam/detail/config.h>
+#include <blam/system/cublas/config.h>
 #include <blam/system/cublas/execution_policy.h>
 
 namespace blam
@@ -36,7 +36,7 @@ namespace cublas
 {
 
 // saxpy
-cublasStatus_t
+inline cublasStatus_t
 axpy(cublasHandle_t handle,
      int n,
      const float* alpha,
@@ -49,7 +49,7 @@ axpy(cublasHandle_t handle,
 }
 
 // daxpy
-cublasStatus_t
+inline cublasStatus_t
 axpy(cublasHandle_t handle,
      int n,
      const double* alpha,
@@ -62,7 +62,7 @@ axpy(cublasHandle_t handle,
 }
 
 // caxpy
-cublasStatus_t
+inline cublasStatus_t
 axpy(cublasHandle_t handle,
      int n,
      const ComplexFloat* alpha,
@@ -77,7 +77,7 @@ axpy(cublasHandle_t handle,
 }
 
 // zaxpy
-cublasStatus_t
+inline cublasStatus_t
 axpy(cublasHandle_t handle,
      int n,
      const ComplexDouble* alpha,
@@ -94,7 +94,7 @@ axpy(cublasHandle_t handle,
 // blam -> cublas
 template <typename DerivedPolicy,
           typename Alpha, typename VX, typename VY>
-auto
+inline auto
 axpy(const execution_policy<DerivedPolicy>& exec,
      int n,
      const Alpha& alpha,

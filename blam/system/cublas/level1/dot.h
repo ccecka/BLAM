@@ -27,7 +27,7 @@
 
 #pragma once
 
-#include <blam/detail/config.h>
+#include <blam/system/cublas/config.h>
 #include <blam/system/cublas/execution_policy.h>
 
 namespace blam
@@ -36,7 +36,7 @@ namespace cublas
 {
 
 // sdot
-cublasStatus_t
+inline cublasStatus_t
 dotu(cublasHandle_t handle, int n,
      const float* x, int incX,
      const float* y, int incY,
@@ -51,7 +51,7 @@ dotu(cublasHandle_t handle, int n,
 }
 
 // ddot
-cublasStatus_t
+inline cublasStatus_t
 dotu(cublasHandle_t handle, int n,
      const double* x, int incX,
      const double* y, int incY,
@@ -66,7 +66,7 @@ dotu(cublasHandle_t handle, int n,
 }
 
 // cdotu
-cublasStatus_t
+inline cublasStatus_t
 dotu(cublasHandle_t handle, int n,
      const ComplexFloat* x, int incX,
      const ComplexFloat* y, int incY,
@@ -81,7 +81,7 @@ dotu(cublasHandle_t handle, int n,
 }
 
 // zdotu
-cublasStatus_t
+inline cublasStatus_t
 dotu(cublasHandle_t handle, int n,
      const ComplexDouble* x, int incX,
      const ComplexDouble* y, int incY,
@@ -96,7 +96,7 @@ dotu(cublasHandle_t handle, int n,
 }
 
 // cdotc
-cublasStatus_t
+inline cublasStatus_t
 dotc(cublasHandle_t handle, int n,
      const ComplexFloat* x, int incX,
      const ComplexFloat* y, int incY,
@@ -111,7 +111,7 @@ dotc(cublasHandle_t handle, int n,
 }
 
 // zdotc
-cublasStatus_t
+inline cublasStatus_t
 dotc(cublasHandle_t handle, int n,
      const ComplexDouble* x, int incX,
      const ComplexDouble* y, int incY,
@@ -128,7 +128,7 @@ dotc(cublasHandle_t handle, int n,
 // blam -> cublas
 template <typename DerivedPolicy,
           typename VX, typename VY, typename R>
-auto
+inline auto
 dotu(const execution_policy<DerivedPolicy>& exec, int n,
      const VX* x, int incX,
      const VY* y, int incY,
@@ -147,7 +147,7 @@ dotu(const execution_policy<DerivedPolicy>& exec, int n,
 // blam -> cublas
 template <typename DerivedPolicy,
           typename VX, typename VY, typename R>
-auto
+inline auto
 dotc(const execution_policy<DerivedPolicy>& exec, int n,
      const VX* x, int incX,
      const VY* y, int incY,

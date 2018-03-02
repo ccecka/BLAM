@@ -27,7 +27,7 @@
 
 #pragma once
 
-#include <blam/detail/config.h>
+#include <blam/system/cublas/config.h>
 #include <blam/system/cublas/execution_policy.h>
 
 namespace blam
@@ -36,7 +36,7 @@ namespace cublas
 {
 
 // scopy
-cublasStatus_t
+inline cublasStatus_t
 copy(cublasHandle_t handle, int n,
      const float* x, int incX,
      float* y, int incY)
@@ -49,7 +49,7 @@ copy(cublasHandle_t handle, int n,
 }
 
 // dcopy
-cublasStatus_t
+inline cublasStatus_t
 copy(cublasHandle_t handle, int n,
      const double* x, int incX,
      double* y, int incY)
@@ -62,7 +62,7 @@ copy(cublasHandle_t handle, int n,
 }
 
 // ccopy
-cublasStatus_t
+inline cublasStatus_t
 copy(cublasHandle_t handle, int n,
      const ComplexFloat* x, int incX,
      ComplexFloat* y, int incY)
@@ -75,7 +75,7 @@ copy(cublasHandle_t handle, int n,
 }
 
 // zcopy
-cublasStatus_t
+inline cublasStatus_t
 copy(cublasHandle_t handle, int n,
      const ComplexDouble* x, int incX,
      ComplexDouble* y, int incY)
@@ -90,7 +90,7 @@ copy(cublasHandle_t handle, int n,
 // blam -> cublas
 template <typename DerivedPolicy,
           typename VX, typename VY>
-auto
+inline auto
 copy(const execution_policy<DerivedPolicy>& exec, int n,
      const VX* x, int incX,
      VY* y, int incY)

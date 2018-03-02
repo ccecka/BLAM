@@ -27,7 +27,7 @@
 
 #pragma once
 
-#include <blam/detail/config.h>
+#include <blam/system/cublas/config.h>
 #include <blam/system/cublas/execution_policy.h>
 
 namespace blam
@@ -36,7 +36,7 @@ namespace cublas
 {
 
 // sswap
-cublasStatus_t
+inline cublasStatus_t
 swap(cublasHandle_t handle, int n,
      float* x, int incX,
      float* y, int incY)
@@ -49,7 +49,7 @@ swap(cublasHandle_t handle, int n,
 }
 
 // dcopy
-cublasStatus_t
+inline cublasStatus_t
 swap(cublasHandle_t handle, int n,
      double* x, int incX,
      double* y, int incY)
@@ -62,7 +62,7 @@ swap(cublasHandle_t handle, int n,
 }
 
 // ccopy
-cublasStatus_t
+inline cublasStatus_t
 swap(cublasHandle_t handle, int n,
      ComplexFloat* x, int incX,
      ComplexFloat* y, int incY)
@@ -75,7 +75,7 @@ swap(cublasHandle_t handle, int n,
 }
 
 // zcopy
-cublasStatus_t
+inline cublasStatus_t
 swap(cublasHandle_t handle, int n,
      ComplexDouble* x, int incX,
      ComplexDouble* y, int incY)
@@ -90,7 +90,7 @@ swap(cublasHandle_t handle, int n,
 // blam -> cublas
 template <typename DerivedPolicy,
           typename VX, typename VY>
-auto
+inline auto
 swap(const execution_policy<DerivedPolicy>& exec, int n,
      VX* x, int incX,
      VY* y, int incY)

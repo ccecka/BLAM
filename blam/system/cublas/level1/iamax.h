@@ -27,7 +27,7 @@
 
 #pragma once
 
-#include <blam/detail/config.h>
+#include <blam/system/cublas/config.h>
 #include <blam/system/cublas/execution_policy.h>
 
 namespace blam
@@ -36,7 +36,7 @@ namespace cublas
 {
 
 // isamax
-cublasStatus_t
+inline cublasStatus_t
 iamax(cublasHandle_t handle, int n,
       const float* x, int incX,
       int* result)
@@ -50,7 +50,7 @@ iamax(cublasHandle_t handle, int n,
 
 
 // idamax
-cublasStatus_t
+inline cublasStatus_t
 iamax(cublasHandle_t handle, int n,
       const double* x, int incX,
       int* result)
@@ -64,7 +64,7 @@ iamax(cublasHandle_t handle, int n,
 
 
 // icamax
-cublasStatus_t
+inline cublasStatus_t
 iamax(cublasHandle_t handle, int n,
       const ComplexFloat* x, int incX,
       int* result)
@@ -77,7 +77,7 @@ iamax(cublasHandle_t handle, int n,
 }
 
 // izamax
-cublasStatus_t
+inline cublasStatus_t
 iamax(cublasHandle_t handle, int n,
       const ComplexDouble* x, int incX,
       int* result)
@@ -92,17 +92,20 @@ iamax(cublasHandle_t handle, int n,
 // blam -> cublas
 template <typename DerivedPolicy,
           typename VX, typename R>
-auto
+inline auto
 iamax(const execution_policy<DerivedPolicy>& exec, int n,
       const VX* x, int incX,
       R& result)
     -> decltype(iamax(handle(derived_cast(exec)), n,
                       x, incX,
-                      &result))
+                      std::declval<int*>()))   // XXX HACK for 64-bit/32-bit
 {
-  return iamax(handle(derived_cast(exec)), n,
-               x, incX,
-               &result);
+  int result_i;
+  auto r = iamax(handle(derived_cast(exec)), n,
+                 x, incX,
+                 &result_i);
+  result = result_i;
+  return r;
 }
 
 } // end namespace cublas

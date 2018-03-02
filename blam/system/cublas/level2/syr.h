@@ -27,7 +27,7 @@
 
 #pragma once
 
-#include <blam/detail/config.h>
+#include <blam/system/cublas/config.h>
 #include <blam/system/cublas/execution_policy.h>
 
 namespace blam
@@ -36,7 +36,7 @@ namespace cublas
 {
 
 // ssyr
-cublasStatus_t
+inline cublasStatus_t
 syr(cublasHandle_t handle, cublasFillMode_t uplo,
     int n,
     const float* alpha,
@@ -53,7 +53,7 @@ syr(cublasHandle_t handle, cublasFillMode_t uplo,
 }
 
 // dsyr
-cublasStatus_t
+inline cublasStatus_t
 syr(cublasHandle_t handle, cublasFillMode_t uplo,
     int n,
     const double* alpha,
@@ -70,7 +70,7 @@ syr(cublasHandle_t handle, cublasFillMode_t uplo,
 }
 
 // csyr
-cublasStatus_t
+inline cublasStatus_t
 syr(cublasHandle_t handle, cublasFillMode_t uplo,
     int n,
     const ComplexFloat* alpha,
@@ -87,7 +87,7 @@ syr(cublasHandle_t handle, cublasFillMode_t uplo,
 }
 
 // zsyr
-cublasStatus_t
+inline cublasStatus_t
 syr(cublasHandle_t handle, cublasFillMode_t uplo,
     int n,
     const ComplexDouble* alpha,
@@ -107,7 +107,7 @@ syr(cublasHandle_t handle, cublasFillMode_t uplo,
 template <typename DerivedPolicy,
           typename Alpha,
           typename VX, typename MA>
-auto
+inline auto
 syr(const execution_policy<DerivedPolicy>& exec,
     Uplo uplo,
     int n,
@@ -129,7 +129,7 @@ syr(const execution_policy<DerivedPolicy>& exec,
 template <typename DerivedPolicy,
           typename Alpha,
           typename VX, typename MA>
-auto
+inline auto
 syr(const execution_policy<DerivedPolicy>& exec,
     Layout order, Uplo uplo,
     int n,

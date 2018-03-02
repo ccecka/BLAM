@@ -27,7 +27,7 @@
 
 #pragma once
 
-#include <blam/detail/config.h>
+#include <blam/system/cublas/config.h>
 #include <blam/system/cublas/execution_policy.h>
 
 namespace blam
@@ -36,7 +36,7 @@ namespace cublas
 {
 
 // sgbmv
-cublasStatus_t
+inline cublasStatus_t
 gbmv(cublasHandle_t handle, cublasOperation_t trans,
      int m, int n, int kl, int ku,
      const float* alpha,
@@ -57,7 +57,7 @@ gbmv(cublasHandle_t handle, cublasOperation_t trans,
 }
 
 // dgbmv
-cublasStatus_t
+inline cublasStatus_t
 gbmv(cublasHandle_t handle, cublasOperation_t trans,
      int m, int n,
      int kl, int ku,
@@ -79,7 +79,7 @@ gbmv(cublasHandle_t handle, cublasOperation_t trans,
 }
 
 // cgbmv
-cublasStatus_t
+inline cublasStatus_t
 gbmv(cublasHandle_t handle, cublasOperation_t trans,
      int m, int n, int kl, int ku,
      const ComplexFloat* alpha,
@@ -100,7 +100,7 @@ gbmv(cublasHandle_t handle, cublasOperation_t trans,
 }
 
 // zgbmv
-cublasStatus_t
+inline cublasStatus_t
 gbmv(cublasHandle_t handle, cublasOperation_t trans,
      int m, int n, int kl, int ku,
      const ComplexDouble* alpha,
@@ -124,7 +124,7 @@ gbmv(cublasHandle_t handle, cublasOperation_t trans,
 template <typename DerivedPolicy,
           typename Alpha, typename MA, typename VX,
           typename Beta, typename VY>
-auto
+inline auto
 gbmv(const execution_policy<DerivedPolicy>& exec,
      Op trans,
      int m, int n, int kl, int ku,
@@ -154,7 +154,7 @@ gbmv(const execution_policy<DerivedPolicy>& exec,
 template <typename DerivedPolicy,
           typename Alpha, typename MA, typename VX,
           typename Beta, typename VY>
-auto
+inline auto
 gbmv(const execution_policy<DerivedPolicy>& exec,
      Layout order, Op trans,
      int m, int n, int kl, int ku,

@@ -27,7 +27,7 @@
 
 #pragma once
 
-#include <blam/detail/config.h>
+#include <blam/system/cublas/config.h>
 #include <blam/system/cublas/execution_policy.h>
 
 namespace blam
@@ -36,7 +36,7 @@ namespace cublas
 {
 
 // sgemv
-cublasStatus_t
+inline cublasStatus_t
 gemv(cublasHandle_t handle, cublasOperation_t trans,
      int m, int n,
      const float* alpha,
@@ -57,7 +57,7 @@ gemv(cublasHandle_t handle, cublasOperation_t trans,
 }
 
 // dgemv
-cublasStatus_t
+inline cublasStatus_t
 gemv(cublasHandle_t handle, cublasOperation_t trans,
      int m, int n,
      const double* alpha,
@@ -78,7 +78,7 @@ gemv(cublasHandle_t handle, cublasOperation_t trans,
 }
 
 // cgemv
-cublasStatus_t
+inline cublasStatus_t
 gemv(cublasHandle_t handle, cublasOperation_t trans,
      int m, int n,
      const ComplexFloat* alpha,
@@ -99,7 +99,7 @@ gemv(cublasHandle_t handle, cublasOperation_t trans,
 }
 
 // zgemv
-cublasStatus_t
+inline cublasStatus_t
 gemv(cublasHandle_t handle, cublasOperation_t trans,
      int m, int n,
      const ComplexDouble* alpha,
@@ -120,7 +120,7 @@ gemv(cublasHandle_t handle, cublasOperation_t trans,
 }
 
 // csgemv   XXX: Move to general
-cublasStatus_t
+inline cublasStatus_t
 gemv(cublasHandle_t handle, cublasOperation_t trans,
      int m, int n,
      const float* alpha,
@@ -143,7 +143,7 @@ gemv(cublasHandle_t handle, cublasOperation_t trans,
 }
 
 // zdgemv   XXX: Move to general
-cublasStatus_t
+inline cublasStatus_t
 gemv(cublasHandle_t handle, cublasOperation_t trans,
      int m, int n,
      const double* alpha,
@@ -169,7 +169,7 @@ gemv(cublasHandle_t handle, cublasOperation_t trans,
 template <typename DerivedPolicy,
           typename Alpha, typename MA, typename VX,
           typename Beta, typename VY>
-auto
+inline auto
 gemv(const execution_policy<DerivedPolicy>& exec,
      Op trans,
      int m, int n,
@@ -199,7 +199,7 @@ gemv(const execution_policy<DerivedPolicy>& exec,
 template <typename DerivedPolicy,
           typename Alpha, typename MA, typename VX,
           typename Beta, typename VY>
-auto
+inline auto
 gemv(const execution_policy<DerivedPolicy>& exec,
      Layout order, Op trans,
      int m, int n,

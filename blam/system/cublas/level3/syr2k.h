@@ -27,7 +27,7 @@
 
 #pragma once
 
-#include <blam/detail/config.h>
+#include <blam/system/cublas/config.h>
 #include <blam/system/cublas/execution_policy.h>
 
 namespace blam
@@ -36,7 +36,7 @@ namespace cublas
 {
 
 // ssyr2k
-cublasStatus_t
+inline cublasStatus_t
 syr2k(cublasHandle_t handle,
       cublasFillMode_t uplo, cublasOperation_t trans,
       int n, int k,
@@ -58,7 +58,7 @@ syr2k(cublasHandle_t handle,
 }
 
 // dsyr2k
-cublasStatus_t
+inline cublasStatus_t
 syr2k(cublasHandle_t handle,
       cublasFillMode_t uplo, cublasOperation_t trans,
       int n, int k,
@@ -80,7 +80,7 @@ syr2k(cublasHandle_t handle,
 }
 
 // csyrk
-cublasStatus_t
+inline cublasStatus_t
 syr2k(cublasHandle_t handle,
       cublasFillMode_t uplo, cublasOperation_t trans,
       int n, int k,
@@ -102,7 +102,7 @@ syr2k(cublasHandle_t handle,
 }
 
 // zsyrk
-cublasStatus_t
+inline cublasStatus_t
 syr2k(cublasHandle_t handle,
       cublasFillMode_t uplo, cublasOperation_t trans,
       int n, int k,
@@ -127,7 +127,7 @@ syr2k(cublasHandle_t handle,
 template <typename DerivedPolicy,
           typename Alpha, typename MA, typename MB,
           typename Beta, typename MC>
-auto
+inline auto
 syr2k(const execution_policy<DerivedPolicy>& exec,
       Uplo uplo, Op trans,
       int n, int k,
@@ -159,7 +159,7 @@ syr2k(const execution_policy<DerivedPolicy>& exec,
 template <typename DerivedPolicy,
           typename Alpha, typename MA, typename MB,
           typename Beta, typename MC>
-auto
+inline auto
 syr2k(const execution_policy<DerivedPolicy>& exec,
       Layout order, Uplo uplo, Op trans,
       int n, int k,

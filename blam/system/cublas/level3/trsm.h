@@ -27,7 +27,7 @@
 
 #pragma once
 
-#include <blam/detail/config.h>
+#include <blam/system/cublas/config.h>
 #include <blam/system/cublas/execution_policy.h>
 
 namespace blam
@@ -36,7 +36,7 @@ namespace cublas
 {
 
 // strsm
-cublasStatus_t
+inline cublasStatus_t
 trsm(cublasHandle_t handle,
      cublasSideMode_t side, cublasFillMode_t uplo,
      cublasOperation_t trans, cublasDiagType_t diag,
@@ -55,7 +55,7 @@ trsm(cublasHandle_t handle,
 }
 
 // dtrsm
-cublasStatus_t
+inline cublasStatus_t
 trsm(cublasHandle_t handle,
      cublasSideMode_t side, cublasFillMode_t uplo,
      cublasOperation_t trans, cublasDiagType_t diag,
@@ -74,7 +74,7 @@ trsm(cublasHandle_t handle,
 }
 
 // ctrsm
-cublasStatus_t
+inline cublasStatus_t
 trsm(cublasHandle_t handle,
      cublasSideMode_t side, cublasFillMode_t uplo,
      cublasOperation_t trans, cublasDiagType_t diag,
@@ -93,7 +93,7 @@ trsm(cublasHandle_t handle,
 }
 
 // ztrsm
-cublasStatus_t
+inline cublasStatus_t
 trsm(cublasHandle_t handle,
      cublasSideMode_t side, cublasFillMode_t uplo,
      cublasOperation_t trans, cublasDiagType_t diag,
@@ -113,8 +113,8 @@ trsm(cublasHandle_t handle,
 
 // blam -> cublas
 template <typename DerivedPolicy,
-          typename Alpha, typename MA, typename MB, typename MC>
-auto
+          typename Alpha, typename MA, typename MB>
+inline auto
 trsm(const execution_policy<DerivedPolicy>& exec,
      Side side, Uplo uplo, Op trans, Diag diag,
      int m, int n,
@@ -140,8 +140,8 @@ trsm(const execution_policy<DerivedPolicy>& exec,
 
 // RowMajor -> ColMajor
 template <typename DerivedPolicy,
-          typename Alpha, typename MA, typename MB, typename MC>
-auto
+          typename Alpha, typename MA, typename MB>
+inline auto
 trsm(const execution_policy<DerivedPolicy>& exec,
      Layout order, Side side, Uplo uplo, Op trans, Diag diag,
      int m, int n,

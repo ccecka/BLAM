@@ -27,7 +27,7 @@
 
 #pragma once
 
-#include <blam/detail/config.h>
+#include <blam/system/cublas/config.h>
 #include <blam/system/cublas/execution_policy.h>
 
 namespace blam
@@ -36,7 +36,7 @@ namespace cublas
 {
 
 // sgeam
-cublasStatus_t
+inline cublasStatus_t
 geam(cublasHandle_t handle,
      cublasOperation_t transA, cublasOperation_t transB,
      int m, int n,
@@ -58,7 +58,7 @@ geam(cublasHandle_t handle,
 }
 
 // dgeam
-cublasStatus_t
+inline cublasStatus_t
 geam(cublasHandle_t handle,
      cublasOperation_t transA, cublasOperation_t transB,
      int m, int n,
@@ -80,7 +80,7 @@ geam(cublasHandle_t handle,
 }
 
 // cgeam
-cublasStatus_t
+inline cublasStatus_t
 geam(cublasHandle_t handle,
      cublasOperation_t transA, cublasOperation_t transB,
      int m, int n,
@@ -102,7 +102,7 @@ geam(cublasHandle_t handle,
 }
 
 // zgeam
-cublasStatus_t
+inline cublasStatus_t
 geam(cublasHandle_t handle,
      cublasOperation_t transA, cublasOperation_t transB,
      int m, int n,
@@ -127,7 +127,7 @@ geam(cublasHandle_t handle,
 template <typename DerivedPolicy,
           typename Alpha, typename MA, typename MB,
           typename Beta, typename MC>
-auto
+inline auto
 geam(const execution_policy<DerivedPolicy>& exec,
      Op transA, Op transB,
      int m, int n,

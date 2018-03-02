@@ -27,10 +27,9 @@
 
 #pragma once
 
-#include <blam/detail/config.h>
-#include <blam/detail/execution_policy.h>
+#include <blam/system/cublas/config.h>
 
-#include <blam/system/cublas/types.h>
+#include <blam/detail/execution_policy.h>
 
 namespace blam
 {
@@ -115,7 +114,7 @@ struct execute_on_handle_base
     return result;
   }
 
- private:
+ protected:  // XXX
   // handle() is a friend function because we call it through ADL
   friend inline cublasHandle_t handle(const execute_on_handle_base& exec)
   {
@@ -135,7 +134,7 @@ struct execute_on_handle_base
   cublasHandle_t m_handle;
 };
 
-
+/*
 // execution policy which submits kernel launches on a given handle
 class execute_on_handle
     : public execute_on_handle_base<execute_on_handle>
@@ -143,7 +142,6 @@ class execute_on_handle
   typedef execute_on_handle_base<execute_on_handle> super_t;
 
  public:
-  // XXX: Default handle??
   inline execute_on_handle(void) {}
 
   inline execute_on_handle(const cublasHandle_t& handle)
@@ -152,42 +150,60 @@ class execute_on_handle
 };
 
 static const execute_on_handle par;
+*/
+
+// execution policy which submits kernel launches on a default handle
+class default_handle
+    : public execute_on_handle_base<default_handle>
+{
+  typedef execute_on_handle_base<default_handle> super_t;
+
+ public:
+  inline default_handle(void) {
+    auto status = cublasCreate(&m_handle);
+    assert(status == CUBLAS_STATUS_SUCCESS);
+  }
+
+  // TODO: Destructor
+};
+
+static const default_handle par;
 
 //
 // Library type ADLs
 //
 
-const char*
+inline const char*
 get_error(cublas::tag, cublasStatus_t status)
 {
   return cublas_get_error(status);
 }
 
-bool
+inline bool
 is_error(cublas::tag, cublasStatus_t status)
 {
   return cublas_is_error(status);
 }
 
-cublasOperation_t
+inline cublasOperation_t
 library_type(cublas::tag, Op trans)
 {
   return cublas_type(trans);
 }
 
-cublasFillMode_t
+inline cublasFillMode_t
 library_type(cublas::tag, Uplo uplo)
 {
   return cublas_type(uplo);
 }
 
-cublasSideMode_t
+inline cublasSideMode_t
 library_type(cublas::tag, Side side)
 {
   return cublas_type(side);
 }
 
-cublasDiagType_t
+inline cublasDiagType_t
 library_type(cublas::tag, Diag diag)
 {
   return cublas_type(diag);

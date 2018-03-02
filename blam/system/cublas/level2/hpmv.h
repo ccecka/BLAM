@@ -27,7 +27,7 @@
 
 #pragma once
 
-#include <blam/detail/config.h>
+#include <blam/system/cublas/config.h>
 #include <blam/system/cublas/execution_policy.h>
 
 namespace blam
@@ -36,7 +36,7 @@ namespace cublas
 {
 
 // chpmv
-cublasStatus_t
+inline cublasStatus_t
 hpmv(cublasHandle_t handle, cublasFillMode_t uplo,
      int n,
      const ComplexFloat* alpha,
@@ -57,7 +57,7 @@ hpmv(cublasHandle_t handle, cublasFillMode_t uplo,
 }
 
 // zhpmv
-cublasStatus_t
+inline cublasStatus_t
 hpmv(cublasHandle_t handle, cublasFillMode_t uplo,
      int n,
      const ComplexDouble* alpha,
@@ -81,7 +81,7 @@ hpmv(cublasHandle_t handle, cublasFillMode_t uplo,
 template <typename DerivedPolicy,
           typename Alpha, typename MA, typename VX,
           typename Beta, typename VY>
-auto
+inline auto
 hpmv(const execution_policy<DerivedPolicy>& exec,
      Uplo uplo,
      int n,

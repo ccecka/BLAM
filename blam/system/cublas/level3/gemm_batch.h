@@ -27,7 +27,7 @@
 
 #pragma once
 
-#include <blam/detail/config.h>
+#include <blam/system/cublas/config.h>
 #include <blam/system/cublas/execution_policy.h>
 
 #if (CUDA_VERSION >= 8000)
@@ -38,7 +38,7 @@ namespace cublas
 {
 
 // hgemm
-cublasStatus_t
+inline cublasStatus_t
 gemm_batch(cublasHandle_t handle,
            cublasOperation_t transA, cublasOperation_t transB,
            int m, int n, int k,
@@ -62,7 +62,7 @@ gemm_batch(cublasHandle_t handle,
 }
 
 // sgemm
-cublasStatus_t
+inline cublasStatus_t
 gemm_batch(cublasHandle_t handle,
            cublasOperation_t transA, cublasOperation_t transB,
            int m, int n, int k,
@@ -86,7 +86,7 @@ gemm_batch(cublasHandle_t handle,
 }
 
 // dgemm
-cublasStatus_t
+inline cublasStatus_t
 gemm_batch(cublasHandle_t handle,
            cublasOperation_t transA, cublasOperation_t transB,
            int m, int n, int k,
@@ -110,7 +110,7 @@ gemm_batch(cublasHandle_t handle,
 }
 
 // cgemm
-cublasStatus_t
+inline cublasStatus_t
 gemm_batch(cublasHandle_t handle,
            cublasOperation_t transA, cublasOperation_t transB,
            int m, int n, int k,
@@ -134,7 +134,7 @@ gemm_batch(cublasHandle_t handle,
 }
 
 // zgemm
-cublasStatus_t
+inline cublasStatus_t
 gemm_batch(cublasHandle_t handle,
            cublasOperation_t transA, cublasOperation_t transB,
            int m, int n, int k,
@@ -158,7 +158,7 @@ gemm_batch(cublasHandle_t handle,
 }
 
 // scgemm    XXX: Move to general?
-cublasStatus_t
+inline cublasStatus_t
 gemm_batch(cublasHandle_t handle,
            cublasOperation_t transA, cublasOperation_t transB,
            int m, int n, int k,
@@ -184,7 +184,7 @@ gemm_batch(cublasHandle_t handle,
 }
 
 // csgemm    XXX: Move to general?
-cublasStatus_t
+inline cublasStatus_t
 gemm_batch(cublasHandle_t handle,
            cublasOperation_t transA, cublasOperation_t transB,
            int m, int n, int k,
@@ -210,7 +210,7 @@ gemm_batch(cublasHandle_t handle,
 }
 
 // zdgemm    XXX: Move to general?
-cublasStatus_t
+inline cublasStatus_t
 gemm_batch(cublasHandle_t handle,
            cublasOperation_t transA, cublasOperation_t transB,
            int m, int n, int k,
@@ -236,7 +236,7 @@ gemm_batch(cublasHandle_t handle,
 }
 
 // dzgemm    XXX: Move to general?
-cublasStatus_t
+inline cublasStatus_t
 gemm_batch(cublasHandle_t handle,
            cublasOperation_t transA, cublasOperation_t transB,
            int m, int n, int k,
@@ -265,7 +265,7 @@ gemm_batch(cublasHandle_t handle,
 template <typename DerivedPolicy,
           typename Alpha, typename MA, typename MB,
           typename Beta, typename MC>
-auto
+inline auto
 gemm_batch(const execution_policy<DerivedPolicy>& exec,
            Op transA, Op transB,
            int m, int n, int k,
@@ -300,7 +300,7 @@ gemm_batch(const execution_policy<DerivedPolicy>& exec,
 template <typename DerivedPolicy,
           typename Alpha, typename MA, typename MB,
           typename Beta, typename MC>
-auto
+inline auto
 gemm_batch(const execution_policy<DerivedPolicy>& exec,
            Layout order, Op transA, Op transB,
            int m, int n, int k,

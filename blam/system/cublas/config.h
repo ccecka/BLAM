@@ -35,7 +35,7 @@
 namespace blam
 {
 
-cublasOperation_t
+inline cublasOperation_t
 cublas_type(Op trans)
 {
   switch (trans) {
@@ -48,7 +48,7 @@ cublas_type(Op trans)
   }
 }
 
-cublasFillMode_t
+inline cublasFillMode_t
 cublas_type(Uplo uplo)
 {
   switch (uplo) {
@@ -60,7 +60,7 @@ cublas_type(Uplo uplo)
   }
 }
 
-cublasSideMode_t
+inline cublasSideMode_t
 cublas_type(Side side)
 {
   switch (side) {
@@ -72,7 +72,7 @@ cublas_type(Side side)
   }
 }
 
-cublasDiagType_t
+inline cublasDiagType_t
 cublas_type(Diag diag)
 {
   switch (diag) {
@@ -84,7 +84,7 @@ cublas_type(Diag diag)
   }
 }
 
-const char*
+inline const char*
 cublas_get_error(cublasStatus_t status)
 {
   switch (status) {
@@ -113,7 +113,7 @@ cublas_get_error(cublasStatus_t status)
   }
 }
 
-bool
+inline bool
 cublas_is_error(cublasStatus_t status)
 {
   return status == CUBLAS_STATUS_SUCCESS;

@@ -27,7 +27,7 @@
 
 #pragma once
 
-#include <blam/detail/config.h>
+#include <blam/system/cublas/config.h>
 #include <blam/system/cublas/execution_policy.h>
 
 namespace blam
@@ -36,7 +36,7 @@ namespace cublas
 {
 
 // ssymv
-cublasStatus_t
+inline cublasStatus_t
 symv(cublasHandle_t handle, cublasFillMode_t uplo,
      int n,
      const float* alpha,
@@ -57,7 +57,7 @@ symv(cublasHandle_t handle, cublasFillMode_t uplo,
 }
 
 // dsymv
-cublasStatus_t
+inline cublasStatus_t
 symv(cublasHandle_t handle, cublasFillMode_t uplo,
      int n,
      const double* alpha,
@@ -78,7 +78,7 @@ symv(cublasHandle_t handle, cublasFillMode_t uplo,
 }
 
 // csymv
-cublasStatus_t
+inline cublasStatus_t
 symv(cublasHandle_t handle, cublasFillMode_t uplo,
      int n,
      const ComplexFloat* alpha,
@@ -99,7 +99,7 @@ symv(cublasHandle_t handle, cublasFillMode_t uplo,
 }
 
 // zsymv
-cublasStatus_t
+inline cublasStatus_t
 symv(cublasHandle_t handle, cublasFillMode_t uplo,
      int n,
      const ComplexDouble* alpha,
@@ -123,7 +123,7 @@ symv(cublasHandle_t handle, cublasFillMode_t uplo,
 template <typename DerivedPolicy,
           typename Alpha, typename MA, typename VX,
           typename Beta, typename VY>
-auto
+inline auto
 symv(const execution_policy<DerivedPolicy>& exec,
      Uplo uplo,
      int n,
@@ -153,7 +153,7 @@ symv(const execution_policy<DerivedPolicy>& exec,
 template <typename DerivedPolicy,
           typename Alpha, typename MA, typename VX,
           typename Beta, typename VY>
-auto
+inline auto
 symv(const execution_policy<DerivedPolicy>& exec,
      Layout order, Uplo uplo,
      int n,

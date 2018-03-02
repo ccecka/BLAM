@@ -27,7 +27,7 @@
 
 #pragma once
 
-#include <blam/detail/config.h>
+#include <blam/system/cublas/config.h>
 #include <blam/system/cublas/execution_policy.h>
 
 namespace blam
@@ -36,7 +36,7 @@ namespace cublas
 {
 
 // strmm
-cublasStatus_t
+inline cublasStatus_t
 trmm(cublasHandle_t handle,
      cublasSideMode_t side, cublasFillMode_t uplo,
      cublasOperation_t transA, cublasDiagType_t diag,
@@ -57,7 +57,7 @@ trmm(cublasHandle_t handle,
 }
 
 // dtrmm
-cublasStatus_t
+inline cublasStatus_t
 trmm(cublasHandle_t handle,
      cublasSideMode_t side, cublasFillMode_t uplo,
      cublasOperation_t transA, cublasDiagType_t diag,
@@ -78,7 +78,7 @@ trmm(cublasHandle_t handle,
 }
 
 // ctrmm
-cublasStatus_t
+inline cublasStatus_t
 trmm(cublasHandle_t handle,
      cublasSideMode_t side, cublasFillMode_t uplo,
      cublasOperation_t transA, cublasDiagType_t diag,
@@ -99,7 +99,7 @@ trmm(cublasHandle_t handle,
 }
 
 // ztrmm
-cublasStatus_t
+inline cublasStatus_t
 trmm(cublasHandle_t handle,
      cublasSideMode_t side, cublasFillMode_t uplo,
      cublasOperation_t transA, cublasDiagType_t diag,
@@ -122,7 +122,7 @@ trmm(cublasHandle_t handle,
 // blam -> cublas
 template <typename DerivedPolicy,
           typename Alpha, typename MA, typename MB, typename MC>
-auto
+inline auto
 trmm(const execution_policy<DerivedPolicy>& exec,
      Side side, Uplo uplo, Op transA, Diag diag,
      int m, int n,
@@ -152,7 +152,7 @@ trmm(const execution_policy<DerivedPolicy>& exec,
 // RowMajor -> ColMajor
 template <typename DerivedPolicy,
           typename Alpha, typename MA, typename MB, typename MC>
-auto
+inline auto
 trmm(const execution_policy<DerivedPolicy>& exec,
      Layout order, Side side, Uplo uplo, Op transA, Diag diag,
      int m, int n,
@@ -168,18 +168,43 @@ trmm(const execution_policy<DerivedPolicy>& exec,
                      C, ldC))
 {
   if (order == RowMajor) {
-    // Swap left <=> right, upper <=> lower
+    // Swap left <=> right, upper <=> lower, m <=> n
     side = (side==Left) ? Right : Left;
     uplo = (uplo==Upper) ? Lower : Upper;
+    std::swap(m,n);
   }
 
-  return trmm(exec, side, uplo,
-              transA, diag,
+  return trmm(exec, side, uplo, transA, diag,
               m, n,
               alpha,
               A, ldA,
               B, ldB,
               C, ldC);
+}
+
+// blam -> cublas
+template <typename DerivedPolicy,
+          typename Alpha, typename MA, typename MB>
+inline auto
+trmm(const execution_policy<DerivedPolicy>& exec,
+     Layout order, Side side, Uplo uplo, Op transA, Diag diag,
+     int m, int n,
+     const Alpha& alpha,
+     const MA* A, int ldA,
+     MB* B, int ldB)
+    -> decltype(trmm(exec, order, side, uplo, transA, diag,
+                     m, n,
+                     alpha,
+                     A, ldA,
+                     B, ldB,
+                     B, ldB))
+{
+  return trmm(exec, order, side, uplo, transA, diag,
+              m, n,
+              alpha,
+              A, ldA,
+              B, ldB,
+              B, ldB);
 }
 
 } // end namespace cublas

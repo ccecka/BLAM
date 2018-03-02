@@ -27,7 +27,7 @@
 
 #pragma once
 
-#include <blam/detail/config.h>
+#include <blam/system/cublas/config.h>
 #include <blam/system/cublas/execution_policy.h>
 
 namespace blam
@@ -36,7 +36,7 @@ namespace cublas
 {
 
 // ssymm
-cublasStatus_t
+inline cublasStatus_t
 symm(cublasHandle_t handle,
      cublasSideMode_t side, cublasFillMode_t uplo,
      int m, int n,
@@ -58,7 +58,7 @@ symm(cublasHandle_t handle,
 }
 
 // dsymm
-cublasStatus_t
+inline cublasStatus_t
 symm(cublasHandle_t handle,
      cublasSideMode_t side, cublasFillMode_t uplo,
      int m, int n,
@@ -80,7 +80,7 @@ symm(cublasHandle_t handle,
 }
 
 // csymm
-cublasStatus_t
+inline cublasStatus_t
 symm(cublasHandle_t handle,
      cublasSideMode_t side, cublasFillMode_t uplo,
      int m, int n,
@@ -102,7 +102,7 @@ symm(cublasHandle_t handle,
 }
 
 // zsymm
-cublasStatus_t
+inline cublasStatus_t
 symm(cublasHandle_t handle,
      cublasSideMode_t side, cublasFillMode_t uplo,
      int m, int n,
@@ -127,7 +127,7 @@ symm(cublasHandle_t handle,
 template <typename DerivedPolicy,
           typename Alpha, typename MA, typename MB,
           typename Beta, typename MC>
-auto
+inline auto
 symm(const execution_policy<DerivedPolicy>& exec,
      Side side, Uplo uplo,
      int m, int n,
@@ -159,7 +159,7 @@ symm(const execution_policy<DerivedPolicy>& exec,
 template <typename DerivedPolicy,
           typename Alpha, typename MA, typename MB,
           typename Beta, typename MC>
-auto
+inline auto
 symm(const execution_policy<DerivedPolicy>& exec,
      Layout order, Side side, Uplo uplo,
      int m, int n,

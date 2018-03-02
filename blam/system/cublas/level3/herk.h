@@ -27,7 +27,7 @@
 
 #pragma once
 
-#include <blam/detail/config.h>
+#include <blam/system/cublas/config.h>
 #include <blam/system/cublas/execution_policy.h>
 
 namespace blam
@@ -36,7 +36,7 @@ namespace cublas
 {
 
 // cherk
-cublasStatus_t
+inline cublasStatus_t
 herk(cublasHandle_t handle,
      cublasFillMode_t uplo, cublasOperation_t trans,
      int n, int k,
@@ -56,7 +56,7 @@ herk(cublasHandle_t handle,
 }
 
 // zherk
-cublasStatus_t
+inline cublasStatus_t
 herk(cublasHandle_t handle,
      cublasFillMode_t uplo, cublasOperation_t trans,
      int n, int k,
@@ -79,7 +79,7 @@ herk(cublasHandle_t handle,
 template <typename DerivedPolicy,
           typename Alpha, typename MA,
           typename Beta, typename MC>
-auto
+inline auto
 herk(const execution_policy<DerivedPolicy>& exec,
      Uplo uplo, Op trans,
      int n, int k,
@@ -108,7 +108,7 @@ herk(const execution_policy<DerivedPolicy>& exec,
 template <typename DerivedPolicy,
           typename Alpha, typename MA,
           typename Beta, typename MC>
-auto
+inline auto
 herk(const execution_policy<DerivedPolicy>& exec,
      Layout order, Uplo uplo, Op trans,
      int n, int k,

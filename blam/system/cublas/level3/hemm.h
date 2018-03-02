@@ -27,7 +27,7 @@
 
 #pragma once
 
-#include <blam/detail/config.h>
+#include <blam/system/cublas/config.h>
 #include <blam/system/cublas/execution_policy.h>
 
 namespace blam
@@ -36,7 +36,7 @@ namespace cublas
 {
 
 // chemm
-cublasStatus_t
+inline cublasStatus_t
 hemm(cublasHandle_t handle,
      cublasSideMode_t side, cublasFillMode_t uplo,
      int m, int n,
@@ -58,7 +58,7 @@ hemm(cublasHandle_t handle,
 }
 
 // zhemm
-cublasStatus_t
+inline cublasStatus_t
 hemm(cublasHandle_t handle,
      cublasSideMode_t side, cublasFillMode_t uplo,
      int m, int n,
@@ -83,7 +83,7 @@ hemm(cublasHandle_t handle,
 template <typename DerivedPolicy,
           typename Alpha, typename MA, typename MB,
           typename Beta, typename MC>
-auto
+inline auto
 hemm(const execution_policy<DerivedPolicy>& exec,
      Side side, Uplo uplo,
      int m, int n,
@@ -115,7 +115,7 @@ hemm(const execution_policy<DerivedPolicy>& exec,
 template <typename DerivedPolicy,
           typename Alpha, typename MA, typename MB,
           typename Beta, typename MC>
-auto
+inline auto
 hemm(const execution_policy<DerivedPolicy>& exec,
      Layout order, Side side, Uplo uplo,
      int m, int n,

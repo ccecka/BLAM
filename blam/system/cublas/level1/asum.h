@@ -27,7 +27,7 @@
 
 #pragma once
 
-#include <blam/detail/config.h>
+#include <blam/system/cublas/config.h>
 #include <blam/system/cublas/execution_policy.h>
 
 namespace blam
@@ -36,7 +36,7 @@ namespace cublas
 {
 
 // scopy
-cublasStatus_t
+inline cublasStatus_t
 asum(cublasHandle_t handle, int n,
      const float* x, int incX,
      float& result)
@@ -50,7 +50,7 @@ asum(cublasHandle_t handle, int n,
 
 
 // dasum
-cublasStatus_t
+inline cublasStatus_t
 asum(cublasHandle_t handle, int n,
      const double* x, int incX,
      double& result)
@@ -64,7 +64,7 @@ asum(cublasHandle_t handle, int n,
 
 
 // casum
-cublasStatus_t
+inline cublasStatus_t
 asum(cublasHandle_t handle, int n,
      const ComplexFloat* x, int incX,
      float& result)
@@ -77,7 +77,7 @@ asum(cublasHandle_t handle, int n,
 }
 
 // zasum
-cublasStatus_t
+inline cublasStatus_t
 asum(cublasHandle_t handle, int n,
      const ComplexDouble* x, int incX,
      double& result)
@@ -92,7 +92,7 @@ asum(cublasHandle_t handle, int n,
 // blam -> cublas
 template <typename DerivedPolicy,
           typename VX, typename R>
-auto
+inline auto
 asum(const execution_policy<DerivedPolicy>& exec,
      int n,
      const VX* x, int incX,

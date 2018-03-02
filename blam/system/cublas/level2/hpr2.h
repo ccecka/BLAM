@@ -27,7 +27,7 @@
 
 #pragma once
 
-#include <blam/detail/config.h>
+#include <blam/system/cublas/config.h>
 #include <blam/system/cublas/execution_policy.h>
 
 namespace blam
@@ -36,7 +36,7 @@ namespace cublas
 {
 
 // chpr2
-cublasStatus_t
+inline cublasStatus_t
 hpr2(cublasHandle_t handle, cublasFillMode_t uplo,
      int n,
      const float* alpha,
@@ -55,7 +55,7 @@ hpr2(cublasHandle_t handle, cublasFillMode_t uplo,
 }
 
 // zhpr2
-cublasStatus_t
+inline cublasStatus_t
 hpr2(cublasHandle_t handle, cublasFillMode_t uplo,
      int n,
      const double* alpha,
@@ -77,7 +77,7 @@ hpr2(cublasHandle_t handle, cublasFillMode_t uplo,
 template <typename DerivedPolicy,
           typename Alpha,
           typename VX, typename VY, typename MA>
-auto
+inline auto
 hpr2(const execution_policy<DerivedPolicy>& exec,
      Uplo uplo,
      int n,
