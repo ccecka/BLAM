@@ -29,110 +29,32 @@
 ## Makefile Setup ##
 ####################
 
-# Get the host-name if empty
-ifeq ($(host-name),)
-	host-name := $(shell hostname)
-endif
-# Get the kernel-name if empty
-ifeq ($(kernel-name),)
-	kernel-name := $(shell uname -s)
-endif
-# Get the arch-name if empty
-ifeq ($(arch-name),)
-	arch-name := $(shell uname -p)
-endif
+BLAM_PATH := $(dir $(lastword ${MAKEFILE_LIST}))
 
-#########################
-## Library Directories ##
-#########################
+include ${BLAM_PATH}/make.inc.mkl
+#include $(BLAM_PATH)/make.inc.openblas
+include ${BLAM_PATH}/make.inc.cublas
 
-BLAM_PATH := $(dir $(lastword $(MAKEFILE_LIST)))
+# defaults if not defined in make.inc
+CXX      ?= g++
 
-CUDA_PATH = /usr/local/cuda
+LDFLAGS  += -fPIC
 
-INTEL_PATH = /opt/intel
-MKL_PATH = $(INTEL_PATH)/mkl
+CXXFLAGS += -O3 -std=c++11 -fPIC -pedantic \
+            -Wall -Wno-unused-local-typedefs -Wno-unused-but-set-variable
+#CXXFLAGS += -Werror
+#CXXFLAGS += -Wconversion
+CXXFLAGS += -I${BLAM_PATH}
 
-# https://software.intel.com/en-us/articles/intel-mkl-link-line-advisor
-BLAS_INC = -I$(MKL_PATH)/include
-ifeq ($(kernel-name),Darwin)
-	BLAS_LIBS = -lpthread -ldl -lm -L$(MKL_PATH)/lib -lmkl_rt -lmkl_intel_thread -L$(INTEL_PATH)/lib -liomp5 -lcublas
-endif
-ifeq ($(kernel-name),Linux)
-	BLAS_LIBS =  -Wl,--start-group $(MKL_PATH)/lib/intel64/libmkl_intel_lp64.a $(MKL_PATH)/lib/intel64/libmkl_intel_thread.a $(MKL_PATH)/lib/intel64/libmkl_core.a /opt/intel/lib/intel64/libiomp5.a -Wl,--end-group -lpthread -ldl -lm -L$(MKL_PATH)/lib/intel64 -lcublas
-endif
-
-###############
-## Compilers ##
-###############
-
-# Define the C++ compiler to use
-ifeq ($(kernel-name),Darwin)
-	USE_CXX := $(shell which clang++)
-	CXXFLAGS = -fopenmp=libiomp5
-endif
-ifeq ($(kernel-name),Linux)
-	USE_CXX := $(shell which g++)
-	CXXFLAGS = -fopenmp
-endif
-CXX := $(USE_CXX) -std=c++11
-# Check for CUDA compiler
-USE_NVCC := $(shell which nvcc)
-NVCC     := $(USE_NVCC) -std=c++11 -ccbin=$(USE_CXX) --expt-extended-lambda
+LIBS     ?= -lblas
 
 # Dependency directory and flags
-DEPSDIR := $(shell mkdir -p .deps; echo .deps)
+DEPSDIR := ${shell mkdir -p .deps; echo .deps}
 # MD: Dependency as side-effect of compilation
 # MF: File for output
 # MP: Include phony targets
-DEPSFILE = $(DEPSDIR)/$(notdir $*.d)
-DEPSFLAGS = -MD -MF $(DEPSFILE) #-MP
-
-# Define any directories containing header files
-#   To include directories use -Ipath/to/files
-INCLUDES += -I$(BLAM_PATH) $(BLAS_INC)
-
-# Define cxx compile flags
-CXXFLAGS += -O3
-
-# Define nvcc compile flags   TODO: Detect and generate appropriate sm_XX?
-NVCCFLAGS := -arch=sm_70 -O3 --compiler-options "$(CXXFLAGS)"
-
-# Define any directories containing libraries
-#   To include directories use -Lpath/to/files
-LDFLAGS +=
-
-# Define any libraries to link into executable
-#   To link in libraries (libXXX.so or libXXX.a) use -lXXX
-LDLIBS  += $(BLAS_LIBS)
-
-######################
-## Makefile Options ##
-######################
-
-ifeq ($(NDEBUG),1)
-	CXXFLAGS += -DNDEBUG
-	NVCCFLAGS += -DNDEBUG
-endif
-ifeq ($(DEBUG),1)
-	CXXFLAGS += -g -fno-inline
-endif
-ifeq ($(PROFILE),1)
-	CXXFLAGS += -g -pg
-endif
-
-# Set up for CUDA if available
-ifeq ($(USE_NVCC),)    # NVCC is not available
-else                   # NVCC is available
-	INCLUDES += -I$(CUDA_PATH)/include
-	# Use cuda lib64 if it exists, else cuda lib
-	ifneq ($(wildcard $(CUDA_PATH)/lib64/.*),)
-		LDFLAGS += -L$(CUDA_PATH)/lib64
-	else
-		LDFLAGS += -L$(CUDA_PATH)/lib
-	endif
-	LDLIBS += -lcudart
-endif
+DEPSFILE = ${DEPSDIR}/$(notdir $*.d)
+DEPSFLAGS = -MD -MF ${DEPSFILE} #-MP
 
 ####################
 ## Makefile Rules ##
@@ -144,28 +66,32 @@ endif
 #   $@: the name of the target of the rule
 
 # 'make' - default rule
-all: $(EXEC)
+all: ${EXEC}
 
-# Default rule for creating an exec of $(EXEC) from a .o file
-$(EXEC): % : %.o
-	$(CXX) $(CXXFLAGS) $(LDFLAGS) -o $@ $^ $(LDLIBS)
+# Default rule for creating an exec of ${EXEC} from a .o file
+${EXEC}: % : %.o
+	${CXX} ${LDFLAGS} -o $@ $^ ${LIBS}
 
 # Default rule for creating a .o file from a .cpp file
 %.o: %.cpp
-	$(CXX) $(CXXFLAGS) $(INCLUDES) $(DEPSFLAGS) -c -o $@ $<
+	${CXX} ${CXXFLAGS} ${INCLUDES} ${DEPSFLAGS} -c -o $@ $<
+
+# Default rule for creating a .o file from a .cc file
+%.o: %.cc
+	${CXX} ${CXXFLAGS} ${INCLUDES} ${DEPSFLAGS} -c -o $@ $<
 
 # Default rule for creating a .o file from a .cu file
 %.o: %.cu
-	$(NVCC) $(NVCCFLAGS) $(INCLUDES) -c -o $@ $<
-	@$(NVCC) $(NVCCFLAGS) $(INCLUDES) -M -o $(DEPSFILE) $<
+	${NVCC} -ccbin=${CXX} ${NVCCFLAGS} --compiler-options "${CXXFLAGS}" -c -o $@ $<
+	@${NVCC} -ccbin=${CXX} ${NVCCFLAGS} --compiler-options "${CXXFLAGS}" -M -o ${DEPSFILE} $<
 
 # 'make clean' - deletes all .o and temp files, exec, and dependency file
 clean:
-	-$(RM) *.o $(EXEC)
-	$(RM) -r $(DEPSDIR)
+	-${RM} *.o ${EXEC}
+	${RM} -r ${DEPSDIR}
 
 # Define rules that do not actually generate the corresponding file
 .PHONY: clean all
 
 # Include the dependency files
--include $(wildcard $(DEPSDIR)/*.d)
+-include ${wildcard ${DEPSDIR}/*.d}

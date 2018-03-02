@@ -1,0 +1,46 @@
+# BLAM with OpenBLAS https://github.com/xianyi/OpenBLAS
+#
+# caveat: must use recent openblas release (> 5 Nov 2017)
+#         reason: requires void* for complex number arguments
+#         https://github.com/xianyi/OpenBLAS/commit/66ac898f6441f0cb334f76d0c5603c37962bf368#diff-d23268747e861f1166acbfc56e8b2917
+#
+# Assumes Linux
+#
+# Create a symbolic link:
+#     ln -s make.inc.openblas make.inc
+#
+# Optional: $OPENBLAS_PATH is set to where OpenBLAS is installed, e.g. in ~/.profile
+#     export OPENBLASROOT=/home/XXX/local/OpenBLAS
+#
+# Optional: $OPENBLAS_INC is set to where OpenBLAS cblas.h exists, e.g., in ~/.profile
+#     export OPENBLAS_INC=/home/XXX/local/OpenBLAS/include
+#
+# Optional: $OPENBLAS_LIB is set to where libopenblas exists, e.g., in ~/.profile
+#     export OPENBLASLIB=/home/XXX/local/OpenBLAS/lib
+#
+# Then
+#     make
+# or alternatively (to force OPENBLAS_INC, OPENBLAS_LIB)
+#     make OPENBLAS_LIB=/some/path OPENBLAS_INC=/some/path
+#
+
+OPENBLASROOT  ?= /usr/local/opt/openblas
+OPENBLAS_INC  ?= ${OPENBLASROOT}/include
+OPENBLAS_LIB  ?= ${OPENBLASROOT}/lib
+
+CXX       = g++
+
+LDFLAGS   += -fopenmp
+
+CXXFLAGS  += -fopenmp
+
+ifdef OPENBLAS_INC
+      CXXFLAGS += -I${OPENBLAS_INC}
+endif
+
+ifdef OPENBLAS_LIB
+      LIBS += -L${OPENBLAS_LIB}
+endif
+
+# note: -llapack is required for tests
+LIBS +=  -llapack -lopenblas

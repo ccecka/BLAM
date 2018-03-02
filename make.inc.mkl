@@ -1,0 +1,41 @@
+# Intel MKL with GNU gcc/g++
+# Assumes $MKLROOT is set, e.g., in ~/.bashrc:
+#     source /opt/intel/bin/compilervars.sh intel64
+# or
+#     source /opt/intel/mkl/bin/mklvars.sh intel64
+
+INTELROOT ?= /opt/intel
+INTEL_LIB ?= ${INTELROOT}/lib
+MKLROOT   ?= ${INTELROOT}/mkl
+MKL_INC   ?= ${MKLROOT}/include
+MKL_LIB   ?= ${MKLROOT}/lib
+
+# Get the kernel-name if empty
+ifeq ($(kernel-name),)
+	kernel-name := $(shell uname -s)
+endif
+
+CXX      = g++
+
+LDFLAGS   += -fopenmp
+
+CXXFLAGS  += -fopenmp
+
+ifdef MKL_INC
+      CXXFLAGS += -I${MKL_INC}
+endif
+
+ifdef MKL_LIB
+      LIBS += -L${MKL_LIB}
+endif
+
+#
+# Constructed with aid from Intel Line Advisor:
+# https://software.intel.com/en-us/articles/intel-mkl-link-line-advisor
+#
+ifeq ($(kernel-name),Darwin)
+	LIBS += -lpthread -ldl -lm -lmkl_rt -lmkl_intel_thread -L${INTEL_LIB} -liomp5
+endif
+ifeq ($(kernel-name),Linux)
+	LIBS += -Wl,--start-group $(MKL_LIB)/intel64/libmkl_intel_lp64.a $(MKL_LIB)/intel64/libmkl_intel_thread.a $(MKL_LIB)/intel64/libmkl_core.a $(INTEL_LIB)/intel64/libiomp5.a -Wl,--end-group -lpthread -ldl -lm
+endif
