@@ -30,6 +30,8 @@
 #include <blam/system/cublas/config.h>
 #include <blam/system/cublas/execution_policy.h>
 
+#include <blam/system/cublas/level3/gemm.h>  // RowMajor+ConjTrans
+
 namespace blam
 {
 namespace cublas
@@ -119,7 +121,7 @@ gemv(cublasHandle_t handle, cublasOperation_t trans,
                      reinterpret_cast<cuDoubleComplex*>(y), incY);
 }
 
-// csgemv   XXX: Move to general
+// csgemv   XXX: Move to general?
 inline cublasStatus_t
 gemv(cublasHandle_t handle, cublasOperation_t trans,
      int m, int n,
@@ -142,7 +144,7 @@ gemv(cublasHandle_t handle, cublasOperation_t trans,
                      reinterpret_cast<float*>(y), incY);
 }
 
-// zdgemv   XXX: Move to general
+// zdgemv   XXX: Move to general?
 inline cublasStatus_t
 gemv(cublasHandle_t handle, cublasOperation_t trans,
      int m, int n,
@@ -217,8 +219,30 @@ gemv(const execution_policy<DerivedPolicy>& exec,
                      y, incY))
 {
   if (order == RowMajor) {
-    // Transpose A, swap m <=> n
-    trans = Op(trans ^ Trans);
+    if ((std::is_same<MA,ComplexFloat>::value || std::is_same<MA,ComplexDouble>::value)
+        && trans == ConjTrans) {
+      // No zero-overhead solution exists for RowMajor+Complex+ConjTrans gemv. Options are:
+      // 0) Fail with return code, assert, or throw
+      // 1) Decay to many dot/axpy
+      // 2) Copy and conjugate x on input, then conjugate y on output
+      // 3) Promote to gemm
+
+      // Here, we've chosen (3), which works when incX > 0 and incY > 0
+      // (Could consider a copy for incX < 0 and/or incY < 0)
+
+      //assert(false && "No cublas::gemv for RowMajor+ConjTrans");
+      //return CUBLAS_STATUS_INVALID_VALUE;
+
+      return gemm(exec, NoTrans, trans,
+                  1, m, n,
+                  alpha,
+                  x, incX,
+                  A, ldA,
+                  beta,
+                  y, incY);
+    }
+    // A => A^T; A^T => A; A^H => A, swap m <=> n
+    trans = (trans==NoTrans ? Trans : NoTrans);
     std::swap(m,n);
   }
 

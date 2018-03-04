@@ -137,7 +137,7 @@ tbmv(const execution_policy<DerivedPolicy>& exec,
 {
   if (order == RowMajor) {
     // Transpose A, swap upper <=> lower
-    trans = Op(trans ^ Trans);
+    trans = (trans==NoTrans ? Trans : NoTrans);
     uplo = (uplo==Upper) ? Lower : Upper;
   }
 

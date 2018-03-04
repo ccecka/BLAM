@@ -94,10 +94,10 @@ symm(cublasHandle_t handle,
 
   return cublasCsymm(handle, side, uplo,
                      m, n,
-                     reinterpret_cast<const cuFloatComplex*>(&alpha),
+                     reinterpret_cast<const cuFloatComplex*>(alpha),
                      reinterpret_cast<const cuFloatComplex*>(A), ldA,
                      reinterpret_cast<const cuFloatComplex*>(B), ldB,
-                     reinterpret_cast<const cuFloatComplex*>(&beta),
+                     reinterpret_cast<const cuFloatComplex*>(beta),
                      reinterpret_cast<cuFloatComplex*>(C), ldC);
 }
 

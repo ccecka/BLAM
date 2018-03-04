@@ -30,12 +30,14 @@
 #include <blam/system/cublas/config.h>
 #include <blam/system/cublas/execution_policy.h>
 
+#include <blam/system/cublas/level3/gemm.h>  // RowMajor gerc
+
 namespace blam
 {
 namespace cublas
 {
 
-// sger
+// sgeru
 inline cublasStatus_t
 geru(cublasHandle_t handle,
      int m, int n,
@@ -54,7 +56,7 @@ geru(cublasHandle_t handle,
                     A, ldA);
 }
 
-// dger
+// dgeru
 inline cublasStatus_t
 geru(cublasHandle_t handle,
      int m, int n,
@@ -71,6 +73,78 @@ geru(cublasHandle_t handle,
                     x, incX,
                     y, incY,
                     A, ldA);
+}
+
+// cgeru
+inline cublasStatus_t
+geru(cublasHandle_t handle,
+     int m, int n,
+     const ComplexFloat* alpha,
+     const ComplexFloat* x, int incX,
+     const ComplexFloat* y, int incY,
+     ComplexFloat* A, int ldA)
+{
+  BLAM_DEBUG_OUT("cublasCgeru");
+
+  return cublasCgeru(handle,
+                     m, n,
+                     reinterpret_cast<const cuFloatComplex*>(alpha),
+                     reinterpret_cast<const cuFloatComplex*>(x), incX,
+                     reinterpret_cast<const cuFloatComplex*>(y), incY,
+                     reinterpret_cast<cuFloatComplex*>(A), ldA);
+}
+
+// zgeru
+inline cublasStatus_t
+geru(cublasHandle_t handle,
+     int m, int n,
+     const ComplexDouble* alpha,
+     const ComplexDouble* x, int incX,
+     const ComplexDouble* y, int incY,
+     ComplexDouble* A, int ldA)
+{
+  BLAM_DEBUG_OUT("cublasZgeru");
+
+  return cublasZgeru(handle,
+                     m, n,
+                     reinterpret_cast<const cuDoubleComplex*>(alpha),
+                     reinterpret_cast<const cuDoubleComplex*>(x), incX,
+                     reinterpret_cast<const cuDoubleComplex*>(y), incY,
+                     reinterpret_cast<cuDoubleComplex*>(A), ldA);
+}
+
+// sgerc
+inline cublasStatus_t
+gerc(cublasHandle_t handle,
+     int m, int n,
+     const float* alpha,
+     const float* x, int incX,
+     const float* y, int incY,
+     float* A, int ldA)
+{
+  return geru(handle,
+              m, n,
+              alpha,
+              x, incX,
+              y, incY,
+              A, ldA);
+}
+
+// dgerc
+inline cublasStatus_t
+gerc(cublasHandle_t handle,
+     int m, int n,
+     const double* alpha,
+     const double* x, int incX,
+     const double* y, int incY,
+     double* A, int ldA)
+{
+  return geru(handle,
+              m, n,
+              alpha,
+              x, incX,
+              y, incY,
+              A, ldA);
 }
 
 // cgerc
@@ -111,42 +185,72 @@ gerc(cublasHandle_t handle,
                      reinterpret_cast<cuDoubleComplex*>(A), ldA);
 }
 
-// cgeru
+// sger
 inline cublasStatus_t
-geru(cublasHandle_t handle,
-     int m, int n,
-     const ComplexFloat* alpha,
-     const ComplexFloat* x, int incX,
-     const ComplexFloat* y, int incY,
-     ComplexFloat* A, int ldA)
+ger(cublasHandle_t handle,
+    int m, int n,
+    const float* alpha,
+    const float* x, int incX,
+    const float* y, int incY,
+    float* A, int ldA)
 {
-  BLAM_DEBUG_OUT("cublasCgeru");
-
-  return cublasCgeru(handle,
-                     m, n,
-                     reinterpret_cast<const cuFloatComplex*>(alpha),
-                     reinterpret_cast<const cuFloatComplex*>(x), incX,
-                     reinterpret_cast<const cuFloatComplex*>(y), incY,
-                     reinterpret_cast<cuFloatComplex*>(A), ldA);
+  return geru(handle,
+              m, n,
+              alpha,
+              x, incX,
+              y, incY,
+              A, ldA);
 }
 
-// zgeru
+// dger
 inline cublasStatus_t
-geru(cublasHandle_t handle,
-     int m, int n,
-     const ComplexDouble* alpha,
-     const ComplexDouble* x, int incX,
-     const ComplexDouble* y, int incY,
-     ComplexDouble* A, int ldA)
+ger(cublasHandle_t handle,
+    int m, int n,
+    const double* alpha,
+    const double* x, int incX,
+    const double* y, int incY,
+    double* A, int ldA)
 {
-  BLAM_DEBUG_OUT("cublasZgeru");
+  return geru(handle,
+              m, n,
+              alpha,
+              x, incX,
+              y, incY,
+              A, ldA);
+}
 
-  return cublasZgeru(handle,
-                     m, n,
-                     reinterpret_cast<const cuDoubleComplex*>(alpha),
-                     reinterpret_cast<const cuDoubleComplex*>(x), incX,
-                     reinterpret_cast<const cuDoubleComplex*>(y), incY,
-                     reinterpret_cast<cuDoubleComplex*>(A), ldA);
+// cger
+inline cublasStatus_t
+ger(cublasHandle_t handle,
+    int m, int n,
+    const ComplexFloat* alpha,
+    const ComplexFloat* x, int incX,
+    const ComplexFloat* y, int incY,
+    ComplexFloat* A, int ldA)
+{
+  return gerc(handle,
+              m, n,
+              alpha,
+              x, incX,
+              y, incY,
+              A, ldA);
+}
+
+// zger
+inline cublasStatus_t
+ger(cublasHandle_t handle,
+    int m, int n,
+    const ComplexDouble* alpha,
+    const ComplexDouble* x, int incX,
+    const ComplexDouble* y, int incY,
+    ComplexDouble* A, int ldA)
+{
+  return gerc(handle,
+              m, n,
+              alpha,
+              x, incX,
+              y, incY,
+              A, ldA);
 }
 
 // blam -> cublas
@@ -246,16 +350,35 @@ gerc(const execution_policy<DerivedPolicy>& exec,
                      y, incY,
                      A, ldA))
 {
-  if (order == ColMajor || (m == n && x == y && incX == incY)) {
-    return gerc(exec, m, n,
-                alpha,
-                x, incX,
-                y, incY,
-                A, ldA);
-  } else {
-    // No such implementation
-    assert(false);  // XXX: Use fn which does not elide with NDEBUG
+  if (order == RowMajor) {
+    if ((std::is_same<MA,ComplexFloat>::value || std::is_same<MA,ComplexDouble>::value)) {
+      // No zero-overhead solution exists for RowMajor+Complex gerc. Options are:
+      // 0) Fail with return code, assert, or throw
+      // 1) Decay to many dot/axpy
+      // 2) Copy and conjugate y on input
+      // 3) Promote to gemm
+
+      // Here, we've chosen (3), which works when incX > 0 and incY > 0
+
+      //assert(false && "No cublas::gerc for RowMajor");
+      //return CUBLAS_STATUS_INVALID_VALUE;
+
+      MA beta = 1;
+      return gemm(exec, order, NoTrans, ConjTrans,
+                  m, n, 1,
+                  alpha,
+                  x, incX,
+                  y, incY,
+                  beta,
+                  A, ldA);
+    }
   }
+
+  return gerc(exec, m, n,
+              alpha,
+              x, incX,
+              y, incY,
+              A, ldA);
 }
 
 } // end namespace cublas

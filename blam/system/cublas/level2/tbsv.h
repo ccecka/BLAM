@@ -137,8 +137,8 @@ tbsv(const execution_policy<DerivedPolicy>& exec,
 {
   if (order == RowMajor) {
     // Transpose A, swap upper <=> lower
-    trans = Op(trans ^ Trans);
     uplo = (uplo==Upper) ? Lower : Upper;
+    trans = (trans==NoTrans ? Trans : NoTrans);
   }
 
   return tbsv(exec, uplo, trans, diag,

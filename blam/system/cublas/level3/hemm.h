@@ -30,10 +30,52 @@
 #include <blam/system/cublas/config.h>
 #include <blam/system/cublas/execution_policy.h>
 
+#include <blam/system/cublas/level3/symm.h>  // Real-valued hemm
+
 namespace blam
 {
 namespace cublas
 {
+
+// shemm
+inline cublasStatus_t
+hemm(cublasHandle_t handle,
+     cublasSideMode_t side, cublasFillMode_t uplo,
+     int m, int n,
+     const float* alpha,
+     const float* A, int ldA,
+     const float* B, int ldB,
+     const float* beta,
+     float* C, int ldC)
+{
+  return symm(handle, side, uplo,
+              m, n,
+              alpha,
+              A, ldA,
+              B, ldB,
+              beta,
+              C, ldC);
+}
+
+// dhemm
+inline cublasStatus_t
+hemm(cublasHandle_t handle,
+     cublasSideMode_t side, cublasFillMode_t uplo,
+     int m, int n,
+     const double* alpha,
+     const double* A, int ldA,
+     const double* B, int ldB,
+     const double* beta,
+     double* C, int ldC)
+{
+  return symm(handle, side, uplo,
+              m, n,
+              alpha,
+              A, ldA,
+              B, ldB,
+              beta,
+              C, ldC);
+}
 
 // chemm
 inline cublasStatus_t

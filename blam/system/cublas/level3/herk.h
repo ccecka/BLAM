@@ -30,10 +30,48 @@
 #include <blam/system/cublas/config.h>
 #include <blam/system/cublas/execution_policy.h>
 
+#include <blam/system/cublas/level3/syrk.h>  // Real-valued herk
+
 namespace blam
 {
 namespace cublas
 {
+
+// sherk
+inline cublasStatus_t
+herk(cublasHandle_t handle,
+      cublasFillMode_t uplo, cublasOperation_t trans,
+      int n, int k,
+      const float* alpha,
+      const float* A, int ldA,
+      const float* beta,
+      float* C, int ldC)
+{
+  return syrk(handle, uplo, trans,
+              n, k,
+              alpha,
+              A, ldA,
+              beta,
+              C, ldC);
+}
+
+// dherk
+inline cublasStatus_t
+herk(cublasHandle_t handle,
+      cublasFillMode_t uplo, cublasOperation_t trans,
+      int n, int k,
+      const double* alpha,
+      const double* A, int ldA,
+      const double* beta,
+      double* C, int ldC)
+{
+  return syrk(handle, uplo, trans,
+              n, k,
+              alpha,
+              A, ldA,
+              beta,
+              C, ldC);
+}
 
 // cherk
 inline cublasStatus_t

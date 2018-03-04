@@ -30,10 +30,51 @@
 #include <blam/system/cublas/config.h>
 #include <blam/system/cublas/execution_policy.h>
 
+#include <blam/system/cublas/level2/symv.h>  // Real-valued hemv
+#include <blam/system/cublas/level3/hemm.h>  // RowMajor+ConjTrans
+
 namespace blam
 {
 namespace cublas
 {
+
+// shemv
+inline cublasStatus_t
+hemv(cublasHandle_t handle, cublasFillMode_t uplo,
+     int n,
+     const float* alpha,
+     const float* A, int ldA,
+     const float* x, int incX,
+     const float* beta,
+     float* y, int incY)
+{
+  return symv(handle, uplo,
+              n,
+              alpha,
+              A, ldA,
+              x, incX,
+              beta,
+              y, incY);
+}
+
+// dhemv
+inline cublasStatus_t
+hemv(cublasHandle_t handle, cublasFillMode_t uplo,
+     int n,
+     const double* alpha,
+     const double* A, int ldA,
+     const double* x, int incX,
+     const double* beta,
+     double* y, int incY)
+{
+  return symv(handle, uplo,
+              n,
+              alpha,
+              A, ldA,
+              x, incX,
+              beta,
+              y, incY);
+}
 
 // chemv
 inline cublasStatus_t
@@ -129,6 +170,28 @@ hemv(const execution_policy<DerivedPolicy>& exec,
                      y, incY))
 {
   if (order == RowMajor) {
+    if (std::is_same<MA,ComplexFloat>::value || std::is_same<MA,ComplexDouble>::value) {
+      // No zero-overhead solution exists for RowMajor hemv. Options are:
+      // 0) Fail with return code, assert, or throw
+      // 1) Decay to many dot/axpy
+      // 2) Copy and conjugate x on input, then conjugate y on output
+      // 3) Promote to hemm
+
+      // Here, we've chosen (3), which works when incX > 0 and incY > 0
+      // (Could consider a copy for incX < 0 and/or incY < 0)
+
+      //assert(false && "No cublas::hemv for RowMajor");
+      //return CUBLAS_STATUS_INVALID_VALUE;
+
+      return hemm(exec, Right, (uplo==Upper) ? Lower : Upper,
+                  1, n,
+                  alpha,
+                  A, ldA,
+                  x, incX,
+                  beta,
+                  y, incY);
+    }
+
     // Swap upper <=> lower
     uplo = (uplo==Upper) ? Lower : Upper;
   }

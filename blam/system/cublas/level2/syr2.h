@@ -30,6 +30,8 @@
 #include <blam/system/cublas/config.h>
 #include <blam/system/cublas/execution_policy.h>
 
+#include <blam/system/cublas/level3/syr2k.h>  // RowMajor
+
 namespace blam
 {
 namespace cublas
@@ -155,6 +157,29 @@ syr2(const execution_policy<DerivedPolicy>& exec,
                      A, ldA))
 {
   if (order == RowMajor) {
+    if (std::is_same<MA,ComplexFloat>::value || std::is_same<MA,ComplexDouble>::value) {
+      // No zero-overhead solution exists for RowMajor syr2. Options are:
+      // 0) Fail with return code, assert, or throw
+      // 1) Decay to many dot/axpy
+      // 3) Promote to syr2k
+
+      // Here, we've chosen (3), which works when incX > 0 and incY > 0
+      // (Could consider a copy for incX < 0 and/or incY < 0)
+
+      //assert(false && "No cublas::syr2 for RowMajor+Complex");
+      //return CUBLAS_STATUS_INVALID_VALUE;
+
+      MA beta = 1;
+      return syr2k(exec, order, uplo, Trans,
+                   n, 1,
+                   alpha,
+                   x, incX,
+                   y, incY,
+                   beta,
+                   A, ldA);
+    }
+
+
     // Swap upper <=> lower
     uplo = (uplo==Upper) ? Lower : Upper;
   }

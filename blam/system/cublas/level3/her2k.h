@@ -30,10 +30,52 @@
 #include <blam/system/cublas/config.h>
 #include <blam/system/cublas/execution_policy.h>
 
+#include <blam/system/cublas/level3/syr2k.h>  // Real-valued her2k
+
 namespace blam
 {
 namespace cublas
 {
+
+// sher2k
+inline cublasStatus_t
+her2k(cublasHandle_t handle,
+      cublasFillMode_t uplo, cublasOperation_t trans,
+      int n, int k,
+      const float* alpha,
+      const float* A, int ldA,
+      const float* B, int ldB,
+      const float* beta,
+      float* C, int ldC)
+{
+  return syr2k(handle, uplo, trans,
+               n, k,
+               alpha,
+               A, ldA,
+               B, ldB,
+               beta,
+               C, ldC);
+}
+
+// dher2k
+inline cublasStatus_t
+her2k(cublasHandle_t handle,
+      cublasFillMode_t uplo, cublasOperation_t trans,
+      int n, int k,
+      const double* alpha,
+      const double* A, int ldA,
+      const double* B, int ldB,
+      const double* beta,
+      double* C, int ldC)
+{
+  return syr2k(handle, uplo, trans,
+               n, k,
+               alpha,
+               A, ldA,
+               B, ldB,
+               beta,
+               C, ldC);
+}
 
 // cher2k
 inline cublasStatus_t

@@ -35,7 +35,7 @@ namespace blam
 namespace cublas
 {
 
-// sdot
+// sdotu
 inline cublasStatus_t
 dotu(cublasHandle_t handle, int n,
      const float* x, int incX,
@@ -50,7 +50,7 @@ dotu(cublasHandle_t handle, int n,
                     result);
 }
 
-// ddot
+// ddotu
 inline cublasStatus_t
 dotu(cublasHandle_t handle, int n,
      const double* x, int incX,
@@ -95,6 +95,32 @@ dotu(cublasHandle_t handle, int n,
                      reinterpret_cast<cuDoubleComplex*>(result));
 }
 
+// sdotc
+inline cublasStatus_t
+dotc(cublasHandle_t handle, int n,
+     const float* x, int incX,
+     const float* y, int incY,
+     float* result)
+{
+  return dotu(handle, n,
+              x, incX,
+              y, incY,
+              result);
+}
+
+// ddotc
+inline cublasStatus_t
+dotc(cublasHandle_t handle, int n,
+     const double* x, int incX,
+     const double* y, int incY,
+     double* result)
+{
+  return dotu(handle, n,
+              x, incX,
+              y, incY,
+              result);
+}
+
 // cdotc
 inline cublasStatus_t
 dotc(cublasHandle_t handle, int n,
@@ -123,6 +149,58 @@ dotc(cublasHandle_t handle, int n,
                      reinterpret_cast<const cuDoubleComplex*>(x), incX,
                      reinterpret_cast<const cuDoubleComplex*>(y), incY,
                      reinterpret_cast<cuDoubleComplex*>(result));
+}
+
+// sdot
+inline cublasStatus_t
+dot(cublasHandle_t handle, int n,
+    const float* x, int incX,
+    const float* y, int incY,
+    float* result)
+{
+  return dotu(handle, n,
+              x, incX,
+              y, incY,
+              result);
+}
+
+// ddot
+inline cublasStatus_t
+dot(cublasHandle_t handle, int n,
+    const double* x, int incX,
+    const double* y, int incY,
+    double* result)
+{
+  return dotu(handle, n,
+              x, incX,
+              y, incY,
+              result);
+}
+
+// cdot
+inline cublasStatus_t
+dot(cublasHandle_t handle, int n,
+    const ComplexFloat* x, int incX,
+    const ComplexFloat* y, int incY,
+    ComplexFloat* result)
+{
+  return dotc(handle, n,
+              x, incX,
+              y, incY,
+              result);
+}
+
+// zdot
+inline cublasStatus_t
+dot(cublasHandle_t handle, int n,
+    const ComplexDouble* x, int incX,
+    const ComplexDouble* y, int incY,
+    ComplexDouble* result)
+{
+  return dotc(handle, n,
+              x, incX,
+              y, incY,
+              result);
 }
 
 // blam -> cublas

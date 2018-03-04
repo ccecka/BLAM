@@ -173,7 +173,7 @@ gbmv(const execution_policy<DerivedPolicy>& exec,
 {
   if (order == RowMajor) {
     // Transpose A, swap m <=> n, kl <=> ku
-    trans = Op(trans ^ Trans);
+    trans = (trans == NoTrans ? Trans : NoTrans);
     std::swap(m,n);
     std::swap(kl,ku);
   }

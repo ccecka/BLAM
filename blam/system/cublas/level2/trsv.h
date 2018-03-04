@@ -30,6 +30,8 @@
 #include <blam/system/cublas/config.h>
 #include <blam/system/cublas/execution_policy.h>
 
+#include <blam/system/cublas/level3/trsm.h>  // RowMajor+ConjTrans
+
 namespace blam
 {
 namespace cublas
@@ -136,9 +138,30 @@ trsv(const execution_policy<DerivedPolicy>& exec,
                      x, incX))
 {
   if (order == RowMajor) {
-    // Transpose A, swap upper <=> lower
-    trans = Op(trans ^ Trans);
+    if ((std::is_same<MA,ComplexFloat>::value || std::is_same<MA,ComplexDouble>::value)
+        && trans == ConjTrans) {
+      // No zero-overhead solution exists for RowMajor+Complex+ConjTrans trsv. Options are:
+      // 0) Fail with return code, assert, or throw
+      // 1) Decay to many dot/axpy
+      // 2) Conjugate x on input and output
+      // 3) Promote to trsm
+
+      // Here, we've chosen (3), which works when incX > 0
+      // (Could consider a copy for incX < 0)
+
+      //assert(false && "No cublas::trsv for RowMajor+ConjTrans");
+      //return CUBLAS_STATUS_INVALID_VALUE;
+
+      MA alpha = 1;
+      return trsm(exec, order, Left, uplo, trans, diag,
+                  n, 1,
+                  alpha,
+                  A, ldA,
+                  x, incX);
+    }
+    // A => A^T; A^T => A; A^H => A, swap upper <=> lower
     uplo = (uplo==Upper) ? Lower : Upper;
+    trans = (trans==NoTrans ? Trans : NoTrans);
   }
 
   return trsv(exec, uplo, trans, diag,

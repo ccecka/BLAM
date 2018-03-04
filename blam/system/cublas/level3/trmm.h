@@ -182,7 +182,7 @@ trmm(const execution_policy<DerivedPolicy>& exec,
               C, ldC);
 }
 
-// blam -> cublas
+// blam -> cublas: in-place
 template <typename DerivedPolicy,
           typename Alpha, typename MA, typename MB>
 inline auto

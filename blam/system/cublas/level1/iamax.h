@@ -104,7 +104,7 @@ iamax(const execution_policy<DerivedPolicy>& exec, int n,
   auto r = iamax(handle(derived_cast(exec)), n,
                  x, incX,
                  &result_i);
-  result = result_i;
+  result = --result_i;
   return r;
 }
 

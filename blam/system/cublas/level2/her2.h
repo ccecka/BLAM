@@ -30,10 +30,46 @@
 #include <blam/system/cublas/config.h>
 #include <blam/system/cublas/execution_policy.h>
 
+#include <blam/system/cublas/level2/syr2.h>  // Real-valued her2
+
 namespace blam
 {
 namespace cublas
 {
+
+// sher2
+inline cublasStatus_t
+her2(cublasHandle_t handle, cublasFillMode_t uplo,
+     int n,
+     const float* alpha,
+     const float* x, int incX,
+     const float* y, int incY,
+     float* A, int ldA)
+{
+  return syr2(handle, uplo,
+              n,
+              alpha,
+              x, incX,
+              y, incY,
+              A, ldA);
+}
+
+// dher2
+inline cublasStatus_t
+her2(cublasHandle_t handle, cublasFillMode_t uplo,
+     int n,
+     const double* alpha,
+     const double* x, int incX,
+     const double* y, int incY,
+     double* A, int ldA)
+{
+  return syr2(handle, uplo,
+              n,
+              alpha,
+              x, incX,
+              y, incY,
+              A, ldA);
+}
 
 // cher2
 inline cublasStatus_t
