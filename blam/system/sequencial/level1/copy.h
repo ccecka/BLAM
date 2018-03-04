@@ -27,7 +27,7 @@
 
 #pragma once
 
-#include <blam/detail/config.h>
+#include <blam/system/seq/config.h>
 #include <blam/system/seq/execution_policy.h>
 
 namespace blam
