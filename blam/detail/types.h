@@ -82,9 +82,9 @@ enum Op : char {
 };
 
 enum Uplo : char {
-  Upper = 'U',
-  Lower = 'L',
-  General   = 'G'
+  Upper   = 'U',
+  Lower   = 'L',
+  General = 'G'
 };
 
 enum Diag : char {
