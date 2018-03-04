@@ -30,10 +30,50 @@
 #include <blam/system/cblas/config.h>
 #include <blam/system/cblas/execution_policy.h>
 
+#include <blam/system/cblas/level2/symv.h>  // Real-valued hemv
+
 namespace blam
 {
 namespace cblas
 {
+
+// shemv
+inline void
+hemv(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
+     int n,
+     const float& alpha,
+     const float* A, int ldA,
+     const float* x, int incX,
+     const float& beta,
+     float* y, int incY)
+{
+  return symv(order, uplo,
+              n,
+              alpha,
+              A, ldA,
+              x, incX,
+              beta,
+              y, incY);
+}
+
+// dhemv
+inline void
+hemv(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
+     int n,
+     const double& alpha,
+     const double* A, int ldA,
+     const double* x, int incX,
+     const double& beta,
+     double* y, int incY)
+{
+  return symv(order, uplo,
+              n,
+              alpha,
+              A, ldA,
+              x, incX,
+              beta,
+              y, incY);
+}
 
 // chemv
 inline void

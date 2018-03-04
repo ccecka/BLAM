@@ -30,10 +30,52 @@
 #include <blam/system/cblas/config.h>
 #include <blam/system/cblas/execution_policy.h>
 
+#include <blam/system/cblas/level3/syr2k.h>  // Real-valued her2k
+
 namespace blam
 {
 namespace cblas
 {
+
+// sher2k
+inline void
+her2k(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
+      CBLAS_TRANSPOSE trans,
+      int n, int k,
+      const float& alpha,
+      const float* A, int ldA,
+      const float* B, int ldB,
+      const float& beta,
+      float* C, int ldC)
+{
+  return syr2k(order, uplo, trans,
+               n, k,
+               alpha,
+               A, ldA,
+               B, ldB,
+               beta,
+               C, ldC);
+}
+
+// dher2k
+inline void
+her2k(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
+      CBLAS_TRANSPOSE trans,
+      int n, int k,
+      const double& alpha,
+      const double* A, int ldA,
+      const double* B, int ldB,
+      const double& beta,
+      double* C, int ldC)
+{
+  return syr2k(order, uplo, trans,
+               n, k,
+               alpha,
+               A, ldA,
+               B, ldB,
+               beta,
+               C, ldC);
+}
 
 // cher2k
 inline void

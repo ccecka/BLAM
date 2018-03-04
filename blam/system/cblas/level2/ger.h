@@ -111,6 +111,40 @@ geru(CBLAS_LAYOUT order,
               reinterpret_cast<double*>(A), ldA);
 }
 
+// sgerc
+inline void
+gerc(CBLAS_LAYOUT order,
+     int m, int n,
+     const float& alpha,
+     const float* x, int incX,
+     const float* y, int incY,
+     float* A, int ldA)
+{
+  return geru(order,
+              m, n,
+              alpha,
+              x, incX,
+              y, incY,
+              A, ldA);
+}
+
+// dgerc
+inline void
+gerc(CBLAS_LAYOUT order,
+     int m, int n,
+     const double& alpha,
+     const double* x, int incX,
+     const double* y, int incY,
+     double* A, int ldA)
+{
+  return geru(order,
+              m, n,
+              alpha,
+              x, incX,
+              y, incY,
+              A, ldA);
+}
+
 // cgerc
 inline void
 gerc(CBLAS_LAYOUT order,
@@ -147,6 +181,74 @@ gerc(CBLAS_LAYOUT order,
               reinterpret_cast<const double*>(x), incX,
               reinterpret_cast<const double*>(y), incY,
               reinterpret_cast<double*>(A), ldA);
+}
+
+// sger
+inline void
+ger(CBLAS_LAYOUT order,
+    int m, int n,
+    const float& alpha,
+    const float* x, int incX,
+    const float* y, int incY,
+    float* A, int ldA)
+{
+  return geru(order,
+              m, n,
+              alpha,
+              x, incX,
+              y, incY,
+              A, ldA);
+}
+
+// dger
+inline void
+ger(CBLAS_LAYOUT order,
+    int m, int n,
+    const double& alpha,
+    const double* x, int incX,
+    const double* y, int incY,
+    double* A, int ldA)
+{
+  return geru(order,
+              m, n,
+              alpha,
+              x, incX,
+              y, incY,
+              A, ldA);
+}
+
+// cger
+inline void
+ger(CBLAS_LAYOUT order,
+    int m, int n,
+    const ComplexFloat& alpha,
+    const ComplexFloat* x, int incX,
+    const ComplexFloat* y, int incY,
+    ComplexFloat* A, int ldA)
+{
+  return gerc(order,
+              m, n,
+              alpha,
+              x, incX,
+              y, incY,
+              A, ldA);
+}
+
+// zger
+inline void
+ger(CBLAS_LAYOUT order,
+    int m, int n,
+    const ComplexDouble& alpha,
+    const ComplexDouble* x, int incX,
+    const ComplexDouble* y, int incY,
+    ComplexDouble* A, int ldA)
+{
+  return gerc(order,
+              m, n,
+              alpha,
+              x, incX,
+              y, incY,
+              A, ldA);
 }
 
 // blam -> cblas

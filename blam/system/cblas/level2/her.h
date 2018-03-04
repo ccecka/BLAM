@@ -30,12 +30,44 @@
 #include <blam/system/cblas/config.h>
 #include <blam/system/cblas/execution_policy.h>
 
+#include <blam/system/cblas/level2/syr.h>  // Real-valued her
+
 namespace blam
 {
 namespace cblas
 {
 
-// cgerc
+// sher
+inline void
+her(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
+    int n,
+    const float& alpha,
+    const float* x, int incX,
+    float* A, int ldA)
+{
+  return syr(order, uplo,
+             n,
+             alpha,
+             x, incX,
+             A, ldA);
+}
+
+// dher
+inline void
+her(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
+    int n,
+    const double& alpha,
+    const double* x, int incX,
+    double* A, int ldA)
+{
+  return syr(order, uplo,
+             n,
+             alpha,
+             x, incX,
+             A, ldA);
+}
+
+// cher
 inline void
 her(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
     int n,
@@ -51,7 +83,7 @@ her(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
              reinterpret_cast<float*>(A), ldA);
 }
 
-// zgerc
+// zher
 inline void
 her(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
     int n,

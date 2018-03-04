@@ -121,6 +121,32 @@ dotu(int n,
                   //reinterpret_cast<double*>(&result));
 }
 
+// sdotc
+inline void
+dotc(int n,
+     const float* x, int incX,
+     const float* y, int incY,
+     float& result)
+{
+  return dotu(n,
+              x, incX,
+              y, incY,
+              result);
+}
+
+// ddotc
+inline void
+dotc(int n,
+     const double* x, int incX,
+     const double* y, int incY,
+     double& result)
+{
+  return dotu(n,
+              x, incX,
+              y, incY,
+              result);
+}
+
 // cdotc_sub
 inline void
 dotc(int n,
@@ -149,6 +175,58 @@ dotc(int n,
                   reinterpret_cast<const double*>(y), incY,
                   any_cast{&result});
                   //reinterpret_cast<double*>(&result));
+}
+
+// sdot
+inline void
+dot(int n,
+    const float* x, int incX,
+    const float* y, int incY,
+    float& result)
+{
+  return dotu(n,
+              x, incX,
+              y, incY,
+              result);
+}
+
+// ddot
+inline void
+dot(int n,
+    const double* x, int incX,
+    const double* y, int incY,
+    double& result)
+{
+  return dotu(n,
+              x, incX,
+              y, incY,
+              result);
+}
+
+// cdot
+inline void
+dot(int n,
+    const ComplexFloat* x, int incX,
+    const ComplexFloat* y, int incY,
+    ComplexFloat& result)
+{
+  return dotc(n,
+              x, incX,
+              y, incY,
+              result);
+}
+
+// zdot
+inline void
+dot(int n,
+    const ComplexDouble* x, int incX,
+    const ComplexDouble* y, int incY,
+    ComplexDouble& result)
+{
+  return dotc(n,
+              x, incX,
+              y, incY,
+              result);
 }
 
 // blam -> cblas

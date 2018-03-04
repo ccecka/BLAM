@@ -30,10 +30,52 @@
 #include <blam/system/cblas/config.h>
 #include <blam/system/cblas/execution_policy.h>
 
+#include <blam/system/cblas/level3/symm.h>  // Real-valued hemm
+
 namespace blam
 {
 namespace cblas
 {
+
+// shemm
+inline void
+hemm(CBLAS_LAYOUT order,
+     CBLAS_SIDE side, CBLAS_UPLO uplo,
+     int m, int n,
+     const float& alpha,
+     const float* A, int ldA,
+     const float* B, int ldB,
+     const float& beta,
+     float* C, int ldC)
+{
+  return symm(order, side, uplo,
+              m, n,
+              alpha,
+              A, ldA,
+              B, ldB,
+              beta,
+              C, ldC);
+}
+
+// dhemm
+inline void
+hemm(CBLAS_LAYOUT order,
+     CBLAS_SIDE side, CBLAS_UPLO uplo,
+     int m, int n,
+     const double& alpha,
+     const double* A, int ldA,
+     const double* B, int ldB,
+     const double& beta,
+     double* C, int ldC)
+{
+  return symm(order, side, uplo,
+              m, n,
+              alpha,
+              A, ldA,
+              B, ldB,
+              beta,
+              C, ldC);
+}
 
 // chemm
 inline void

@@ -30,10 +30,49 @@
 #include <blam/system/cblas/config.h>
 #include <blam/system/cblas/execution_policy.h>
 
+#include <blam/system/cblas/level3/syrk.h>  // Real-valued herk
+
 namespace blam
 {
 namespace cblas
 {
+
+// sherk
+inline void
+herk(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
+     CBLAS_TRANSPOSE trans,
+     int n, int k,
+     const float& alpha,
+     const float* A, int ldA,
+     const float& beta,
+     float* C, int ldC)
+{
+  return syrk(order, uplo, trans,
+              n, k,
+              alpha,
+              A, ldA,
+              beta,
+              C, ldC);
+}
+
+// dherk
+inline void
+herk(CBLAS_LAYOUT order, CBLAS_UPLO uplo,
+     CBLAS_TRANSPOSE trans,
+     int n, int k,
+     const double& alpha,
+     const double* A, int ldA,
+     const double* B, int ldB,
+     const double& beta,
+     double* C, int ldC)
+{
+  return syrk(order, uplo, trans,
+              n, k,
+              alpha,
+              A, ldA,
+              beta,
+              C, ldC);
+}
 
 // cherk
 inline void
