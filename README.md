@@ -24,7 +24,7 @@ BLAM wraps cblas and cublas to provide overloaded interfaces which can be access
 
 Execution policies are extensible and composable objects that may be used to specify how an algorithm should be executed. Execution policies are used throughout the C++17 Parallel STL and we largely follow the design laid out in [N3554](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2013/n3554.pdf).
 
-BLAM currently provides two primary execution policies, `blam::cblas::par` and `blam::cublas::par`, that can be used with a a unified BLAS interface in the `blam::` namespace. These policies dispatch to the appropriate backend and convert the unified interface to the bankend interface.
+BLAM currently provides two primary execution policies, `blam::cblas::par` and `blam::cublas::par`, that can be used with a a unified BLAS interface in the `blam::` namespace. These policies dispatch to the appropriate backend and convert the unified interface to the backend interface.
 
 In the future, we will show how these policies can be composed with other libraries, extended for custom behavior, and modified for improved control over execution.
 
@@ -36,7 +36,7 @@ Each customization point is currently tasked with finding an appropriate dispatc
 
 1. Map the call to an equivalent call that can be sent back to the customization point. This can be used to easily provide new entry point interfaces that default parameters or provide interface conveniences.
 
-2. "Decay" the operation to a weaker operation. e.g. GEMM can be evaluated with multiple GEMVs. This can be used to implement/test new backends quickly: implementating AXPBY could provide the necessary functionality for nearly all of BLAS.
+2. "Decay" the operation to a weaker operation. e.g. GEMM can be evaluated with multiple GEMVs. This can be used to implement/test new backends quickly: implementating AXPBY/DOT could provide the necessary functionality for nearly all of BLAS.
 
 3. Statically fail, with function signature + error message.
 
