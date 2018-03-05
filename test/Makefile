@@ -32,57 +32,14 @@ test_dep = ${addsuffix .d, ${basename ${test_src}}}
 
 # ------------------------------------------------------------------------------
 # rules
-.PHONY: default all include test clean test_headers
+.PHONY: default all include
 
 default: test
 
 all: test
-
-# default rules for subdirectories
-include: test_headers
 
 test: test.o ${test_obj} ${libtest_so}
 	${CXX} ${LDFLAGS} -o $@ test.o ${test_obj} ${BLASPP_LIBS} ${LIBS}
 
 ${libtest_so}: ${libtest_src}
 	cd ${libtest_path} && ${MAKE}
-
-#%.o: %.cc
-#	${CXX} ${CXXFLAGS} ${BLASPP_FLAGS} -c -o $@ $<
-
-%.i: %.cc
-	${CXX} ${CXXFLAGS} ${BLASPP_FLAGS} -E -o $@ $<
-
-clean: include/clean test/clean
-
-include/clean:
-	-${RM} gch/include/*.gch
-
-test/clean:
-	-${RM} test/test test/*.{o,d} gch/test/*.gch
-
--include ${test_dep}
-
-# ------------------------------------------------------------------------------
-# precompile headers to verify self-sufficiency
-headers     = ${wildcard include/*.h include/*.hh test/*.hh}
-headers_gch = ${addprefix gch/, ${addsuffix .gch, ${headers}}}
-
-include/test_headers: test_headers
-
-test_headers: ${headers_gch}
-
-gch/include/%.h.gch: include/%.h | gch/include
-	${CXX} ${CXXFLAGS} ${BLASPP_FLAGS} -c -o $@ $<
-
-gch/include/%.hh.gch: include/%.hh | gch/include
-	${CXX} ${CXXFLAGS} ${BLASPP_FLAGS} -c -o $@ $<
-
-gch/test/%.hh.gch: test/%.hh | gch/test
-	${CXX} ${CXXFLAGS} ${BLASPP_FLAGS} -c -o $@ $<
-
-# make directories
-gch/include: | gch
-gch/test:    | gch
-gch/include gch/test gch:
-	mkdir $@
