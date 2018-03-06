@@ -27,33 +27,79 @@
 
 #pragma once
 
-#include <blam/system/seq/config.h>
-#include <blam/system/seq/execution_policy.h>
+#include <blam/system/sequential/config.h>
+#include <blam/system/sequential/execution_policy.h>
+
+#include <blam/blas/level1/dot.h>
 
 namespace blam
 {
-namespace cblas
+namespace seq
 {
 
 template <typename DerivedPolicy,
-          typename VX, typename R>
+          typename Alpha, typename MA, typename VX,
+          typename Beta, typename VY>
 inline void
-iamax(const execution_policy<DerivedPolicy>& /*exec*/,
-      int n,
-      const VX* x, int incX,
-      R& result)
+gemv(const execution_policy<DerivedPolicy>& exec,
+     Op trans,
+     int m, int n,
+     const Alpha& alpha,
+     const MA* A, int ldA,
+     const VX* x, int incX,
+     const Beta& beta,
+     VY* y, int incY)
 {
-  using blam::abs1;
+  using Ax_t = decltype(*A * *x);
 
-  result = R{};
-  auto m = decltype(abs1(*x)){};
-  for (int i = 0; i < n; ++i, x += incX) {
-    auto a = abs1(*x);
-    if (a > m) {
-      result = i;
-      m = a;
+  int stepA = 1;
+  if (trans & Op::Trans) {
+    std::swap(stepA, ldA);
+    std::swap(m, n);
+  }
+
+  if (incY < 0) y -= incY*(m-1);
+
+  if (trans & Op::Conj) { // is conjugated -> use dotc
+    for (int i = 0; i < m; ++i, y += incY, A += stepA) {
+      Ax_t Ax;
+      blam::dotc(derived_cast(exec), n, A, ldA, x, incX, Ax);
+      *y = alpha * Ax + beta * *y;
+    }
+  } else {                // is not conjugated -> use dotu
+    for (int i = 0; i < m; ++i, y += incY, A += stepA) {
+      Ax_t Ax;
+      blam::dotu(derived_cast(exec), n, A, ldA, x, incX, Ax);
+      *y = alpha * Ax + beta * *y;
     }
   }
+}
+
+template <typename DerivedPolicy,
+          typename Alpha, typename MA, typename VX,
+          typename Beta, typename VY>
+inline void
+gemv(const execution_policy<DerivedPolicy>& exec,
+     Layout order, Op trans,
+     int m, int n,
+     const Alpha& alpha,
+     const MA* A, int ldA,
+     const VX* x, int incX,
+     const Beta& beta,
+     VY* y, int incY)
+{
+  if (order == RowMajor) {
+    trans = Op(trans ^ Op::Trans);
+    std::swap(m,n);
+  }
+
+  return gemv(exec, trans,
+              m, n,
+              alpha,
+              A, ldA,
+              x, incX,
+              beta,
+              y, incY);
 }
 
 } // end namespace seq

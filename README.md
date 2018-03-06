@@ -55,7 +55,7 @@ TODO
 * Accept abstracted pointers (e.g. thrust::device_ptr)?
 
 * Guidance for default execution policies.
-** Currently algorithms invoked without an execution policy fail. Alternatively, this could default to sequencial or a use-defined policy.
+** Currently algorithms invoked without an execution policy fail. Alternatively, this could default to sequential or a use-defined policy.
 
 * Guidance for synchronous/asychronous execution.
 

@@ -27,26 +27,22 @@
 
 #pragma once
 
-#include <blam/system/seq/config.h>
-#include <blam/system/seq/execution_policy.h>
+// Execution policy first
+#include <blam/system/sequential/execution_policy.h>
 
-namespace blam
-{
-namespace seq
-{
+// Include all algorithms
 
-template <typename DerivedPolicy,
-          typename VX, typename VY>
-inline void
-copy(const execution_policy<DerivedPolicy>& exec,
-     int n,
-     const VX* x, int incX,
-     VY* y, int incY)
-{
-  for (int i = 0; i < n, ++i, x += incX, y += incY) {
-    *y = *x;
-  }
-}
+// Level 1
+#include <blam/system/sequential/level1/asum.h>
+#include <blam/system/sequential/level1/axpy.h>
+#include <blam/system/sequential/level1/copy.h>
+#include <blam/system/sequential/level1/dot.h>
+#include <blam/system/sequential/level1/iamax.h>
+#include <blam/system/sequential/level1/nrm2.h>
+#include <blam/system/sequential/level1/scal.h>
+#include <blam/system/sequential/level1/swap.h>
 
-} // end namespace seq
-} // end namespace blam
+// Level 2
+#include <blam/system/sequential/level2/gemv.h>
+
+// Level 3

@@ -27,60 +27,35 @@
 
 #pragma once
 
-#include <blam/system/seq/config.h>
-#include <blam/system/seq/execution_policy.h>
+#include <blam/system/sequential/config.h>
+#include <blam/system/sequential/execution_policy.h>
 
 namespace blam
 {
-namespace seq
+namespace cblas
 {
 
 template <typename DerivedPolicy,
-          typename VX, typename VY, typename R>
+          typename VX, typename R>
 inline void
-dotu(const execution_policy<DerivedPolicy>& /*exec*/,
-     int n,
-     const VX* x, int incX,
-     const VY* y, int incY,
-     R& result)
+iamax(const execution_policy<DerivedPolicy>& /*exec*/,
+      int n,
+      const VX* x, int incX,
+      R& result)
 {
-  result = R{};
-  for (int i = 0; i < n; ++i, x += incX, y += incY) {
-    result += *x * *y;
-  }
-}
+  using blam::abs1;
 
-template <typename DerivedPolicy,
-          typename VX, typename VY, typename R>
-inline void
-dotc(const execution_policy<DerivedPolicy>& /*exec*/,
-     int n,
-     const VX* x, int incX,
-     const VY* y, int incY,
-     R& result)
-{
-  using std::conj;
+  if (incX < 0) x -= incX*(n-1);
 
   result = R{};
-  for (int i = 0; i < n; ++i, x += incX, y += incY) {
-    result += conj(*x) * *y;
+  auto max_x = decltype(abs1(*x)){};
+  for (int i = 0; i < n; ++i, x += incX) {
+    auto xi = abs1(*x);
+    if (xi > max_x) {
+      max_x = xi;
+      result = i;
+    }
   }
-}
-
-template <typename DerivedPolicy,
-          typename VX, typename VY, typename R>
-inline void
-dot(const execution_policy<DerivedPolicy>& exec,
-    int n,
-    const VX* x, int incX,
-    const VY* y, int incY,
-    R& result)
-{
-  return dotc(exec,
-              n,
-              x, incX,
-              y, incY,
-              result);
 }
 
 } // end namespace seq

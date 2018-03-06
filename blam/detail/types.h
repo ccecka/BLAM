@@ -75,10 +75,17 @@ enum Layout : char {
 };
 
 enum Op : char {
+  // Can be used as binary flags
+  NoTrans   = 0,
+  Trans     = 1,
+  Conj      = 2,
+  ConjTrans = 3
+  /*
   NoTrans   = 'N',
   Conj      = 'X',
   Trans     = 'T',
   ConjTrans = 'C'
+  */
 };
 
 enum Uplo : char {
@@ -109,7 +116,14 @@ to_char(Layout layout)
 inline char
 to_char(Op op)
 {
-  return char(op);
+  switch (op) {
+    case NoTrans:   return 'N';
+    case Trans:     return 'T';
+    case ConjTrans: return 'C';
+    default:
+      assert(false && "Invalid Op parameter");
+      return 'X';
+  }
 }
 
 inline char
@@ -144,9 +158,15 @@ char2layout(char layout)
 inline Op
 char2op(char op)
 {
-  op = (char) toupper(op);
-  assert(op == 'N' || op == 'T' || op == 'C');
-  return Op(op);
+  op = char(toupper(op));
+  switch (op) {
+    case 'N': return Op::NoTrans;
+    case 'T': return Op::Trans;
+    case 'C': return Op::ConjTrans;
+    default:
+      assert(op == 'N' || op == 'T' || op == 'C');
+      return Op::NoTrans;
+  }
 }
 
 inline Uplo

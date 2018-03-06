@@ -27,8 +27,8 @@
 
 #pragma once
 
-#include <blam/system/seq/config.h>
-#include <blam/system/seq/execution_policy.h>
+#include <blam/system/sequential/config.h>
+#include <blam/system/sequential/execution_policy.h>
 
 namespace blam
 {
@@ -36,15 +36,18 @@ namespace seq
 {
 
 template <typename DerivedPolicy,
-          typename Alpha, typename VX>
+          typename VX, typename VY>
 inline void
-scal(const execution_policy<DerivedPolicy>& /*exec*/,
+copy(const execution_policy<DerivedPolicy>& /*exec*/,
      int n,
-     const Alpha& alpha,
-     const VX* x, int incX)
+     const VX* x, int incX,
+     VY* y, int incY)
 {
-  for (int i = 0; i < n; ++i, x += incX) {
-    *x *= alpha;
+  if (incX < 0) x -= incX*(n-1);
+  if (incY < 0) y -= incY*(n-1);
+
+  for (int i = 0; i < n; ++i, x += incX, y += incY) {
+    *y = *x;
   }
 }
 

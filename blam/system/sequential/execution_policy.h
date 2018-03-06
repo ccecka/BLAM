@@ -27,27 +27,50 @@
 
 #pragma once
 
-#include <blam/system/seq/config.h>
-#include <blam/system/seq/execution_policy.h>
+#include <blam/system/sequential/config.h>
+
+#include <blam/detail/execution_policy.h>
 
 namespace blam
 {
 namespace seq
 {
 
-template <typename DerivedPolicy,
-          typename Alpha, typename VX, typename VY>
-inline void
-axpy(const execution_policy<DerivedPolicy>& /*exec*/,
-     int n,
-     const Alpha& alpha,
-     const VX* x, int incX,
-     VY* y, int incY)
+// this awkward sequence of definitions arise
+// from the desire both for tag to derive
+// from execution_policy and for execution_policy
+// to convert to tag (when execution_policy is not
+// an ancestor of tag)
+
+// forward declaration of tag
+struct tag;
+
+// forward declaration of execution_policy
+template <typename>
+struct execution_policy;
+
+// specialize execution_policy for tag
+template <>
+struct execution_policy<tag>
+    : blam::execution_policy<tag>
+{};
+
+// tag's definition comes before the
+// generic definition of execution_policy
+struct tag : execution_policy<tag> {};
+
+// allow conversion to tag when it is not a successor
+template <typename Derived>
+struct execution_policy
+    : blam::execution_policy<Derived>
 {
-  for (int i = 0; i < n; ++i, y += incY, x += incX) {
-    *y += alpha * *x;
+  // allow conversion to tag
+  inline operator tag () const {
+    return tag();
   }
-}
+};
+
+static const tag par{};
 
 } // end namespace seq
 } // end namespace blam

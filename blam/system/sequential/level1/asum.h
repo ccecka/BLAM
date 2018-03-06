@@ -27,21 +27,31 @@
 
 #pragma once
 
-// Execution policy first
-#include <blam/system/sequencial/execution_policy.h>
+#include <blam/system/sequential/config.h>
+#include <blam/system/sequential/execution_policy.h>
 
-// Include all algorithms
+namespace blam
+{
+namespace seq
+{
 
-// Level 1
-#include <blam/system/seq/level1/asum.h>
-#include <blam/system/seq/level1/axpy.h>
-#include <blam/system/seq/level1/copy.h>
-#include <blam/system/seq/level1/dot.h>
-#include <blam/system/seq/level1/iamax.h>
-#include <blam/system/seq/level1/nrm2.h>
-#include <blam/system/seq/level1/scal.h>
-#include <blam/system/seq/level1/swap.h>
+template <typename DerivedPolicy,
+          typename VX, typename R>
+inline void
+asum(const execution_policy<DerivedPolicy>& /*exec*/,
+     int n,
+     const VX* x, int incX,
+     R& result)
+{
+  using blam::abs1;
 
-// Level 2
+  if (incX < 0) x -= incX*(n-1);
 
-// Level 3
+  result = R{};
+  for (int i = 0; i < n; ++i, x += incX) {
+    result += abs1(*x);
+  }
+}
+
+} // end namespace seq
+} // end namespace blam

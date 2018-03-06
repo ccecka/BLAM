@@ -27,8 +27,8 @@
 
 #pragma once
 
-#include <blam/system/seq/config.h>
-#include <blam/system/seq/execution_policy.h>
+#include <blam/system/sequential/config.h>
+#include <blam/system/sequential/execution_policy.h>
 
 namespace blam
 {
@@ -36,30 +36,21 @@ namespace seq
 {
 
 template <typename DerivedPolicy,
-          typename VX, typename R>
+          typename VX, typename VY>
 inline void
-nrm2(const execution_policy<DerivedPolicy>& /*exec*/,
+swap(const execution_policy<DerivedPolicy>& /*exec*/,
      int n,
-     const VX* x, int incX,
-     R& result)
+     VX* x, int incX,
+     VY* y, int incY)
 {
-  using blam::abs1;
-  using std::sqrt;
+  using std::swap;
 
-  result   = R{0};
-  auto ssq = R{1};
+  if (incX < 0) x -= incX*(n-1);
+  if (incY < 0) y -= incY*(n-1);
 
-  // Scaled to prevent overflow and underflow
-  for (int i = 0; i < n; ++i, x += incX) {
-    auto absXi = R{abs1(*x)};
-    if (result < absXi) {
-      ssq = R{1} + ssq * (result/absXi) * (result/absXi);
-      result = absXi;
-    } else {
-      ssq += (result/absXi) * (result/absXi);
-    }
+  for (int i = 0; i < n; ++i, x += incX, y += incY) {
+    swap(*x, *y);
   }
-  result *= sqrt(ssq);
 }
 
 } // end namespace seq
