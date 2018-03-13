@@ -18,13 +18,13 @@ Design Choices
 
 ### Type Dispatching
 
-BLAM wraps cblas and cublas to provide overloaded interfaces which can be accessed directly via the `blam::cblas::` and blam::cublas::` namespaces. Note that these wrappers do not change the interfaces -- e.g. cuBLAS requires a `cublasHandle_t` object and alpha/beta parameters are often passed by pointer -- and only act to provide convenient type overloading.
+BLAM wraps cblas and cublas to provide overloaded interfaces which can be accessed directly via the `blam::cblas::` and `blam::cublas::` namespaces. Note that these wrappers do not change the interfaces -- e.g. cuBLAS requires a `cublasHandle_t` object and alpha/beta parameters are passed by pointer rather than value -- and only act to provide convenient type overloading.
 
 ### Execution Policies
 
 Execution policies are extensible and composable objects that may be used to specify how an algorithm should be executed. Execution policies are used throughout the C++17 Parallel STL and we largely follow the design laid out in [N3554](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2013/n3554.pdf).
 
-BLAM currently provides two primary execution policies, `blam::cblas::par` and `blam::cublas::par`, that can be used with a a unified BLAS interface in the `blam::` namespace. These policies dispatch to the appropriate backend and convert the unified interface to the backend interface.
+BLAM currently provides two primary execution policies, `blam::cblas::par` and `blam::cublas::par`, that can be used with a unified BLAS interface in the `blam::` namespace. These policies dispatch to the appropriate backend and convert the unified interface to the backend interface.
 
 In the future, we will show how these policies can be composed with other libraries, extended for custom behavior, and modified for improved control over execution.
 
@@ -52,7 +52,7 @@ TODO
 
 * Guidance for `__managed__` customization points.
 
-* Accept abstracted pointers (e.g. thrust::device_ptr)?
+* Accept abstracted pointers (e.g. `thrust::device_ptr`)? Other extentions to better interop with Thrust.
 
 * Guidance for default execution policies.
 ** Currently algorithms invoked without an execution policy fail. Alternatively, this could default to sequential or a use-defined policy.
