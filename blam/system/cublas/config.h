@@ -116,7 +116,7 @@ cublas_get_error(cublasStatus_t status)
 inline bool
 cublas_is_error(cublasStatus_t status)
 {
-  return status == CUBLAS_STATUS_SUCCESS;
+  return status != CUBLAS_STATUS_SUCCESS;
 }
 
 } // end namespace blam
