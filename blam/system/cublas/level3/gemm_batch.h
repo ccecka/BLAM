@@ -30,8 +30,6 @@
 #include <blam/system/cublas/config.h>
 #include <blam/system/cublas/execution_policy.h>
 
-#if (CUDA_VERSION >= 8000)
-
 namespace blam
 {
 namespace cublas
@@ -155,6 +153,141 @@ gemm_batch(cublasHandle_t handle,
                                    reinterpret_cast<const cuDoubleComplex*>(beta),
                                    reinterpret_cast<cuDoubleComplex*>(C), ldC, loC,
                                    batch_size);
+}
+
+// hgemm
+inline cublasStatus_t
+gemm_batch(cublasHandle_t handle,
+           cublasOperation_t transA, cublasOperation_t transB,
+           int m, int n, int k,
+           const __half* alpha,
+           const __half* const A[], int ldA,
+           const __half* const B[], int ldB,
+           const __half* beta,
+           __half* const C[], int ldC,
+           int batch_size)
+{
+  BLAM_DEBUG_OUT("cublasHgemmBatched");
+
+  return cublasHgemmBatched(handle, transA, transB,
+                            m, n, k,
+                            alpha,
+                            const_cast<const __half**>(A), ldA,
+                            // A, ldA,   // cuBLAS 9.2
+                            const_cast<const __half**>(B), ldB,
+                            // B, ldB,   // cuBLAS 9.2
+                            beta,
+                            const_cast<__half**>(C), ldC,
+                            // C, ldC,   // cuBLAS 9.2
+                            batch_size);
+}
+
+// sgemm
+inline cublasStatus_t
+gemm_batch(cublasHandle_t handle,
+           cublasOperation_t transA, cublasOperation_t transB,
+           int m, int n, int k,
+           const float* alpha,
+           const float* const A[], int ldA,
+           const float* const B[], int ldB,
+           const float* beta,
+           float* const C[], int ldC,
+           int batch_size)
+{
+  BLAM_DEBUG_OUT("cublasSgemmBatched");
+
+  return cublasSgemmBatched(handle, transA, transB,
+                            m, n, k,
+                            alpha,
+                            const_cast<const float**>(A), ldA,
+                            // A, ldA,   // cuBLAS 9.2
+                            const_cast<const float**>(B), ldB,
+                            // B, ldB,   // cuBLAS 9.2
+                            beta,
+                            const_cast<float**>(C), ldC,
+                            // C, ldC,   // cuBLAS 9.2
+                            batch_size);
+}
+
+// dgemm
+inline cublasStatus_t
+gemm_batch(cublasHandle_t handle,
+           cublasOperation_t transA, cublasOperation_t transB,
+           int m, int n, int k,
+           const double* alpha,
+           const double* const A[], int ldA,
+           const double* const B[], int ldB,
+           const double* beta,
+           double* const C[], int ldC,
+           int batch_size)
+{
+  BLAM_DEBUG_OUT("cublasDgemmBatched");
+
+  return cublasDgemmBatched(handle, transA, transB,
+                            m, n, k,
+                            alpha,
+                            const_cast<const double**>(A), ldA,
+                            // A, ldA,   // cuBLAS 9.2
+                            const_cast<const double**>(B), ldB,
+                            // B, ldB,   // cuBLAS 9.2
+                            beta,
+                            const_cast<double**>(C), ldC,
+                            // C, ldC,   // cuBLAS 9.2
+                            batch_size);
+}
+
+// cgemm
+inline cublasStatus_t
+gemm_batch(cublasHandle_t handle,
+           cublasOperation_t transA, cublasOperation_t transB,
+           int m, int n, int k,
+           const ComplexFloat* alpha,
+           const ComplexFloat* const A[], int ldA,
+           const ComplexFloat* const B[], int ldB,
+           const ComplexFloat* beta,
+           ComplexFloat* const C[], int ldC,
+           int batch_size)
+{
+  BLAM_DEBUG_OUT("cublasCgemmBatched");
+
+  return cublasCgemmBatched(handle, transA, transB,
+                            m, n, k,
+                            reinterpret_cast<const cuFloatComplex*>(alpha),
+                            const_cast<const cuFloatComplex**>(reinterpret_cast<const cuFloatComplex* const *>(A)), ldA,
+                            //reinterpret_cast<const cuFloatComplex* const *>(A), ldA,  // cuBLAS 9.2
+                            const_cast<const cuFloatComplex**>(reinterpret_cast<const cuFloatComplex* const *>(B)), ldB,
+                            //reinterpret_cast<const cuFloatComplex* const *>(B), ldB,  // cuBLAS 9.2
+                            reinterpret_cast<const cuFloatComplex*>(beta),
+                            const_cast<cuFloatComplex**>(reinterpret_cast<cuFloatComplex* const *>(C)), ldC,
+                            //reinterpret_cast<cuFloatComplex* const *>(C), ldC,        // cuBLAS 9.2
+                            batch_size);
+}
+
+// zgemm
+inline cublasStatus_t
+gemm_batch(cublasHandle_t handle,
+           cublasOperation_t transA, cublasOperation_t transB,
+           int m, int n, int k,
+           const ComplexDouble* alpha,
+           const ComplexDouble* const A[], int ldA,
+           const ComplexDouble* const B[], int ldB,
+           const ComplexDouble* beta,
+           ComplexDouble* const C[], int ldC,
+           int batch_size)
+{
+  BLAM_DEBUG_OUT("cublasZgemmBatched");
+
+  return cublasZgemmBatched(handle, transA, transB,
+                            m, n, k,
+                            reinterpret_cast<const cuDoubleComplex*>(alpha),
+                            const_cast<const cuDoubleComplex**>(reinterpret_cast<const cuDoubleComplex* const *>(A)), ldA,
+                            //reinterpret_cast<const cuDoubleComplex* const *>(A), ldA,  // cuBLAS 9.2
+                            const_cast<const cuDoubleComplex**>(reinterpret_cast<const cuDoubleComplex* const *>(B)), ldB,
+                            //reinterpret_cast<const cuDoubleComplex* const *>(B), ldB,  // cuBLAS 9.2
+                            reinterpret_cast<const cuDoubleComplex*>(beta),
+                            const_cast<cuDoubleComplex**>(reinterpret_cast<cuDoubleComplex* const *>(C)), ldC,
+                            //reinterpret_cast<cuDoubleComplex* const *>(C), ldC,        // cuBLAS 9.2
+                            batch_size);
 }
 
 // scgemm    XXX: Move to general?
@@ -340,7 +473,84 @@ gemm_batch(const execution_policy<DerivedPolicy>& exec,
   }
 }
 
+// blam -> cublas
+template <typename DerivedPolicy,
+          typename Alpha, typename MA, typename MB,
+          typename Beta, typename MC>
+inline auto
+gemm_batch(const execution_policy<DerivedPolicy>& exec,
+           Op transA, Op transB,
+           int m, int n, int k,
+           const Alpha& alpha,
+           const MA* const A[], int ldA,
+           const MB* const B[], int ldB,
+           const Beta& beta,
+           MC* const C[], int ldC,
+           int batch_size)
+    -> decltype(gemm_batch(handle(derived_cast(exec)),
+                           cublas_type(transA), cublas_type(transB),
+                           m, n, k,
+                           &alpha,
+                           A, ldA,
+                           B, ldB,
+                           &beta,
+                           C, ldC,
+                           batch_size))
+{
+  return gemm_batch(handle(derived_cast(exec)),
+                    cublas_type(transA), cublas_type(transB),
+                    m, n, k,
+                    &alpha,
+                    A, ldA,
+                    B, ldB,
+                    &beta,
+                    C, ldC,
+                    batch_size);
+}
+
+// RowMajor -> ColMajor
+template <typename DerivedPolicy,
+          typename Alpha, typename MA, typename MB,
+          typename Beta, typename MC>
+inline auto
+gemm_batch(const execution_policy<DerivedPolicy>& exec,
+           Layout order, Op transA, Op transB,
+           int m, int n, int k,
+           const Alpha& alpha,
+           const MA* const A[], int ldA,
+           const MB* const B[], int ldB,
+           const Beta& beta,
+           MC* const C[], int ldC,
+           int batch_size)
+    -> decltype(gemm_batch(exec, transA, transB,
+                           m, n, k,
+                           alpha,
+                           A, ldA,
+                           B, ldB,
+                           beta,
+                           C, ldC,
+                           batch_size))
+{
+  if (order == ColMajor) {
+    return gemm_batch(exec, transA, transB,
+                      m, n, k,
+                      alpha,
+                      A, ldA,
+                      B, ldB,
+                      beta,
+                      C, ldC,
+                      batch_size);
+  } else { // RowMajor: swap A <=> B, transA <=> transB, m <=> n
+    return gemm_batch(exec, transB, transA,
+                      n, m, k,
+                      alpha,
+                      B, ldB,
+                      A, ldA,
+                      beta,
+                      C, ldC,
+                      batch_size);
+  }
+}
+
 } // end namespace cublas
 } // end namespace blam
-
-#endif // CUDA_VERSION >= 8000
