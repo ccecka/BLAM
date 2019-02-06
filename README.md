@@ -59,6 +59,8 @@ TODO
 
 * Guidance for synchronous/asychronous execution.
 
+[ ] cublasGemmEx
+
 [ ] Public Sequencial implementations.
 
 [ ] Public ThrustBlas/Agency implementations.
