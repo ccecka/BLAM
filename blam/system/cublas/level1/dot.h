@@ -1,6 +1,6 @@
 /******************************************************************************
- * Copyright (C) 2016-2017, Cris Cecka.  All rights reserved.
- * Copyright (C) 2016-2017, NVIDIA CORPORATION.  All rights reserved.
+ * Copyright (C) 2016-2019, Cris Cecka.  All rights reserved.
+ * Copyright (C) 2016-2019, NVIDIA CORPORATION.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
