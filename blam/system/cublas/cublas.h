@@ -81,3 +81,4 @@
 
 // Extended
 #include <blam/system/cublas/ex/geam.h>
+#include <blam/system/cublas/ex/dgmm.h>
